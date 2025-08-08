@@ -5,40 +5,75 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('apis_ontology', '0001_initial'),
+        ("apis_ontology", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='ereignis',
-            name='alternative_namen',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.CharField(blank=True, max_length=255), blank=True, help_text='Alternative Namen', null=True, size=None),
+            model_name="ereignis",
+            name="alternative_namen",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.CharField(blank=True, max_length=255),
+                blank=True,
+                help_text="Alternative Namen",
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='preis',
-            name='alternative_namen',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.CharField(blank=True, max_length=255), blank=True, help_text='Alternative Namen', null=True, size=None),
+            model_name="preis",
+            name="alternative_namen",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.CharField(blank=True, max_length=255),
+                blank=True,
+                help_text="Alternative Namen",
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='religion',
-            name='alternative_namen',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.CharField(blank=True, max_length=255), blank=True, help_text='Alternative Namen', null=True, size=None),
+            model_name="religion",
+            name="alternative_namen",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.CharField(blank=True, max_length=255),
+                blank=True,
+                help_text="Alternative Namen",
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='versionereignis',
-            name='alternative_namen',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.CharField(blank=True, max_length=255), blank=True, help_text='Alternative Namen', null=True, size=None),
+            model_name="versionereignis",
+            name="alternative_namen",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.CharField(blank=True, max_length=255),
+                blank=True,
+                help_text="Alternative Namen",
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='versionpreis',
-            name='alternative_namen',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.CharField(blank=True, max_length=255), blank=True, help_text='Alternative Namen', null=True, size=None),
+            model_name="versionpreis",
+            name="alternative_namen",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.CharField(blank=True, max_length=255),
+                blank=True,
+                help_text="Alternative Namen",
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='versionreligion',
-            name='alternative_namen',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.CharField(blank=True, max_length=255), blank=True, help_text='Alternative Namen', null=True, size=None),
+            model_name="versionreligion",
+            name="alternative_namen",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.CharField(blank=True, max_length=255),
+                blank=True,
+                help_text="Alternative Namen",
+                null=True,
+                size=None,
+            ),
         ),
     ]

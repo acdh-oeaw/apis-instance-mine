@@ -1,6 +1,6 @@
-from apis_acdhch_default_settings.settings import *
+from apis_acdhch_default_settings.settings import *  # noqa: F403
 
-INSTALLED_APPS += ["apis_core.documentation"]
+INSTALLED_APPS += ["apis_core.documentation"]  # noqa: F405
 INSTALLED_APPS += ["apis_acdhch_django_invite"]
 INSTALLED_APPS += ["django_json_editor_field"]
 INSTALLED_APPS += ["django_interval"]

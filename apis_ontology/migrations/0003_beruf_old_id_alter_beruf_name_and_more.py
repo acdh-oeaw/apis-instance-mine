@@ -4,25 +4,38 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('apis_ontology', '0002_alter_ereignis_alternative_namen_and_more'),
+        ("apis_ontology", "0002_alter_ereignis_alternative_namen_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='beruf',
-            name='old_id',
+            model_name="beruf",
+            name="old_id",
             field=models.IntegerField(blank=True, editable=False, null=True),
         ),
         migrations.AlterField(
-            model_name='beruf',
-            name='name',
+            model_name="beruf",
+            name="name",
             field=models.CharField(max_length=1024),
         ),
         migrations.AlterField(
-            model_name='oeawmitgliedschaft',
-            name='ende_typ',
-            field=models.CharField(blank=True, choices=[('ausgetreten', 'ausgetreten'), ('ausgeschlossen', 'ausgeschlossen'), ('erloschen', 'erloschen'), ('ruhend gestellt', 'ruhend gestellt'), ('andere Mitgliedschaft', 'andere Mitgliedschaft'), ('Tod', 'Tod'), ('unbekannt', 'unbekannt')], default='unbekannt', help_text='Art des Endes der Mitgliedschaft', max_length=100),
+            model_name="oeawmitgliedschaft",
+            name="ende_typ",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("ausgetreten", "ausgetreten"),
+                    ("ausgeschlossen", "ausgeschlossen"),
+                    ("erloschen", "erloschen"),
+                    ("ruhend gestellt", "ruhend gestellt"),
+                    ("andere Mitgliedschaft", "andere Mitgliedschaft"),
+                    ("Tod", "Tod"),
+                    ("unbekannt", "unbekannt"),
+                ],
+                default="unbekannt",
+                help_text="Art des Endes der Mitgliedschaft",
+                max_length=100,
+            ),
         ),
     ]
