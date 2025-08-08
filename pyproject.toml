@@ -3,7 +3,7 @@ name = "mine-2025"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 dependencies = [
     "apis-acdhch-default-settings>=2.11.0",
     "apis-acdhch-django-auditlog>=0.2.1",
@@ -12,7 +12,7 @@ dependencies = [
     "django-interval>=0.5.1",
     "django-json-editor-field>=0.4.2",
     "httpx>=0.28.1",
-    "psycopg2-binary>=2.9.10",
+    "psycopg2>=2.9,<3.0",
 ]
 
 [dependency-groups]
@@ -38,7 +38,7 @@ stubPath = "src/stubs"
 reportMissingImports = "error"
 reportMissingTypeStubs = false
 
-pythonVersion = "3.12"
+pythonVersion = "3.11"
 pythonPlatform = "Linux"
 
 executionEnvironments = [
