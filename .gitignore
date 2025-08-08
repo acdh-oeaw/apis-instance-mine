@@ -1,0 +1,27 @@
+# Devenv
+.devenv*
+devenv.local.nix
+.envrc
+devenv.*
+*.bak
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
+
+.env
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyc
+
+.vscode/
+.zed/
+
+prel_csv_relations/
+relation_types/
+import_person.log

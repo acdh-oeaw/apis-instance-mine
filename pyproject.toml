@@ -1,0 +1,49 @@
+[project]
+name = "mine-2025"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "apis-acdhch-default-settings>=2.11.0",
+    "apis-acdhch-django-auditlog>=0.2.1",
+    "apis-acdhch-django-invite>=0.2.0",
+    "apis-core-rdf>=0.50.2",
+    "django-interval>=0.5.1",
+    "django-json-editor-field>=0.4.2",
+    "httpx>=0.28.1",
+    "psycopg2-binary>=2.9.10",
+]
+
+[dependency-groups]
+dev = [
+    "debugpy>=1.8.12",
+    "djlint>=1.36.4",
+    "duckdb>=1.2.2",
+    "mypy>=1.15.0",
+    "pyright>=1.1.394",
+    "ruff>=0.9.7",
+]
+[tool.pyright]
+#include = ["src"]
+#exclude = ["**/node_modules",
+#    "**/__pycache__",
+#    "src/experimental",
+#    "src/typestubs"
+#]
+#ignore = ["src/oldstuff"]
+defineConstant = { DEBUG = true }
+stubPath = "src/stubs"
+
+reportMissingImports = "error"
+reportMissingTypeStubs = false
+
+pythonVersion = "3.12"
+pythonPlatform = "Linux"
+
+executionEnvironments = [
+    #  { root = "src/web", pythonVersion = "3.5", pythonPlatform = "Windows", extraPaths = [ "src/service_libs" ], reportMissingImports = "warning" },
+    #  { root = "src/sdk", pythonVersion = "3.0", extraPaths = [ "src/backend" ] },
+    #  { root = "src/tests", extraPaths = ["src/tests/e2e", "src/sdk" ]},
+    #  { root = "src" }
+]
