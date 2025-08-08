@@ -130,7 +130,7 @@ def add_to_dict(path, data, row):
 def get_oestat_choices():
     res = dict()
     with open(
-        "/home/sennierer/projects/mine-2025/resources/OEFOS2012_DE_CTI.txt",
+        "resources/OEFOS2012_DE_CTI.txt",
         newline="",
         encoding="latin1",
     ) as inp:
