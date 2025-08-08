@@ -623,7 +623,7 @@ class SchreibtAus(Relation, LegacyFieldsMixin):
 
 @cache
 def get_choices_inst_hierarchie_data():
-    with open("resources/optionen_inst_hierarchie.csv", newline="") as inp:
+    with open("/app/resources/optionen_inst_hierarchie.csv", newline="") as inp:
         reader = csv.DictReader(inp, delimiter=",", quotechar='"')
         return list(reader)
 
@@ -755,7 +755,7 @@ class Stiftet(Relation, LegacyFieldsMixin):
 
 @cache
 def get_choices_memberships_non_oeaw():
-    with open("resources/optionen_mitglied.csv", newline="") as inp:
+    with open("/app/resources/optionen_mitglied.csv", newline="") as inp:
         reader = csv.DictReader(inp, delimiter=",", quotechar='"')
         res = [(f"{i['label_new']}", f"{i['label_new']}") for i in reader]
     return res
