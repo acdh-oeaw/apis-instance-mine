@@ -5,7 +5,7 @@ INSTALLED_APPS += ["apis_acdhch_django_invite"]
 INSTALLED_APPS += ["django_json_editor_field"]
 INSTALLED_APPS += ["django_interval"]
 
-ROOT_URLCONF = "mine.urls"
+ROOT_URLCONF = "apis_ontology.urls"
 
 LANGUAGE_CODE = "de"
 
