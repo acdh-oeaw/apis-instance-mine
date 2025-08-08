@@ -544,7 +544,7 @@ class NichtGewaehlt(Relation, LegacyFieldsMixin):
 
 
 def get_position_choices() -> list[tuple[str, str]]:
-    with open("relation_types/position_inst_relations.csv", newline="") as inp:
+    with open("/app/resources/position_inst_relations.csv", newline="") as inp:
         reader = csv.DictReader(inp, delimiter=",", quotechar='"')
         res = [(i["name"], i["name"]) for i in reader]
     return res
