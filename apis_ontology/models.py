@@ -1,9 +1,13 @@
 import csv
 import os
+import re
+from copy import deepcopy
 from functools import cache
+from typing import Any
 
 from apis_core.apis_entities.abc import E21_Person, E53_Place, E74_Group
 from apis_core.apis_entities.models import AbstractEntity
+from apis_core.apis_metainfo.models import Uri
 from apis_core.generic.abc import GenericModel
 from apis_core.history.models import VersionMixin
 from apis_core.relations.models import Relation
@@ -12,9 +16,44 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.utils import IntegrityError
 from django.utils.translation import gettext_lazy as _
 from django_interval.fields import FuzzyDateParserField
 from django_json_editor_field.fields import JSONEditorField
+
+from apis_import.utils import BASE_URL, api_request
+
+
+def map_dicts(map: list, data: dict) -> dict:
+    res = {}
+    for d in map:
+        if d[0] in data.keys() and d[1] != d[0]:
+            if data[d[0]] and d[1] is not None:
+                data[d[1]] = deepcopy(data[d[0]])
+                del data[d[0]]
+            elif data[d[0]] and d[1] is None:
+                del data[d[0]]
+        elif "__" in d[0]:
+            spl = d[0].split("__")
+            if spl[1] in data[spl[0]].keys():
+                data[d[1]] = data[spl[0]][spl[1]]
+    for k in data.keys():
+        if k in [x[1] for x in map]:
+            res[k] = data[k]
+    return res
+
+
+def clean_fields(cls, data):
+    """replace None values with empty strings for CharFields and TextFields"""
+    fields = [
+        field.name
+        for field in cls._meta.concrete_fields
+        if isinstance(field, models.CharField) or isinstance(field, models.TextField)
+    ]
+    for k, v in data.items():
+        if v is None and k in fields:
+            data[k] = ""
+    return data
 
 
 class NameMixin(models.Model):
@@ -110,11 +149,98 @@ class AlternativeNameMixin(models.Model):
     class Meta:
         abstract = True
 
+    def add_alternative_label(self, row):
+        alternative_namen = self.alternative_namen or []
+        alternative_namen.append(
+            {
+                "name": row["label"],
+                "art": row["name"],
+                "sprache": row["isoCode_639_3"],
+                "beginn": row["start_date_written"],
+                "ende": row["end_date_written"],
+            }
+        )
+        self.alternative_namen = alternative_namen
+        self.save()  # Don't forget to save!
+
 
 class LegacyFieldsMixin(models.Model):
     notes = models.TextField(blank=True)
     references = models.TextField(blank=True)
     old_id = models.IntegerField(blank=True, null=True, unique=True, editable=False)
+
+    class Meta:
+        abstract = True
+
+
+class BaseLegacyImport(models.Model):
+    MAP_FIELDS_OLD = [
+        ("id", "old_id"),
+        ("notes", "notes"),
+        ("references", "references"),
+    ]
+
+    class Meta:
+        abstract = True
+
+    @classmethod
+    def create_from_legacy_data(cls, data: dict[str, Any], logger):
+        data_mapped = map_dicts(cls.MAP_FIELDS_OLD, data)
+        data_mapped = clean_fields(cls, data_mapped)
+        res = cls.objects.create(**data_mapped)
+        if "sameAs" in data:
+            for u in data["sameAs"]:
+                try:
+                    Uri.objects.create(uri=u, content_object=res)
+                except IntegrityError:
+                    logger.warning(f"URI {u} already exists, cant create for {res}")
+        return res
+
+    @classmethod
+    def get_or_create_from_legacy_id(cls, legacy_id, logger, use_filter=False):
+        obj = cls.objects.filter(old_id=legacy_id)
+        if obj.exists():
+            return obj.first()
+        else:
+            params = None
+            if use_filter:
+                params = {"id": legacy_id}
+                legacy_id = ""
+            if isinstance(cls.LEGACY_DATA_ROUTE, str):
+                dr = [cls.LEGACY_DATA_ROUTE]
+            elif isinstance(cls.LEGACY_DATA_ROUTE, list):
+                dr = cls.LEGACY_DATA_ROUTE
+            else:
+                raise ValueError("LEGACY_DATA_ROUTE must be a string or a list")
+            for route in dr:
+                try:
+                    data = api_request(
+                        f"{BASE_URL}/apis/api/{route}/{legacy_id}",
+                        logger,
+                        params=params,
+                    )
+                except Exception as e:
+                    logger.error(f"Error fetching data from {route}: {e}")
+                    continue
+                if "results" in data and len(data["results"]) > 0:
+                    return cls.create_from_legacy_data(data["results"][0], logger)
+                return cls.create_from_legacy_data(data, logger)
+
+
+class LegacyImportDates(BaseLegacyImport):
+    MAP_FIELDS_OLD = BaseLegacyImport.MAP_FIELDS_OLD + [
+        ("start_date_written", "beginn"),
+        ("end_date_written", "ende"),
+    ]
+
+    class Meta:
+        abstract = True
+
+
+class LegacyImportSingleDate(BaseLegacyImport):
+    MAP_FIELDS_OLD = BaseLegacyImport.MAP_FIELDS_OLD + [
+        ("start_date_written", "datum"),
+    ]
 
     class Meta:
         abstract = True
@@ -151,8 +277,13 @@ def get_oestat_choices():
     return res
 
 
-class Beruf(GenericModel, models.Model):
-    old_id = models.IntegerField(blank=True, null=True, unique=True, editable=False)
+class Beruf(GenericModel, BaseLegacyImport, models.Model):
+    LEGACY_DATA_ROUTE = "vocabularies/professiontype"
+    MAP_FIELDS_OLD = [
+        ("old_id", "old_id"),
+        ("name", "name"),
+    ]
+    old_id = models.IntegerField(blank=True, null=True, editable=False)
     name = models.CharField(max_length=1024)
 
     def __str__(self):
@@ -179,11 +310,33 @@ class Bild(GenericModel, models.Model):
         verbose_name = _("Bild")
         verbose_name_plural = _("Bilder")
 
+    @classmethod
+    def create_from_legacy_data(cls, obj, data, data_full):
+        data_fin = {
+            "pfad": data["label"],
+            "content_object": obj,
+            "art": "Wikimedia",
+        }
+        if data["name"] == "filename OEAW Archiv":
+            data_fin["art"] = "OEAW Archiv"
+            for d2 in data_full:
+                if (
+                    d2["temp_entity_id"] == data["temp_entity_id"]
+                    and d2["name"] == "photocredit OEAW Archiv"
+                ):
+                    data_fin["credit"] = d2["label"]
+        cls.objects.create(**data_fin)
 
-class Fach(AbstractEntity, VersionMixin):
+
+class Fach(AbstractEntity, VersionMixin, BaseLegacyImport):
     """akademische Fachrichtung"""
 
-    old_id = models.IntegerField(blank=True, null=True, unique=True, editable=False)
+    MAP_FIELDS_OLD = BaseLegacyImport.MAP_FIELDS_OLD + [
+        ("name", "name"),
+    ]
+    LEGACY_DATA_ROUTE = "vocabularies/personinstitutionrelation"
+
+    old_id = models.IntegerField(blank=True, null=True, editable=False)
     name = models.CharField(max_length=400)
     oestat = models.CharField(max_length=400, blank=True, choices=get_oestat_choices)
 
@@ -194,15 +347,30 @@ class Fach(AbstractEntity, VersionMixin):
     def __str__(self):
         return str(self.name)
 
+    @classmethod
+    def create_from_legacy_data(cls, data, logger):
+        res = cls.objects.filter(name=data["name"])
+        if res.exists():
+            logger.info(f"Found existing Fachrichtung with name {data['name']}")
+            return res.first()
+        return super().create_from_legacy_data(data, logger)
+
 
 class Ereignis(
     VersionMixin,
     AbstractEntity,
     NameMixin,
     LegacyFieldsMixin,
+    LegacyImportSingleDate,
     AlternativeNameMixin,
 ):
     """haupsächlich Sitzungen und Wahlen"""
+
+    MAP_FIELDS_OLD = LegacyImportSingleDate.MAP_FIELDS_OLD + [
+        ("name", "name"),
+        ("kind__label", "typ"),
+    ]
+    LEGACY_DATA_ROUTE = "entities/event"
 
     TYP_CHOICES = [
         ("Wahlsitzung", "Wahlsitzung"),
@@ -227,15 +395,38 @@ class Ereignis(
         verbose_name = "Ereignis"
         verbose_name_plural = "Ereignisse"
 
+    @classmethod
+    def create_election_from_year(cls, year, logger):
+        params = {
+            "name": f"Wahlsitzung der Gesamtakademie {year}",
+        }
+        data = api_request(
+            f"{BASE_URL}/apis/api/entities/event/", params=params, logger=logger
+        )
+        return cls.create_from_legacy_data(data["results"][0], logger)
+
+    @classmethod
+    def get_or_create_election_from_year(cls, year, logger):
+        try:
+            return cls.objects.get(typ=f"Wahlsitzung der Gesamtakademie {year}")
+        except cls.DoesNotExist:
+            return cls.create_election_from_year(year, logger)
+
 
 class Preis(
     VersionMixin,
     AbstractEntity,
     NameMixin,
     LegacyFieldsMixin,
+    LegacyImportDates,
     AlternativeNameMixin,
 ):
     """Auschreibung eines Preises oder Preisaufgabe"""
+
+    LEGACY_DATA_ROUTE = ["entities/event", "entities/institution"]
+    MAP_FIELDS_OLD = LegacyImportDates.MAP_FIELDS_OLD + [
+        ("name", "name"),
+    ]
 
     text = models.TextField(blank=True)
     datum_ausschreibung = FuzzyDateParserField(
@@ -252,8 +443,12 @@ class Preis(
         return self.name
 
 
-class Religion(VersionMixin, AbstractEntity, NameMixin, LegacyFieldsMixin):
+class Religion(
+    VersionMixin, AbstractEntity, NameMixin, LegacyFieldsMixin, BaseLegacyImport
+):
     """Religionsgemeinschaft"""
+
+    LEGACY_DATA_ROUTE = "entities/institution"
 
     class Meta(VersionMixin.Meta, AbstractEntity.Meta, NameMixin.Meta):
         verbose_name = _("Religionsgemeinschaft")
@@ -264,8 +459,13 @@ class Werk(
     VersionMixin,
     AbstractEntity,
     LegacyFieldsMixin,
+    BaseLegacyImport,
     AlternativeNameMixin,
 ):
+    LEGACY_DATA_ROUTE = "entities/work"
+    MAP_FIELDS_OLD = BaseLegacyImport.MAP_FIELDS_OLD + [
+        ("name", "titel"),
+    ]
     TYP_CHOICES = [
         ("Buch", "Buch"),
         ("Zeitschrift", "Zeitschrift"),
@@ -302,8 +502,17 @@ class Person(
     E21_Person,
     AbstractEntity,
     LegacyFieldsMixin,
+    BaseLegacyImport,
     AlternativeNameMixin,
 ):
+    LEGACY_DATA_ROUTE = "entities/person"
+    MAP_FIELDS_OLD = BaseLegacyImport.MAP_FIELDS_OLD + [
+        ("start_date_written", "date_of_birth"),
+        ("end_date_written", "date_of_death"),
+        ("name", "surname"),
+        ("first_name", "forename"),
+        ("gender", "gender"),
+    ]
     KLASSE_CHOICES = [
         (
             "Mathematisch-Naturwissenschaftliche Klasse",
@@ -395,14 +604,74 @@ class Person(
         verbose_name = "Person"
         verbose_name_plural = "Personen"
 
+    @classmethod
+    def create_from_legacy_data(cls, data, logger):
+        data_mapped = map_dicts(cls.MAP_FIELDS_OLD, data)
+        data_mapped = clean_fields(cls, data_mapped)
+        if data_mapped["gender"] == "male":
+            data_mapped["gender"] = "männlich"
+        elif data_mapped["gender"] == "female":
+            data_mapped["gender"] = "weiblich"
+        profs = []
+        for prof in data["profession"]:
+            p = Beruf.get_or_create_from_legacy_id(prof["id"], logger)
+            profs.append(p)
+
+        for rel in data["relations"]:
+            if ("(gewählt und bestätigt)" or "(Gewählt)" in rel["label"]) and (
+                "KLASSE" or "GESAMTAKADEMIE" in rel["label"]
+            ):
+                logger.info("Person is member of the academy")
+                data_mapped["mitglied"] = True
+            if "PHILOSOPHISCH-HISTORISCHE KLASSE" in rel["label"]:
+                logger.info("Person is member of the philosophical-historical class")
+                if "klasse" in data_mapped:
+                    if data_mapped["klasse"] != "GESAMTAKADEMIE":
+                        logger.warning(
+                            "Person is already member of another class, skipping"
+                        )
+                        continue
+                data_mapped["klasse"] = "Philosophisch-Historische Klasse"
+            if "MATHEMATISCH-NATURWISSENSCHAFTLICHE KLASSE" in rel["label"]:
+                logger.info(
+                    "Person is member of the mathematical-natural-sciences class"
+                )
+                if "klasse" in data_mapped:
+                    if data_mapped["klasse"] != "GESAMTAKADEMIE":
+                        logger.warning(
+                            "Person is already member of another class, skipping"
+                        )
+                        continue
+                data_mapped["klasse"] = "Mathematisch-Naturwissenschaftliche Klasse"
+            if "GESAMTAKADEMIE" in rel["label"] and "klasse" not in data_mapped:
+                logger.info("Person has role in GESAMTAKADEMIE")
+                data_mapped["klasse"] = "GESAMTAKADEMIE"
+        pers = cls.objects.create(**data_mapped)
+        pers.beruf.add(*profs)
+        if "sameAs" in data:
+            for u in data["sameAs"]:
+                try:
+                    Uri.objects.create(uri=u, content_object=pers)
+                except IntegrityError:
+                    logger.warning(f"URI {u} already exists, cant create for {pers}")
+        return pers
+
 
 class Ort(
     VersionMixin,
     E53_Place,
     AbstractEntity,
     LegacyFieldsMixin,
+    BaseLegacyImport,
     AlternativeNameMixin,
 ):
+    MAP_FIELDS_OLD = BaseLegacyImport.MAP_FIELDS_OLD + [
+        ("name", "label"),
+        ("lat", "latitude"),
+        ("lng", "longitude"),
+    ]
+    LEGACY_DATA_ROUTE = "entities/place"
+
     class Meta(AbstractEntity.Meta, E53_Place.Meta, VersionMixin.Meta):
         verbose_name = "Ort"
         verbose_name_plural = "Orte"
@@ -413,8 +682,13 @@ class Institution(
     E74_Group,
     AbstractEntity,
     LegacyFieldsMixin,
+    LegacyImportDates,
     AlternativeNameMixin,
 ):
+    LEGACY_DATA_ROUTE = "entities/institution"
+    MAP_FIELDS_OLD = LegacyImportDates.MAP_FIELDS_OLD + [
+        ("name", "label"),
+    ]
     TYP_CHOICES = [
         ("Kommission", "Kommission"),
         ("Institut", "Institut"),
@@ -463,8 +737,32 @@ class Institution(
         verbose_name = "Institution"
         verbose_name_plural = "Institutionen"
 
+    @classmethod
+    def get_or_create_from_legacy_id(cls, legacy_id, logger, use_filter=True):
+        return super().get_or_create_from_legacy_id(legacy_id, logger, use_filter)
 
-class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin):
+    @classmethod
+    def create_from_legacy_data(cls, data, logger):
+        data_mapped = map_dicts(cls.MAP_FIELDS_OLD, data)
+        data_mapped = clean_fields(cls, data_mapped)
+        if "kind" in data and data["kind"] is not None:
+            label_lst = data["kind"]["label"].split(" >> ")
+            if label_lst[0] == "Akademie":
+                data_mapped["akademie_institution"] = True
+                data_mapped["typ"] = label_lst[-1]
+            elif len(label_lst) == 1:
+                data_mapped["typ"] = label_lst[0]
+        res = cls.objects.create(**data_mapped)
+        if "sameAs" in data:
+            for u in data["sameAs"]:
+                try:
+                    Uri.objects.create(uri=u, content_object=res)
+                except IntegrityError:
+                    logger.warning(f"URI {u} already exists, cant create for {res}")
+        return res
+
+
+class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin, BaseLegacyImport):
     """class for the membership in the OeAW"""
 
     BEGIN_TYP_CHOICES = [
@@ -552,6 +850,63 @@ class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name = _("Mitgliedschaft")
         verbose_name_plural = _("Mitgliedschaften")
 
+    @classmethod
+    def _create_nominated_by(cls, data, logger):
+        """fetch nominators from legacy API and create Persons if they don't exist"""
+        ids_check = [3061, 3141]  # parent ids of "vorgeschlagen von"
+        res = []
+        year = data["beginn"].split(".")[-1]
+        person_id = data["related_person"]["id"]
+        try:
+            rel_data = api_request(
+                f"{BASE_URL}/apis/api/relations/personperson/",
+                logger,
+                params={"related_personA": person_id, "start_date__year": year},
+            )
+        except Exception as e:
+            logger.error(f"Error fetching nominators: {e}")
+            return None
+        for rel in rel_data["results"]:
+            if rel["relation_type"]["parent_id"] in ids_check:
+                nominator_id = rel["related_personB"]["id"]
+                nominator = Person.get_or_create_from_legacy_id(nominator_id, logger)
+                res.append(nominator)
+        return res
+
+    @classmethod
+    def create_from_legacy_data(cls, data, logger):
+        MAP_FIELDS_OLD = [
+            ("start_date_written", "beginn"),
+            ("end_date_written", "ende"),
+        ]
+        data_mapped = map_dicts(MAP_FIELDS_OLD, data)
+        data_mapped = clean_fields(cls, data_mapped)
+
+        memb = re.search(r"\((.*?)\)", data["relation_type_resolved"][1]["name"])
+        if memb:
+            data_mapped["mitgliedschaft"] = memb.group(1)
+        else:
+            data_mapped["mitgliedschaft"] = "unknown"
+        data_mapped["beginn_typ"] = (
+            data["relation_type_resolved"][2]["name"].strip().lower()
+        )
+        pers = Person.get_or_create_from_legacy_id(data["related_person"]["id"], logger)
+        data_mapped["subj"] = pers
+        inst = Institution.get_or_create_from_legacy_id(
+            data["related_institution"]["id"], logger
+        )
+        data_mapped["obj"] = inst
+        rel = cls.objects.create(**data_mapped)
+        if "gewählt" in data_mapped["beginn_typ"].lower():
+            nominees = cls._create_nominated_by(data, logger)
+            rel.vorgeschlagen_von.add(*nominees)
+            election = Ereignis.get_or_create_election_from_year(
+                rel.beginn_date_sort.year, logger
+            )
+            rel.wahlsitzung = election
+            rel.save()
+        return rel
+
 
 class NichtGewaehlt(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
@@ -613,8 +968,29 @@ class PositionAn(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name = _("Position an")
         verbose_name_plural = _("Positionen an")
 
+    @classmethod
+    def create_from_legacy_data(cls, data: dict[str, Any], logger) -> "PositionAn":
+        rel = super().create_from_legacy_data(data, logger)
+        voc = data["relation_type_resolved"]
+        if len(voc) == 3:  # all the variations of professors with their "fach"
+            check = False
+            for term in ["doz.", "prof.", "ass.", "wissenschaftliche"]:
+                if term in voc[1]["name"].lower():
+                    check = True
+                    break
+            if check and len(voc) > 1:
+                rel.position = voc[1]["name"]
+                rel.fach = Fach.get_or_create_from_legacy_id(voc[2]["id"], logger)
+            else:
+                rel.position = voc[1]["name"]
+        elif voc[0]["id"] in [102]:  # positions that need first element
+            rel.position = voc[0]["name"]
+        else:
+            rel.position = voc[-1]["name"]
+        rel.save()
+        return rel
 
-class AusbildungAn(Relation, VersionMixin, LegacyFieldsMixin):
+class AusbildungAn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin):
     SUBJ_ID_OLD = "related_person"
     OBJ_ID_OLD = "related_institution"
     TYP_CHOICES = [
@@ -643,8 +1019,32 @@ class AusbildungAn(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name = _("Ausbildung an")
         verbose_name_plural = _("Ausbildungen an")
 
+    @classmethod
+    def create_from_legacy_data(cls, data: dict[str, Any], logger) -> "AusbildungAn":
+        rel = super().create_from_legacy_data(data, logger)
+        voc = data["relation_type_resolved"]
+        if voc[0]["id"] == 1385:
+            rel.typ = "Habilitation"
+            if len(voc) > 1:
+                rel.fach = Fach.get_or_create_from_legacy_id(voc[-1]["id"], logger)
+        elif voc[0]["id"] == 1386:
+            rel.typ = "Promotion"
+            if len(voc) > 1:
+                rel.fach = Fach.get_or_create_from_legacy_id(voc[-1]["id"], logger)
+        elif voc[0]["id"] == 176:
+            rel.typ = "Schule"
+        elif voc[0]["id"] == 1369:
+            rel.typ = "Studium"
+        else:
+            rel.typ = voc[-1]["name"]
+            logger.warning(f"Unknown relation type {voc[0]['id']} for AusbildungAn")
+        rel.save()
+        return rel
 
-class SchreibtAus(Relation, VersionMixin, LegacyFieldsMixin):
+
+class SchreibtAus(Relation, VersionMixin, LegacyFieldsMixin, LegacyImportSingleDate):
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_institution"
     subj_model = Institution
     obj_model = Preis
     datum = FuzzyDateParserField(blank=True)
@@ -679,7 +1079,9 @@ def get_choices_inst_hierarchie():
     return res
 
 
-class InstitutionHierarchie(Relation, VersionMixin, LegacyFieldsMixin):
+class InstitutionHierarchie(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin):
+    SUBJ_ID_OLD = "related_institutionA"
+    OBJ_ID_OLD = "related_institutionB"
     subj_model = Institution
     obj_model = Institution
     relation = models.CharField(max_length=255, choices=get_choices_inst_hierarchie)
@@ -707,7 +1109,9 @@ class InstitutionHierarchie(Relation, VersionMixin, LegacyFieldsMixin):
         super().save(*args, **kwargs)
 
 
-class WirdVergebenVon(Relation, VersionMixin, LegacyFieldsMixin):
+class WirdVergebenVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin):
+    SUBJ_ID_OLD = "related_institutionA"
+    OBJ_ID_OLD = "related_institutionB"
     subj_model = Preis
     obj_model = Institution
     beginn = FuzzyDateParserField(blank=True)
@@ -726,7 +1130,9 @@ class WirdVergebenVon(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("wird vergeben von")
 
 
-class WirdGestiftetVon(Relation, VersionMixin, LegacyFieldsMixin):
+class WirdGestiftetVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin):
+    SUBJ_ID_OLD = "related_institutionA"
+    OBJ_ID_OLD = "related_institutionB"
     subj_model = Preis
     obj_model = Institution
     datum = FuzzyDateParserField(blank=True)
@@ -744,7 +1150,9 @@ class WirdGestiftetVon(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("wird vergeben von")
 
 
-class GelegenIn(Relation, VersionMixin, LegacyFieldsMixin):
+class GelegenIn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataBaseMixin):
+    SUBJ_ID_OLD = "related_institution"
+    OBJ_ID_OLD = "related_place"
     subj_model = Institution
     obj_model = Ort
 
@@ -761,7 +1169,9 @@ class GelegenIn(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("gelegen in")
 
 
-class Gewinnt(Relation, VersionMixin, LegacyFieldsMixin):
+class Gewinnt(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin):
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = ["related_event", "related_institution"]
     subj_model = Person
     obj_model = Preis
     datum = FuzzyDateParserField(blank=True)
@@ -779,9 +1189,11 @@ class Gewinnt(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("gewinnt")
 
 
-class Stiftet(Relation, VersionMixin, LegacyFieldsMixin):
+class Stiftet(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin):
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_institution"
     subj_model = Person
-    obj_model = Institution
+    obj_model = Preis
     datum = FuzzyDateParserField(blank=True)
 
     @classmethod
@@ -830,8 +1242,26 @@ class Mitglied(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name = _("Mitglied")
         verbose_name_plural = _("Mitglieder")
 
+    @classmethod
+    def create_from_legacy_data(cls, data: dict[str, Any], logger) -> "Mitglied":
+        rel = super().create_from_legacy_data(data, logger)
+        voc = data["relation_type_resolved"]
+        if len(voc) == 3:
+            if "anwärter" in voc[1]["name"].lower():
+                rel.art = f"{voc[1]['name']} {voc[2]['name']}".title()
+            elif "förderndes mitglied" in voc[1]["name"].lower():
+                rel.art = f"{voc[1]['name']} {voc[2]['name']}".title()
+            elif "kommissionsmitgliedschaft" in voc[1]["name"].lower():
+                rel.art = f"{voc[2]['name']} Kommission".title()
+        else:
+            rel.art = voc[-1]["name"].capitalize()
+        rel.save()
+        return rel
 
-class AnhaengerVon(Relation, VersionMixin, LegacyFieldsMixin):
+
+class AnhaengerVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin):
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_institution"
     subj_model = Person
     obj_model = Religion
 
@@ -851,7 +1281,9 @@ class AnhaengerVon(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("Anhänger")
 
 
-class NimmtTeilAn(Relation, VersionMixin, LegacyFieldsMixin):
+class NimmtTeilAn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin):
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_event"
     subj_model = Person
     obj_model = Ereignis
 
@@ -871,7 +1303,11 @@ class NimmtTeilAn(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("Teilnahme an")
 
 
-class EhrentitelVonInstitution(Relation, VersionMixin, LegacyFieldsMixin):
+class EhrentitelVonInstitution(
+    Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin
+):
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_institution"
     subj_model = Person
     obj_model = Institution
 
@@ -890,8 +1326,18 @@ class EhrentitelVonInstitution(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name = _("Ehrentitel von")
         verbose_name_plural = _("Ehrentitel von")
 
+    @classmethod
+    def create_from_legacy_data(cls, data: dict[str, Any], logger):
+        rel = super().create_from_legacy_data(data, logger)
+        if "Ehrendoktorat" in data["relation_type"]["label"]:
+            rel.titel = "Ehrendoktorat"
+        rel.save()
+        return rel
 
-class LehntPreisAb(Relation, VersionMixin, LegacyFieldsMixin):
+
+class LehntPreisAb(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin):
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_institution"
     subj_model = Person
     obj_model = Preis
 
@@ -911,8 +1357,11 @@ class LehntPreisAb(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("abgelehnt von")
 
 
-class StelltAntragAn(Relation, VersionMixin, LegacyFieldsMixin):
+class StelltAntragAn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin):
     """verwendet für Förderanträge an Institutionen"""
+
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_institution"
 
     CHOICES_STATUS = [
         ("abgelehnt", "abgelehnt"),
@@ -938,8 +1387,19 @@ class StelltAntragAn(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name = _("stellt Antrag an")
         verbose_name_plural = _("stellt Antrag an")
 
+    @classmethod
+    def create_from_legacy_data(cls, data: dict[str, Any], logger):
+        voc = data["relation_type_resolved"]
+        rel = super().create_from_legacy_data(data, logger)
+        if len(voc) == 2:
+            rel.status = voc[1]["name"]
+            rel.save()
+        return rel
 
-class EhepartnerVon(Relation, VersionMixin, LegacyFieldsMixin):
+
+class EhepartnerVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin):
+    SUBJ_ID_OLD = "related_personA"
+    OBJ_ID_OLD = "related_personB"
     subj_model = Person
     obj_model = Person
 
@@ -959,7 +1419,9 @@ class EhepartnerVon(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("Ehepartner von")
 
 
-class FamilienmitgliedVon(Relation, VersionMixin, LegacyFieldsMixin):
+class FamilienmitgliedVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin):
+    SUBJ_ID_OLD = "related_personA"
+    OBJ_ID_OLD = "related_personB"
     subj_model = Person
     obj_model = Person
 
@@ -979,7 +1441,9 @@ class FamilienmitgliedVon(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("Familienmitglied von")
 
 
-class KindVon(Relation, VersionMixin, LegacyFieldsMixin):
+class KindVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataBaseMixin):
+    SUBJ_ID_OLD = "related_personA"
+    OBJ_ID_OLD = "related_personB"
     subj_model = Person
     obj_model = Person
 
@@ -995,8 +1459,18 @@ class KindVon(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name = _("Kind von")
         verbose_name_plural = _("Kind von")
 
+    @classmethod
+    def create_from_legacy_data(cls, data: dict[str, Any], logger):
+        if data["relation_type"]["label"] == "ist Elternteil von":
+            data["related_personA_"] = data.pop("related_personB")
+            data["related_personB"] = data.pop("related_personA")
+            data["related_personA"] = data.pop("related_personA_")
+        return super().create_from_legacy_data(data, logger)
 
-class FreundVon(Relation, VersionMixin, LegacyFieldsMixin):
+
+class FreundVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataBaseMixin):
+    SUBJ_ID_OLD = "related_personA"
+    OBJ_ID_OLD = "related_personB"
     subj_model = Person
     obj_model = Person
 
@@ -1016,7 +1490,11 @@ class FreundVon(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("Freund von")
 
 
-class LehrerVon(Relation, VersionMixin, LegacyFieldsMixin):
+class LehrerVon(
+    Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin
+):  # TODO: Implement reverse_name method
+    SUBJ_ID_OLD = "related_personA"
+    OBJ_ID_OLD = "related_personB"
     CHOICES_LEHRER = [
         ("Doktorvater/mutter", "Doktorvater/mutter"),
         ("LehrerIn", "LehrerIn"),
@@ -1040,7 +1518,9 @@ class LehrerVon(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("Lehrer von")
 
 
-class GeborenIn(Relation, VersionMixin, LegacyFieldsMixin):
+class GeborenIn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataBaseMixin):
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_place"
     subj_model = Person
     obj_model = Ort
 
@@ -1057,7 +1537,9 @@ class GeborenIn(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("geboren in")
 
 
-class GestorbenIn(Relation, VersionMixin, LegacyFieldsMixin):
+class GestorbenIn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataBaseMixin):
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_place"
     subj_model = Person
     obj_model = Ort
 
@@ -1074,7 +1556,9 @@ class GestorbenIn(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("gestorben in")
 
 
-class EhrentitelVon(Relation, VersionMixin, LegacyFieldsMixin):
+class EhrentitelVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin):
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_place"
     CHOICES_EHRENTITEL = [("Ehrenbürger(in)", "Ehrenbürger(in)")]
     subj_model = Person
     obj_model = Ort
@@ -1097,7 +1581,9 @@ class EhrentitelVon(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("Ehrentitel von")
 
 
-class WissenschaftsaustauschIn(Relation, VersionMixin, LegacyFieldsMixin):
+class WissenschaftsaustauschIn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin):
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_place"
     subj_model = Person
     obj_model = Ort
 
@@ -1117,7 +1603,9 @@ class WissenschaftsaustauschIn(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("Wissenschaftsaustausch in")
 
 
-class AutorVon(Relation, VersionMixin, LegacyFieldsMixin):
+class AutorVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataBaseMixin):
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_work"
     subj_model = Person
     obj_model = Werk
 
@@ -1135,6 +1623,8 @@ class AutorVon(Relation, VersionMixin, LegacyFieldsMixin):
 
 
 class ErwaehntIn(Relation, VersionMixin, LegacyFieldsMixin):
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_work"
     TYP_CHOICES = (("erwähnt", "erwähnt"), ("behandelt", "behandelt"))
     subj_model = Person
     obj_model = Werk
@@ -1159,7 +1649,9 @@ class ErwaehntIn(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("erwähnt in")
 
 
-class FindetStattIn(Relation, VersionMixin, LegacyFieldsMixin):
+class FindetStattIn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataBaseMixin):
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_place"
     subj_model = Ereignis
     obj_model = Ort
 
@@ -1176,7 +1668,9 @@ class FindetStattIn(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("findet statt in")
 
 
-class GelegenInOrt(Relation, VersionMixin, LegacyFieldsMixin):
+class GelegenInOrt(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataBaseMixin):
+    SUBJ_ID_OLD = "related_placeA"
+    OBJ_ID_OLD = "related_placeB"
     subj_model = Ort
     obj_model = Ort
 
@@ -1193,7 +1687,9 @@ class GelegenInOrt(Relation, VersionMixin, LegacyFieldsMixin):
         verbose_name_plural = _("gelegen in Ort")
 
 
-class HaeltRedeBei(Relation, VersionMixin, LegacyFieldsMixin):
+class HaeltRedeBei(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin):
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_event"
     subj_model = Person
     obj_model = Ereignis
 
@@ -1211,3 +1707,14 @@ class HaeltRedeBei(Relation, VersionMixin, LegacyFieldsMixin):
     class Meta(LegacyFieldsMixin.Meta):
         verbose_name = _("Hält Rede bei")
         verbose_name_plural = _("Redner")
+
+    @classmethod
+    def create_from_legacy_data(cls, data: dict[str, Any], logger):
+        d_work = api_request(
+            f"{BASE_URL}/apis/api/entities/work/{data['related_work']['id']}", logger
+        )
+        d_work["related_person"] = data["related_person"]
+        for r in d_work["relations"]:
+            if r["related_entity"]["type"] == "Event":
+                d_work["related_event"] = r["related_entity"]
+        return super().create_from_legacy_data(d_work, logger)
