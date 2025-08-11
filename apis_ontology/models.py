@@ -1,4 +1,5 @@
 import csv
+import os
 from functools import cache
 
 from apis_core.apis_entities.abc import E21_Person, E53_Place, E74_Group
@@ -130,7 +131,7 @@ def add_to_dict(path, data, row):
 def get_oestat_choices():
     res = dict()
     with open(
-        "/app/resources/OEFOS2012_DE_CTI.txt",
+        f"{os.path.dirname(__file__)}/../resources/OEFOS2012_DE_CTI.txt",
         newline="",
         encoding="latin1",
     ) as inp:
@@ -433,7 +434,7 @@ class Institution(
         verbose_name_plural = "Institutionen"
 
 
-class OeawMitgliedschaft(Relation, LegacyFieldsMixin):
+class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin):
     """class for the membership in the OeAW"""
 
     BEGIN_TYP_CHOICES = [
@@ -522,7 +523,7 @@ class OeawMitgliedschaft(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("Mitgliedschaften")
 
 
-class NichtGewaehlt(Relation, LegacyFieldsMixin):
+class NichtGewaehlt(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Institution
     vorgeschlagen_von = models.ManyToManyField(Person, blank=True)
@@ -544,13 +545,16 @@ class NichtGewaehlt(Relation, LegacyFieldsMixin):
 
 
 def get_position_choices() -> list[tuple[str, str]]:
-    with open("/app/resources/position_inst_relations.csv", newline="") as inp:
+    with open(
+        f"{os.path.dirname(__file__)}/../resources/position_inst_relations.csv",
+        newline="",
+    ) as inp:
         reader = csv.DictReader(inp, delimiter=",", quotechar='"')
         res = [(i["name"], i["name"]) for i in reader]
     return res
 
 
-class PositionAn(Relation, LegacyFieldsMixin):
+class PositionAn(Relation, VersionMixin, LegacyFieldsMixin):
     """Anstellung/Position in Institution"""
 
     subj_model = Person
@@ -573,7 +577,7 @@ class PositionAn(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("Positionen an")
 
 
-class AusbildungAn(Relation, LegacyFieldsMixin):
+class AusbildungAn(Relation, VersionMixin, LegacyFieldsMixin):
     SUBJ_ID_OLD = "related_person"
     OBJ_ID_OLD = "related_institution"
     TYP_CHOICES = [
@@ -603,7 +607,7 @@ class AusbildungAn(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("Ausbildungen an")
 
 
-class SchreibtAus(Relation, LegacyFieldsMixin):
+class SchreibtAus(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Institution
     obj_model = Preis
     datum = FuzzyDateParserField(blank=True)
@@ -623,7 +627,10 @@ class SchreibtAus(Relation, LegacyFieldsMixin):
 
 @cache
 def get_choices_inst_hierarchie_data():
-    with open("/app/resources/optionen_inst_hierarchie.csv", newline="") as inp:
+    with open(
+        f"{os.path.dirname(__file__)}/../resources/optionen_inst_hierarchie.csv",
+        newline="",
+    ) as inp:
         reader = csv.DictReader(inp, delimiter=",", quotechar='"')
         return list(reader)
 
@@ -635,7 +642,7 @@ def get_choices_inst_hierarchie():
     return res
 
 
-class InstitutionHierarchie(Relation, LegacyFieldsMixin):
+class InstitutionHierarchie(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Institution
     obj_model = Institution
     relation = models.CharField(max_length=255, choices=get_choices_inst_hierarchie)
@@ -663,7 +670,7 @@ class InstitutionHierarchie(Relation, LegacyFieldsMixin):
         super().save(*args, **kwargs)
 
 
-class WirdVergebenVon(Relation, LegacyFieldsMixin):
+class WirdVergebenVon(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Preis
     obj_model = Institution
     beginn = FuzzyDateParserField(blank=True)
@@ -682,7 +689,7 @@ class WirdVergebenVon(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("wird vergeben von")
 
 
-class WirdGestiftetVon(Relation, LegacyFieldsMixin):
+class WirdGestiftetVon(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Preis
     obj_model = Institution
     datum = FuzzyDateParserField(blank=True)
@@ -700,7 +707,7 @@ class WirdGestiftetVon(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("wird vergeben von")
 
 
-class GelegenIn(Relation, LegacyFieldsMixin):
+class GelegenIn(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Institution
     obj_model = Ort
 
@@ -717,7 +724,7 @@ class GelegenIn(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("gelegen in")
 
 
-class Gewinnt(Relation, LegacyFieldsMixin):
+class Gewinnt(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Preis
     datum = FuzzyDateParserField(blank=True)
@@ -735,7 +742,7 @@ class Gewinnt(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("gewinnt")
 
 
-class Stiftet(Relation, LegacyFieldsMixin):
+class Stiftet(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Institution
     datum = FuzzyDateParserField(blank=True)
@@ -755,13 +762,15 @@ class Stiftet(Relation, LegacyFieldsMixin):
 
 @cache
 def get_choices_memberships_non_oeaw():
-    with open("/app/resources/optionen_mitglied.csv", newline="") as inp:
+    with open(
+        f"{os.path.dirname(__file__)}/../resources/optionen_mitglied.csv", newline=""
+    ) as inp:
         reader = csv.DictReader(inp, delimiter=",", quotechar='"')
         res = [(f"{i['label_new']}", f"{i['label_new']}") for i in reader]
     return res
 
 
-class Mitglied(Relation, LegacyFieldsMixin):
+class Mitglied(Relation, VersionMixin, LegacyFieldsMixin):
     """Mitgliedschaften in anderen Institution als der ÖAW"""
 
     subj_model = Person
@@ -785,7 +794,7 @@ class Mitglied(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("Mitglieder")
 
 
-class AnhaengerVon(Relation, LegacyFieldsMixin):
+class AnhaengerVon(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Religion
 
@@ -805,7 +814,7 @@ class AnhaengerVon(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("Anhänger")
 
 
-class NimmtTeilAn(Relation, LegacyFieldsMixin):
+class NimmtTeilAn(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Ereignis
 
@@ -825,7 +834,7 @@ class NimmtTeilAn(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("Teilnahme an")
 
 
-class EhrentitelVonInstitution(Relation, LegacyFieldsMixin):
+class EhrentitelVonInstitution(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Institution
 
@@ -845,7 +854,7 @@ class EhrentitelVonInstitution(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("Ehrentitel von")
 
 
-class LehntPreisAb(Relation, LegacyFieldsMixin):
+class LehntPreisAb(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Preis
 
@@ -865,7 +874,7 @@ class LehntPreisAb(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("abgelehnt von")
 
 
-class StelltAntragAn(Relation, LegacyFieldsMixin):
+class StelltAntragAn(Relation, VersionMixin, LegacyFieldsMixin):
     """verwendet für Förderanträge an Institutionen"""
 
     CHOICES_STATUS = [
@@ -893,7 +902,7 @@ class StelltAntragAn(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("stellt Antrag an")
 
 
-class EhepartnerVon(Relation, LegacyFieldsMixin):
+class EhepartnerVon(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Person
 
@@ -913,7 +922,7 @@ class EhepartnerVon(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("Ehepartner von")
 
 
-class FamilienmitgliedVon(Relation, LegacyFieldsMixin):
+class FamilienmitgliedVon(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Person
 
@@ -933,7 +942,7 @@ class FamilienmitgliedVon(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("Familienmitglied von")
 
 
-class KindVon(Relation, LegacyFieldsMixin):
+class KindVon(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Person
 
@@ -950,7 +959,7 @@ class KindVon(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("Kind von")
 
 
-class FreundVon(Relation, LegacyFieldsMixin):
+class FreundVon(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Person
 
@@ -970,7 +979,7 @@ class FreundVon(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("Freund von")
 
 
-class LehrerVon(Relation, LegacyFieldsMixin):
+class LehrerVon(Relation, VersionMixin, LegacyFieldsMixin):
     CHOICES_LEHRER = [
         ("Doktorvater/mutter", "Doktorvater/mutter"),
         ("LehrerIn", "LehrerIn"),
@@ -994,7 +1003,7 @@ class LehrerVon(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("Lehrer von")
 
 
-class GeborenIn(Relation, LegacyFieldsMixin):
+class GeborenIn(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Ort
 
@@ -1011,7 +1020,7 @@ class GeborenIn(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("geboren in")
 
 
-class GestorbenIn(Relation, LegacyFieldsMixin):
+class GestorbenIn(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Ort
 
@@ -1028,7 +1037,7 @@ class GestorbenIn(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("gestorben in")
 
 
-class EhrentitelVon(Relation, LegacyFieldsMixin):
+class EhrentitelVon(Relation, VersionMixin, LegacyFieldsMixin):
     CHOICES_EHRENTITEL = [("Ehrenbürger(in)", "Ehrenbürger(in)")]
     subj_model = Person
     obj_model = Ort
@@ -1051,7 +1060,7 @@ class EhrentitelVon(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("Ehrentitel von")
 
 
-class WissenschaftsaustauschIn(Relation, LegacyFieldsMixin):
+class WissenschaftsaustauschIn(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Ort
 
@@ -1071,7 +1080,7 @@ class WissenschaftsaustauschIn(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("Wissenschaftsaustausch in")
 
 
-class AutorVon(Relation, LegacyFieldsMixin):
+class AutorVon(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Werk
 
@@ -1088,7 +1097,7 @@ class AutorVon(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("AutorIn von")
 
 
-class ErwaehntIn(Relation, LegacyFieldsMixin):
+class ErwaehntIn(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Werk
 
@@ -1105,7 +1114,7 @@ class ErwaehntIn(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("erwähnt in")
 
 
-class FindetStattIn(Relation, LegacyFieldsMixin):
+class FindetStattIn(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Ereignis
     obj_model = Ort
 
@@ -1122,7 +1131,7 @@ class FindetStattIn(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("findet statt in")
 
 
-class GelegenInOrt(Relation, LegacyFieldsMixin):
+class GelegenInOrt(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Ort
     obj_model = Ort
 
@@ -1139,7 +1148,7 @@ class GelegenInOrt(Relation, LegacyFieldsMixin):
         verbose_name_plural = _("gelegen in Ort")
 
 
-class HaeltRedeBei(Relation, LegacyFieldsMixin):
+class HaeltRedeBei(Relation, VersionMixin, LegacyFieldsMixin):
     subj_model = Person
     obj_model = Ereignis
 
