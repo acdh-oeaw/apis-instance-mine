@@ -5,6 +5,7 @@ INSTALLED_APPS += ["apis_acdhch_django_invite"]
 INSTALLED_APPS += ["django_json_editor_field"]
 INSTALLED_APPS += ["django_interval"]
 INSTALLED_APPS += ["simple_history"]
+INSTALLED_APPS += ["apis_import"]
 
 ROOT_URLCONF = "apis_ontology.urls"
 
