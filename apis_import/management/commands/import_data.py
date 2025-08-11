@@ -14,7 +14,7 @@ from apis_import.utils import BASE_URL, api_request, get_vocab
 
 django.setup()
 
-from apis_ontology.models import Bild, Person
+from apis_ontology.models import Bild, Person  # noqa: E402
 
 # BASE_URL = os.getenv("APIS_BASE_URL", "https://mine.acdh-ch-dev.oeaw.ac.at")
 logger = logging.getLogger("import_person")
@@ -61,9 +61,7 @@ def import_person(id: int, voc_file: dict) -> Person:
     pers_url = f"{BASE_URL}/apis/api/entities/person/{id}/"
     pers_data = api_request(pers_url, logger)
     person = Person.create_from_legacy_data(pers_data, logger)
-    relations = process_relations(
-        pers_id=id, voc_file=voc_file, relations=pers_data["relations"]
-    )
+    process_relations(pers_id=id, voc_file=voc_file, relations=pers_data["relations"])
     return person
 
 
@@ -207,30 +205,3 @@ class Command(BaseCommand):
                     Bild.create_from_legacy_data(obj, row, labels_res)
                 else:
                     obj.add_alternative_label(row)
-
-
-def main():
-    """
-    Main function to run the command programmatically.
-    Adjust person_id, log_file, and log_level for development use.
-    """
-    from django.core.management import call_command
-
-    person_id = "19359"  # Replace with a valid person ID for testing
-    log_file = "import_person.log"
-    log_level = "DEBUG"
-    voc_file = "prel_csv_relations/combined_relations.csv"
-
-    # Run the management command programmatically
-    call_command(
-        "import_data",
-        '{"id": "19359"}',
-        log_file=log_file,
-        log_level=log_level,
-        voc_file=voc_file,
-    )
-
-
-# This block allows you to run the script standalone for development purposes
-if __name__ == "__main__":
-    main()

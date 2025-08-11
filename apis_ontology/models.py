@@ -975,6 +975,64 @@ def get_position_choices() -> list[tuple[str, str]]:
     return res
 
 
+class RelLegacyDataBaseMixin(models.Model):
+    MAP_FIELDS_OLD = [
+        ("id", "old_id"),
+    ]
+
+    class Meta:
+        abstract = True
+
+    @classmethod
+    def get_or_create_subj_obj(cls, kind: str, old_id: int, logger):
+        entity_class = getattr(cls, f"{kind}_model")
+        entity = entity_class.get_or_create_from_legacy_id(old_id, logger)
+        return entity
+
+    @classmethod
+    def determine_subj_obj(cls, kind, data):
+        if isinstance(getattr(cls, kind), str):
+            return getattr(cls, kind)
+        for k in getattr(cls, kind):
+            if k in data:
+                return k
+
+    @classmethod
+    def create_from_legacy_data(cls, data: dict[str, Any], logger):
+        data_mapped = map_dicts(cls.MAP_FIELDS_OLD, data)
+        data_mapped = clean_fields(cls, data_mapped)
+
+        subj = cls.get_or_create_subj_obj(
+            "subj", data[cls.determine_subj_obj("SUBJ_ID_OLD", data)]["id"], logger
+        )
+        obj = cls.get_or_create_subj_obj(
+            "obj", data[cls.determine_subj_obj("OBJ_ID_OLD", data)]["id"], logger
+        )
+        data_mapped["subj"] = subj
+        data_mapped["obj"] = obj
+        res = cls.objects.create(**data_mapped)
+        return res
+
+
+class RelLegacyDataDatesMixin(RelLegacyDataBaseMixin):
+    MAP_FIELDS_OLD = RelLegacyDataBaseMixin.MAP_FIELDS_OLD + [
+        ("start_date_written", "beginn"),
+        ("end_date_written", "ende"),
+    ]
+
+    class Meta:
+        abstract = True
+
+
+class RelLegacyDataSingleDateMixin(RelLegacyDataBaseMixin):
+    MAP_FIELDS_OLD = RelLegacyDataBaseMixin.MAP_FIELDS_OLD + [
+        ("start_date_written", "datum"),
+    ]
+
+    class Meta:
+        abstract = True
+
+
 class PositionAn(Relation, VersionMixin, LegacyFieldsMixin):
     """Anstellung/Position in Institution"""
 
