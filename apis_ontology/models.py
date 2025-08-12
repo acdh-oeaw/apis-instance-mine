@@ -647,8 +647,10 @@ class Person(
             profs.append(p)
 
         for rel in data["relations"]:
-            if ("(gewählt und bestätigt)" or "(Gewählt)" in rel["label"]) and (
-                "KLASSE" or "GESAMTAKADEMIE" in rel["label"]
+            if (
+                ("(gewählt und bestätigt)" in rel["label"])
+                or ("(Gewählt)" in rel["label"])
+                and (("KLASSE" in rel["label"]) or ("GESAMTAKADEMIE" in rel["label"]))
             ):
                 logger.info("Person is member of the academy")
                 data_mapped["mitglied"] = True
