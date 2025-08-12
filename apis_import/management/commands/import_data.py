@@ -20,13 +20,12 @@ from apis_ontology.models import Bild, Person  # noqa: E402
 logger = logging.getLogger("import_person")
 
 
-def process_relations(
-    pers_id: int, voc_file: dict, relations: list[dict]
-) -> list[dict]:
+def process_relations(voc_file: dict, relations: list[dict]) -> list[dict]:
     rel_objects = []
     for rel in relations:
-        logger.info(f"Fetch ing {rel} relations for person ID {pers_id}")
-        rel_data = api_request(rel["url"], logger)
+        logger.info(f"Fetching relation with ID {rel['id']}")
+        # rel_data = api_request(rel["url"], logger)
+        rel_data = rel
         vocab = get_vocab(rel_data["relation_type"]["url"], logger)
         rel_data["relation_type_resolved"] = vocab
         rel_objects.append(rel_data)
@@ -61,7 +60,7 @@ def import_person(id: int, voc_file: dict) -> Person:
     pers_url = f"{BASE_URL}/apis/api/entities/person/{id}/"
     pers_data = api_request(pers_url, logger)
     person = Person.create_from_legacy_data(pers_data, logger)
-    process_relations(pers_id=id, voc_file=voc_file, relations=pers_data["relations"])
+    process_relations(voc_file=voc_file, relations=pers_data["relations"])
     return person
 
 
@@ -83,7 +82,7 @@ class Command(BaseCommand):
         parser.add_argument(
             "--voc-file",
             dest="voc_file",
-            default="prel_csv_relations/combined_relations.csv",
+            default="resources/combined_relations.csv",
             help="location of the vocabulary matching file",
         )
         parser.add_argument(
@@ -128,6 +127,26 @@ class Command(BaseCommand):
 
         return logger
 
+    def add_non_person_relations(self, voc_file):
+        res = []
+        rels = [
+            "institutioninstitution",
+            "eventwork",
+            "institutionevent",
+            "institutionplace",
+            "placeplace",
+        ]
+        for r in rels:
+            data = api_request(
+                f"{BASE_URL}/apis/api/relations/{r}",
+                logger,
+            )
+            res.extend(data["results"])
+            while data["next"]:
+                data = api_request(data["next"], logger)
+                res.extend(data["results"])
+        return process_relations(voc_file, res)
+
     def handle(self, *args, **options):
         person_query = options["person_query"]
         log_file = options.get("log_file")
@@ -140,6 +159,7 @@ class Command(BaseCommand):
         with open(voc_file, newline="") as inp:
             voc_file = csv.DictReader(inp, delimiter=",", quotechar='"')
             voc_file = {x["id"]: x for x in voc_file}
+        self.add_non_person_relations(voc_file)
 
         # Set up logging
         global logger
