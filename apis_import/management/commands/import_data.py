@@ -159,7 +159,6 @@ class Command(BaseCommand):
         with open(voc_file, newline="") as inp:
             voc_file = csv.DictReader(inp, delimiter=",", quotechar='"')
             voc_file = {x["id"]: x for x in voc_file}
-        self.add_non_person_relations(voc_file)
 
         # Set up logging
         global logger
@@ -202,6 +201,7 @@ class Command(BaseCommand):
                 logger.info("No more pages to fetch")
                 pers_list = None
 
+        self.add_non_person_relations(voc_file)
         with open(labels_file, newline="") as inp:
             logger.info(f"Reading labels from file: {labels_file}")
             labels_res = csv.DictReader(inp, delimiter=",", quotechar='"')
