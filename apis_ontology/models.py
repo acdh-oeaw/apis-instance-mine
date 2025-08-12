@@ -1010,6 +1010,11 @@ class RelLegacyDataBaseMixin(models.Model):
         )
         data_mapped["subj"] = subj
         data_mapped["obj"] = obj
+        if cls.objects.filter(old_id=data_mapped["old_id"]).exists():
+            logger.warning(
+                f"Relation {cls.__name__} with old_id {data_mapped['old_id']} already exists"
+            )
+            return cls.objects.get(old_id=data_mapped["old_id"])
         res = cls.objects.create(**data_mapped)
         return res
 
@@ -1076,6 +1081,7 @@ class PositionAn(Relation, VersionMixin, LegacyFieldsMixin):
             rel.position = voc[-1]["name"]
         rel.save()
         return rel
+
 
 class AusbildungAn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin):
     SUBJ_ID_OLD = "related_person"
@@ -1166,9 +1172,14 @@ def get_choices_inst_hierarchie():
     return res
 
 
-class InstitutionHierarchie(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin):
+class InstitutionHierarchie(
+    Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin
+):
     SUBJ_ID_OLD = "related_institutionA"
     OBJ_ID_OLD = "related_institutionB"
+    MAP_FIELDS_OLD = RelLegacyDataDatesMixin.MAP_FIELDS_OLD + [
+        ("relation_type__label", "relation")
+    ]
     subj_model = Institution
     obj_model = Institution
     relation = models.CharField(max_length=255, choices=get_choices_inst_hierarchie)
@@ -1195,8 +1206,27 @@ class InstitutionHierarchie(Relation, VersionMixin, LegacyFieldsMixin, RelLegacy
                 self.relation_reverse = d["name_reverse"]
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return f"{self.subj} {self.relation} {self.obj}"
 
-class WirdVergebenVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin):
+    @classmethod
+    def create_from_legacy_data(cls, data: dict[str, Any], logger):
+        rel = super().create_from_legacy_data(data, logger)
+        choices = get_choices_inst_hierarchie_data()
+        for d in choices:
+            if d["name"] == rel.relation:
+                rel.relation_reverse = d["name_reverse"]
+            elif d["name_reverse"] == rel.relation:
+                rel.relation = d["name"]
+                rel.reverse_relation = d["name_reverse"]
+                rel.subj, rel.obj = rel.obj, rel.subj
+        rel.save()
+        return rel
+
+
+class WirdVergebenVon(
+    Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin
+):
     SUBJ_ID_OLD = "related_institutionA"
     OBJ_ID_OLD = "related_institutionB"
     subj_model = Preis
@@ -1217,7 +1247,9 @@ class WirdVergebenVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDa
         verbose_name_plural = _("wird vergeben von")
 
 
-class WirdGestiftetVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin):
+class WirdGestiftetVon(
+    Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin
+):
     SUBJ_ID_OLD = "related_institutionA"
     OBJ_ID_OLD = "related_institutionB"
     subj_model = Preis
@@ -1422,7 +1454,9 @@ class EhrentitelVonInstitution(
         return rel
 
 
-class LehntPreisAb(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin):
+class LehntPreisAb(
+    Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin
+):
     SUBJ_ID_OLD = "related_person"
     OBJ_ID_OLD = "related_institution"
     subj_model = Person
@@ -1444,7 +1478,9 @@ class LehntPreisAb(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingl
         verbose_name_plural = _("abgelehnt von")
 
 
-class StelltAntragAn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin):
+class StelltAntragAn(
+    Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin
+):
     """verwendet für Förderanträge an Institutionen"""
 
     SUBJ_ID_OLD = "related_person"
@@ -1506,7 +1542,9 @@ class EhepartnerVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDate
         verbose_name_plural = _("Ehepartner von")
 
 
-class FamilienmitgliedVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin):
+class FamilienmitgliedVon(
+    Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin
+):
     SUBJ_ID_OLD = "related_personA"
     OBJ_ID_OLD = "related_personB"
     subj_model = Person
@@ -1643,7 +1681,9 @@ class GestorbenIn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataBaseMi
         verbose_name_plural = _("gestorben in")
 
 
-class EhrentitelVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin):
+class EhrentitelVon(
+    Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin
+):
     SUBJ_ID_OLD = "related_person"
     OBJ_ID_OLD = "related_place"
     CHOICES_EHRENTITEL = [("Ehrenbürger(in)", "Ehrenbürger(in)")]
@@ -1668,7 +1708,9 @@ class EhrentitelVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSing
         verbose_name_plural = _("Ehrentitel von")
 
 
-class WissenschaftsaustauschIn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin):
+class WissenschaftsaustauschIn(
+    Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin
+):
     SUBJ_ID_OLD = "related_person"
     OBJ_ID_OLD = "related_place"
     subj_model = Person
@@ -1774,7 +1816,9 @@ class GelegenInOrt(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataBaseM
         verbose_name_plural = _("gelegen in Ort")
 
 
-class HaeltRedeBei(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin):
+class HaeltRedeBei(
+    Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataSingleDateMixin
+):
     SUBJ_ID_OLD = "related_person"
     OBJ_ID_OLD = "related_event"
     subj_model = Person
