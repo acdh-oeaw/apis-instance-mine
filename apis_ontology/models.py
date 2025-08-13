@@ -884,7 +884,9 @@ class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin, BaseLegacyIm
     @classmethod
     def _create_nominated_by(cls, data, logger):
         """fetch nominators from legacy API and create Persons if they don't exist"""
-        ids_check = [3061, 3141]  # parent ids of "vorgeschlagen von"
+        ids_check = [
+            3141
+        ]  # TODO: check if this ID is enough, there is also 3061, which is for not elected
         res = []
         year = data["beginn"].split(".")[-1]
         person_id = data["related_person"]["id"]
@@ -907,6 +909,7 @@ class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin, BaseLegacyIm
     @classmethod
     def create_from_legacy_data(cls, data, logger):
         MAP_FIELDS_OLD = [
+            ("id", "old_id"),
             ("start_date_written", "beginn"),
             ("end_date_written", "ende"),
         ]
@@ -965,6 +968,92 @@ class NichtGewaehlt(Relation, VersionMixin, LegacyFieldsMixin):
     class Meta(LegacyFieldsMixin.Meta):
         verbose_name = _("Nicht gewählte Person")
         verbose_name_plural = _("Nicht gewählte Personen")
+
+    @classmethod
+    def _create_nominated_by(cls, data, logger):
+        """fetch nominators from legacy API and create Persons if they don't exist"""
+        ids_check = [3061]  # parent ids of "vorgeschlagen von"
+        res = []
+        year = data["datum"].split(".")[-1]
+        person_id = data["related_person"]["id"]
+        try:
+            rel_data = api_request(
+                f"{BASE_URL}/apis/api/relations/personperson/",
+                logger,
+                params={"related_personA": person_id, "start_date__year": year},
+            )
+        except Exception as e:
+            logger.error(f"Error fetching nominators: {e}")
+            return None
+        for rel in rel_data["results"]:
+            if rel["relation_type"]["parent_id"] in ids_check:
+                nominator_id = rel["related_personB"]["id"]
+                nominator = Person.get_or_create_from_legacy_id(nominator_id, logger)
+                res.append(nominator)
+        return res
+
+    @classmethod
+    def _get_klasse(cls, data, logger):
+        kls = api_request(
+            f"{BASE_URL}/apis/api/relations/personinstitution/",
+            logger,
+            params={
+                "related_person": data["related_person"]["id"],
+                "related_institution__in": "2,3",
+            },
+        )
+        ids = list(set([inst["related_institution"]["id"] for inst in kls["results"]]))
+        if len(ids) > 1:
+            logger.warning("found more than one class for not elected person")
+        elif len(ids) == 0:
+            logger.warning("no class found for not elected person")
+            return None
+        return ids
+
+    @classmethod
+    def _match_membership(cls, relation_type_resolved):
+        full_str = (
+            relation_type_resolved[-1]["name"]
+            .split("(")[-1]
+            .replace(".)", "")
+            .replace(". ", "")
+        )
+        return full_str
+
+    @classmethod
+    def create_from_legacy_data(cls, data, logger):
+        """Create a new instance from legacy data"""
+        MAP_FIELDS_OLD = [
+            ("id", "old_id"),
+            ("start_date_written", "datum"),
+        ]
+        data_mapped = map_dicts(MAP_FIELDS_OLD, data)
+        data_mapped = clean_fields(cls, data_mapped)
+        klasse = cls._get_klasse(data, logger)
+        if klasse:
+            data_mapped["obj"] = Institution.get_or_create_from_legacy_id(
+                klasse[0], logger
+            )
+        else:
+            logger.error(
+                f"cant find klasse for not elected person {data['id']}, skipping"
+            )
+            return None
+        data_mapped["subj"] = Person.get_or_create_from_legacy_id(
+            data["related_person"]["id"], logger
+        )
+        election = Ereignis.get_or_create_from_legacy_id(
+            data["related_event"]["id"], logger
+        )
+        data_mapped["wahlsitzung"] = election
+        data_mapped["mitgliedschaft"] = cls._match_membership(
+            data["relation_type_resolved"]
+        )
+        rel = cls.objects.create(**data_mapped)
+        nominees = cls._create_nominated_by(data, logger)
+        rel.vorgeschlagen_von.add(*nominees)
+        rel.save()
+        return rel
 
 
 def get_position_choices() -> list[tuple[str, str]]:

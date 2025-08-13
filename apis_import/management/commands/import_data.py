@@ -24,8 +24,10 @@ def process_relations(voc_file: dict, relations: list[dict]) -> list[dict]:
     rel_objects = []
     for rel in relations:
         logger.info(f"Fetching relation with ID {rel['id']}")
-        # rel_data = api_request(rel["url"], logger)
-        rel_data = rel
+        if "related_entity" in rel:
+            rel_data = api_request(rel["url"], logger)
+        else:
+            rel_data = rel
         vocab = get_vocab(rel_data["relation_type"]["url"], logger)
         rel_data["relation_type_resolved"] = vocab
         rel_objects.append(rel_data)
