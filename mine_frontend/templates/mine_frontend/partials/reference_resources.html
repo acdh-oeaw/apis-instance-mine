@@ -1,0 +1,14 @@
+{% if reference_resources %}
+    <div class="section">
+        <span class="font-weight-bold">Online-Ressourcen</span>
+        <ul class="uris pl-0 list-unstyled">
+            {% for nd in reference_resources %}
+                {% if nd.kind != 'local' %}
+                    <li class="pl-0 font-weight-normal">
+                        {{ nd.kind }} <a target="_blank" rel="noopener noreferrer" href="{{ nd.uri }}">{{ nd.identifier }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

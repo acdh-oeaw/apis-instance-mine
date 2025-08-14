@@ -1,0 +1,12 @@
+<ul class="pl-0 mb-0">
+    {% for edu in education %}
+        <li class="font-weight-normal pb-0"
+            style="list-style-type:none;
+                   padding-bottom: 0.5em">
+            {{ edu.obj }}, {{ edu.typ }}
+            {% if edu.beginn_date_sort or edu.ende_date_sort %}
+                ({{ edu.beginn_date_sort|date:"Y" }} - {{ edu.ende_date_sort|date:"Y" }})
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

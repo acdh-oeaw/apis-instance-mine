@@ -1,0 +1,10 @@
+<div class="section">
+    <span class="font-weight-bold">Mitgliedschaft</span>
+    <ul class="relentities list-unstyled">
+        {% for memb in membership_short %}
+            <li class="pl-0 font-weight-normal pb-0" style="padding-bottom: 0.8em">
+                {{ memb.beginn_date_sort|date:"Y" }} - {{ memb.ende_date_sort|date:"Y" }} {{ memb.get_long_membership }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>

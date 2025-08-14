@@ -1,0 +1,18 @@
+{% load static %}
+<div class="imgcontainer">
+    {% if image %}
+        <figure class="float-md-right" style="max-width:110px;">
+            <a href="{% static image.pfad %}" data-lightbox="images">
+                <img src="{% if image.art == 'Wikimedia' %}{{ image.pfad }}{% else %}{% static image.pfad %}{% endif %}">
+            </a>
+            <figcaption id="photocredit" class="figure-caption text-08 text-center">{{ image.caption }}</figcaption>
+        </figure>
+    {% else %}
+        <a href="{% static 'mine_frontend/img/placeholder_enlarged.png' %}"
+           data-lightbox="images">
+            <img class="float-md-right"
+                 style="max-width:110px"
+                 src="{% static 'mine_frontend/img/placeholder_110-134.png' %}">
+        </a>
+    {% endif %}
+</div>
