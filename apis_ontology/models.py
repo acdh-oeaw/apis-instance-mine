@@ -4,6 +4,7 @@ import re
 from copy import deepcopy
 from functools import cache
 from typing import Any
+from urllib.parse import urlencode
 
 from apis_core.apis_entities.abc import E21_Person, E53_Place, E74_Group
 from apis_core.apis_entities.models import AbstractEntity
@@ -203,10 +204,12 @@ class BaseLegacyImport(models.Model):
         if obj.exists():
             return obj.first()
         else:
-            params = None
+            params_str = ""
             if use_filter:
                 params = {"id": legacy_id}
+                params_str = "?" + urlencode(params)
                 legacy_id = ""
+
             if isinstance(cls.LEGACY_DATA_ROUTE, str):
                 dr = [cls.LEGACY_DATA_ROUTE]
             elif isinstance(cls.LEGACY_DATA_ROUTE, list):
@@ -216,9 +219,8 @@ class BaseLegacyImport(models.Model):
             for route in dr:
                 try:
                     data = api_request(
-                        f"{BASE_URL}/apis/api/{route}/{legacy_id}",
+                        f"{BASE_URL}/apis/api/{route}/{legacy_id}" + params_str,
                         logger,
-                        params=params,
                     )
                 except Exception as e:
                     logger.error(f"Error fetching data from {route}: {e}")
@@ -402,7 +404,8 @@ class Ereignis(
             "name": f"Wahlsitzung der Gesamtakademie {year}",
         }
         data = api_request(
-            f"{BASE_URL}/apis/api/entities/event/", params=params, logger=logger
+            f"{BASE_URL}/apis/api/entities/event/?name={f'Wahlsitzung der Gesamtakademie {year}'}",
+            logger=logger,
         )
         return cls.create_from_legacy_data(data["results"][0], logger)
 
@@ -892,9 +895,8 @@ class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin, BaseLegacyIm
         person_id = data["related_person"]["id"]
         try:
             rel_data = api_request(
-                f"{BASE_URL}/apis/api/relations/personperson/",
+                f"{BASE_URL}/apis/api/relations/personperson/?related_personA={person_id}&start_date__year={year}",
                 logger,
-                params={"related_personA": person_id, "start_date__year": year},
             )
         except Exception as e:
             logger.error(f"Error fetching nominators: {e}")
@@ -978,9 +980,8 @@ class NichtGewaehlt(Relation, VersionMixin, LegacyFieldsMixin):
         person_id = data["related_person"]["id"]
         try:
             rel_data = api_request(
-                f"{BASE_URL}/apis/api/relations/personperson/",
+                f"{BASE_URL}/apis/api/relations/personperson/?related_personA={person_id}&start_date__year={year}",
                 logger,
-                params={"related_personA": person_id, "start_date__year": year},
             )
         except Exception as e:
             logger.error(f"Error fetching nominators: {e}")
@@ -995,12 +996,8 @@ class NichtGewaehlt(Relation, VersionMixin, LegacyFieldsMixin):
     @classmethod
     def _get_klasse(cls, data, logger):
         kls = api_request(
-            f"{BASE_URL}/apis/api/relations/personinstitution/",
+            f"{BASE_URL}/apis/api/relations/personinstitution/?related_person={data['related_person']['id']}&related_institution__in=2,3",
             logger,
-            params={
-                "related_person": data["related_person"]["id"],
-                "related_institution__in": "2,3",
-            },
         )
         ids = list(set([inst["related_institution"]["id"] for inst in kls["results"]]))
         if len(ids) > 1:
