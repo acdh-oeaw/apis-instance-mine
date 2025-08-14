@@ -1,4 +1,5 @@
 import datetime
+import re
 
 from apis_core.apis_metainfo.models import Uri
 from django.views import generic
@@ -13,6 +14,24 @@ from apis_ontology.models import (
     Person,
     PositionAn,
 )
+
+
+def get_web_object_uri(uri_obj):
+    def get_identifier(uri_obj):
+        if "geschichtewiki" in uri_obj.uri:
+            return uri_obj.uri.split("=")[-1]
+        elif "parlament" in uri_obj.uri:
+            return re.search(r"PAD_(\d+)", uri_obj.uri).group(1)
+        elif "deutsche-biographie" in uri_obj.uri:
+            return re.search(r"/(\d+)\.html", uri_obj.uri).group(1)
+        else:
+            return uri_obj.uri.split("/")[-1]
+
+    return {
+        "uri": uri_obj.uri,
+        "kind": uri_obj.short_label,
+        "identifier": get_identifier(uri_obj),
+    }
 
 
 class OEAWMemberDetailView(generic.DetailView):
@@ -50,6 +69,8 @@ class OEAWMemberDetailView(generic.DetailView):
         context["image"] = (
             Bild.objects.filter(object_id=self.object.id).order_by("art").first()
         )
-        context["reference_resources"] = Uri.objects.filter(object_id=self.object.id)
+        context["reference_resources"] = [
+            get_web_object_uri(x) for x in Uri.objects.filter(object_id=self.object.id)
+        ]
 
         return context
