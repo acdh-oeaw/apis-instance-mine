@@ -530,6 +530,13 @@ class NichtGewaehlt(Relation, VersionMixin, LegacyFieldsMixin):
     wahlsitzung = models.ForeignKey(
         Ereignis, on_delete=models.CASCADE, blank=True, null=True
     )
+    datum = FuzzyDateParserField(blank=True)
+    mitgliedschaft = models.CharField(
+        max_length=4,
+        choices=OeawMitgliedschaft.MEMBERSHIP_CHOICES,
+        blank=False,
+        help_text="Art der Mitgliedschaft",
+    )
 
     @classmethod
     def name(cls) -> str:
