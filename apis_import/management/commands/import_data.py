@@ -3,6 +3,7 @@ import json
 import logging
 import os
 from datetime import datetime
+from urllib.parse import urlencode
 
 import django
 from apis_core.apis_metainfo.models import RootObject
@@ -61,7 +62,7 @@ def import_person(id: int, voc_file: dict) -> Person:
     logger.info(f"Fetching person data for ID {id}")
     pers_url = f"{BASE_URL}/apis/api/entities/person/{id}/"
     pers_data = api_request(pers_url, logger)
-    person = Person.create_from_legacy_data(pers_data, logger)
+    person = Person.get_or_create_from_legacy_id(pers_data["id"], logger)
     process_relations(voc_file=voc_file, relations=pers_data["relations"])
     return person
 
@@ -165,8 +166,9 @@ class Command(BaseCommand):
         # Set up logging
         global logger
         logger = self.setup_logging(log_file, log_level)
+        params_str = "?" + urlencode(query_params)
         pers_list = api_request(
-            f"{BASE_URL}/apis/api/entities/person", logger, params=query_params
+            f"{BASE_URL}/apis/api/entities/person" + params_str, logger
         )
         logger.info(
             f"Starting import of persons with query {query_params}, found {pers_list['count']} persons"

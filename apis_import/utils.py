@@ -1,6 +1,6 @@
 import os
 from functools import cache
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 import httpx
 from django.core.management.base import CommandError
@@ -10,11 +10,11 @@ headers = {"Authorization": f"Token {TOKEN}", "Accept": "application/json"}
 BASE_URL = os.getenv("APIS_BASE_URL", "https://mine.acdh-ch-dev.oeaw.ac.at")
 
 
+@cache
 def api_request(
     url: str,
     logger,
     method: str = "GET",
-    params: Optional[Dict[str, Any]] = None,
     follow_redirects: bool = True,
 ) -> Dict[str, Any]:
     """
@@ -33,12 +33,11 @@ def api_request(
         CommandError: If the request fails
     """
     try:
-        logger.debug(f"Making {method} request to {url} with params {params}")
+        logger.debug(f"Making {method} request to {url}")
 
         if method.upper() == "GET":
             response = httpx.get(
                 url,
-                params=params,
                 headers=headers,
                 follow_redirects=follow_redirects,
                 timeout=30.0,  # Add a reasonable timeout
