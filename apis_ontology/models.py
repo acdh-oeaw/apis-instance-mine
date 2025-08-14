@@ -597,7 +597,7 @@ class AusbildungAn(Relation, VersionMixin, LegacyFieldsMixin):
     obj_model = Institution
     abgeschlossen = models.BooleanField(null=True, blank=True)
     fach = models.ForeignKey(Fach, on_delete=models.CASCADE, blank=True, null=True)
-    typ = models.CharField(choices=TYP_CHOICES, max_length=15, blank=True)
+    typ = models.CharField(choices=TYP_CHOICES, max_length=255, blank=True)
     beginn = FuzzyDateParserField(blank=True)
     ende = FuzzyDateParserField(blank=True)
 
