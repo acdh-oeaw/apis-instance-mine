@@ -400,19 +400,19 @@ class Ereignis(
 
     @classmethod
     def create_election_from_year(cls, year, logger):
-        params = {
-            "name": f"Wahlsitzung der Gesamtakademie {year}",
-        }
         data = api_request(
-            f"{BASE_URL}/apis/api/entities/event/?name={f'Wahlsitzung der Gesamtakademie {year}'}",
+            f"{BASE_URL}/apis/api/entities/event/?name=f'Wahlsitzung der Gesamtakademie {year}'",
             logger=logger,
         )
+        if not data["results"]:
+            logger.warning(f"No event found for year {year}")
+            return None
         return cls.create_from_legacy_data(data["results"][0], logger)
 
     @classmethod
     def get_or_create_election_from_year(cls, year, logger):
         try:
-            return cls.objects.get(typ=f"Wahlsitzung der Gesamtakademie {year}")
+            return cls.objects.get(name=f"Wahlsitzung der Gesamtakademie {year}")
         except cls.DoesNotExist:
             return cls.create_election_from_year(year, logger)
 
@@ -924,7 +924,7 @@ class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin, BaseLegacyIm
         else:
             data_mapped["mitgliedschaft"] = "unknown"
         data_mapped["beginn_typ"] = (
-            data["relation_type_resolved"][2]["name"].strip().lower()
+            data["relation_type_resolved"][-1]["name"].strip().lower()
         )
         pers = Person.get_or_create_from_legacy_id(data["related_person"]["id"], logger)
         data_mapped["subj"] = pers
