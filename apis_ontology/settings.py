@@ -30,3 +30,10 @@ STATICFILES_FINDERS = [
 #        "ROOT": SASS_ROOT,
 #    }
 # }
+#
+CSP_DEFAULT_SRC = CSP_DEFAULT_SRC + (
+    "*.jquery.com",
+    "*.googleapis.com",
+    "*.gstatic.com",
+    "*.rawgit.com",
+)

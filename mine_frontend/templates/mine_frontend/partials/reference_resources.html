@@ -1,0 +1,12 @@
+{% if normdaten %}
+    <div class="section">
+        <span class="font-weight-bold">Online-Ressourcen</span>
+        <ul class="uris pl-0 list-unstyled">
+            {% for nd in normdaten %}
+                <li class="pl-0 font-weight-normal">
+                    {{ nd.kind }} <a target="_blank" rel="noopener noreferrer" href="{{ nd.uri }}">{{ nd.identifier }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

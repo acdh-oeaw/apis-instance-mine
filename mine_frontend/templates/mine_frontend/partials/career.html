@@ -1,6 +1,8 @@
-<ul>
+<ul class="pl-0 mb-0">
     {% for position in career %}
-        <li>
+        <li class="font-weight-normal pb-0"
+            style="list-style-type:none;
+                   padding-bottom: 0.5em">
             {{ position.position }}: {{ position.obj }}
             {% if position.beginn_date_sort or position.ende_date_sort %}
                 ({{ position.beginn_date_sort|date:"Y" }} - {{ position.ende_date_sort|date:"Y" }})

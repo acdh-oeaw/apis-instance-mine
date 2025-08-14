@@ -1,5 +1,6 @@
 import datetime
 
+from apis_core.apis_metainfo.models import Uri
 from django.views import generic
 
 from apis_ontology.models import (
@@ -49,4 +50,6 @@ class OEAWMemberDetailView(generic.DetailView):
         context["image"] = (
             Bild.objects.filter(object_id=self.object.id).order_by("art").first()
         )
+        context["reference_resources"] = Uri.objects.filter(object_id=self.object.id)
+
         return context
