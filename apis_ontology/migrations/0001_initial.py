@@ -12,2129 +12,6768 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('apis_metainfo', '0016_remove_rootobject_self_contenttype'),
-        ('contenttypes', '0002_remove_content_type_name'),
-        ('relations', '0003_relation_relations_r_subj_content_type_and_more'),
+        ("apis_metainfo", "0016_remove_rootobject_self_contenttype"),
+        ("contenttypes", "0002_remove_content_type_name"),
+        ("relations", "0003_relation_relations_r_subj_content_type_and_more"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='AnhaengerVon',
+            name="AnhaengerVon",
             fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'Anhänger',
-                'verbose_name_plural': 'Anhänger',
-                'abstract': False,
+                "verbose_name": "Anhänger",
+                "verbose_name_plural": "Anhänger",
+                "abstract": False,
             },
-            bases=('relations.relation', models.Model),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='AutorVon',
+            name="AutorVon",
             fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
             ],
             options={
-                'verbose_name': 'AutorIn von',
-                'verbose_name_plural': 'AutorIn von',
-                'abstract': False,
+                "verbose_name": "AutorIn von",
+                "verbose_name_plural": "AutorIn von",
+                "abstract": False,
             },
-            bases=('relations.relation', models.Model),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='Beruf',
+            name="Beruf",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('name', models.CharField(max_length=1024)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("name", models.CharField(max_length=1024)),
             ],
             options={
-                'verbose_name': 'Beruf',
-                'verbose_name_plural': 'Berufe',
-            },
-            bases=(apis_core.generic.abc.GenericModel, models.Model),
-        ),
-        migrations.CreateModel(
-            name='EhepartnerVon',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'Ehepartner von',
-                'verbose_name_plural': 'Ehepartner von',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='EhrentitelVon',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('titel', models.CharField(choices=[('Ehrenbürger(in)', 'Ehrenbürger(in)')], default='Ehrenbürger(in)', max_length=150)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'Ehrentitel von',
-                'verbose_name_plural': 'Ehrentitel von',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='EhrentitelVonInstitution',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('titel', models.CharField(max_length=255)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'Ehrentitel von',
-                'verbose_name_plural': 'Ehrentitel von',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='Ereignis',
-            fields=[
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('rootobject_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.rootobject')),
-                ('name', models.CharField(max_length=255)),
-                ('alternative_namen', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(blank=True, max_length=255), blank=True, help_text='Alternative Namen', null=True, size=None)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('typ', models.CharField(blank=True, choices=[('Wahlsitzung', 'Wahlsitzung'), ('Feierliche Sitzung', 'Feierliche Sitzung'), ('Gesetz', 'Gesetz')], default='unbekannt', help_text='Art des Events', max_length=100)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'Ereignis',
-                'verbose_name_plural': 'Ereignisse',
-                'abstract': False,
-            },
-            bases=('apis_metainfo.rootobject', models.Model),
-        ),
-        migrations.CreateModel(
-            name='ErwaehntIn',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-            ],
-            options={
-                'verbose_name': 'erwähnt in',
-                'verbose_name_plural': 'erwähnt in',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='Fach',
-            fields=[
-                ('rootobject_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.rootobject')),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('name', models.CharField(max_length=400)),
-                ('oestat', models.CharField(blank=True, choices=apis_ontology.models.get_oestat_choices, max_length=400)),
-            ],
-            options={
-                'verbose_name': 'Fachrichtung',
-                'verbose_name_plural': 'Fachrichtungen',
-            },
-            bases=('apis_metainfo.rootobject', models.Model),
-        ),
-        migrations.CreateModel(
-            name='FamilienmitgliedVon',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'Familienmitglied von',
-                'verbose_name_plural': 'Familienmitglied von',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='FindetStattIn',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-            ],
-            options={
-                'verbose_name': 'findet statt in',
-                'verbose_name_plural': 'findet statt in',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='FreundVon',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'Freund von',
-                'verbose_name_plural': 'Freund von',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='GeborenIn',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-            ],
-            options={
-                'verbose_name': 'geboren in',
-                'verbose_name_plural': 'geboren in',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='GelegenIn',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-            ],
-            options={
-                'verbose_name': 'gelegen in',
-                'verbose_name_plural': 'gelegen in',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='GelegenInOrt',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-            ],
-            options={
-                'verbose_name': 'gelegen in Ort',
-                'verbose_name_plural': 'gelegen in Ort',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='GestorbenIn',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-            ],
-            options={
-                'verbose_name': 'gestorben in',
-                'verbose_name_plural': 'gestorben in',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='Gewinnt',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'gewinnt',
-                'verbose_name_plural': 'gewinnt',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='HaeltRedeBei',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('titel', models.CharField(blank=True, max_length=400)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'Hält Rede bei',
-                'verbose_name_plural': 'Redner',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='Institution',
-            fields=[
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('rootobject_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.rootobject')),
-                ('label', models.CharField(blank=True, default='', max_length=4096, verbose_name='label')),
-                ('alternative_namen', django_json_editor_field.fields.JSONEditorField(blank=True, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('typ', models.CharField(blank=True, choices=[('Kommission', 'Kommission'), ('Institut', 'Institut'), ('Forschungsstelle', 'Forschungsstelle'), ('Klasse', 'Klasse'), ('Institution der Gesamtakademie', 'Institution der Gesamtakademie'), ('Forschungsorientierte Einheit', 'Forschungsorientierte Einheit'), ('Einrichtung', 'Einrichtung'), ('Komitee', 'Komitee'), ('Kuratorium', 'Kuratorium'), ('Beirat', 'Beirat'), ('Delegation', 'Delegation'), ('Internationales Forschungsprogramm', 'Internationales Forschungsprogramm'), ('Preis', 'Preis'), ('Ministerium', 'Ministerium'), ('Orden (geistl.)', 'Orden (geistl.)'), ('Schule', 'Schule'), ('Kirche', 'Kirche'), ('Gymnasium', 'Gymnasium'), ('Akademie (Ausland)', 'Akademie (Ausland)'), ('Universität', 'Universität'), ('Ministerium', 'Ministerium')], default='unbekannt', help_text='Art der Institution', max_length=100)),
-                ('akademie_institution', models.BooleanField(default=False)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'Institution',
-                'verbose_name_plural': 'Institutionen',
-                'ordering': ['label'],
-                'abstract': False,
-            },
-            bases=('apis_metainfo.rootobject', models.Model),
-        ),
-        migrations.CreateModel(
-            name='InstitutionHierarchie',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('relation', models.CharField(choices=apis_ontology.models.get_choices_inst_hierarchie, max_length=255)),
-                ('relation_reverse', models.CharField(editable=False, max_length=255)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'Institutionen Hierarchie',
-                'verbose_name_plural': 'Institutionen Hierarchie',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='KindVon',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-            ],
-            options={
-                'verbose_name': 'Kind von',
-                'verbose_name_plural': 'Kind von',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='LehntPreisAb',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('grund', models.CharField(blank=True, max_length=255)),
-            ],
-            options={
-                'verbose_name': 'abgelehnt von',
-                'verbose_name_plural': 'abgelehnt von',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='LehrerVon',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('art', models.CharField(blank=True, choices=[('Doktorvater/mutter', 'Doktorvater/mutter'), ('LehrerIn', 'LehrerIn')])),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'Lehrer von',
-                'verbose_name_plural': 'Lehrer von',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='Mitglied',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('art', models.CharField(blank=True, choices=apis_ontology.models.get_choices_memberships_non_oeaw, max_length=255)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'Mitglied',
-                'verbose_name_plural': 'Mitglieder',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='NimmtTeilAn',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'Teilnahme an',
-                'verbose_name_plural': 'Teilnahme an',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='Ort',
-            fields=[
-                ('rootobject_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.rootobject')),
-                ('label', models.CharField(blank=True, default='', max_length=4096, verbose_name='label')),
-                ('latitude', models.FloatField(blank=True, null=True, verbose_name='latitude')),
-                ('longitude', models.FloatField(blank=True, null=True, verbose_name='longitude')),
-                ('feature_code', models.CharField(blank=True, default='', help_text='<a href="https://www.geonames.org/export/codes.html">Geonames Feature Code List</a>', max_length=16, verbose_name='feature code')),
-                ('alternative_namen', django_json_editor_field.fields.JSONEditorField(blank=True, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-            ],
-            options={
-                'verbose_name': 'Ort',
-                'verbose_name_plural': 'Orte',
-                'ordering': ['label'],
-                'abstract': False,
-            },
-            bases=('apis_metainfo.rootobject', models.Model),
-        ),
-        migrations.CreateModel(
-            name='Preis',
-            fields=[
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_ausschreibung_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_ausschreibung_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_ausschreibung_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('rootobject_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.rootobject')),
-                ('name', models.CharField(max_length=255)),
-                ('alternative_namen', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(blank=True, max_length=255), blank=True, help_text='Alternative Namen', null=True, size=None)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('text', models.TextField(blank=True)),
-                ('datum_ausschreibung', django_interval.fields.FuzzyDateParserField(blank=True, help_text='Datum der Ausschreibung bei Preisaufgaben')),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True, help_text='Gründungsdatum des Preises')),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True, help_text='Auflösungsdatum des Preises')),
-            ],
-            options={
-                'verbose_name': 'Preis/Preisausschreiben',
-                'verbose_name_plural': 'Preise/Preisausschreiben',
-                'abstract': False,
-            },
-            bases=('apis_metainfo.rootobject', models.Model),
-        ),
-        migrations.CreateModel(
-            name='Religion',
-            fields=[
-                ('rootobject_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.rootobject')),
-                ('name', models.CharField(max_length=255)),
-                ('alternative_namen', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(blank=True, max_length=255), blank=True, help_text='Alternative Namen', null=True, size=None)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-            ],
-            options={
-                'verbose_name': 'Religionsgemeinschaft',
-                'verbose_name_plural': 'Religionsgemeinschaften',
-                'abstract': False,
-            },
-            bases=('apis_metainfo.rootobject', models.Model),
-        ),
-        migrations.CreateModel(
-            name='SchreibtAus',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'schreibt aus',
-                'verbose_name_plural': 'schreibt aus',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='StelltAntragAn',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('status', models.CharField(choices=[('abgelehnt', 'abgelehnt'), ('bewilligt', 'bewilligt'), ('anderwitig erledigt', 'anderweitig erledigt'), ('Förderstatus unbekannt', 'Förderstatus unbekannt')], default='Förderstatus unbekannt')),
-            ],
-            options={
-                'verbose_name': 'stellt Antrag an',
-                'verbose_name_plural': 'stellt Antrag an',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='Stiftet',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'stiftet',
-                'verbose_name_plural': 'stiftet',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='Werk',
-            fields=[
-                ('rootobject_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.rootobject')),
-                ('alternative_namen', django_json_editor_field.fields.JSONEditorField(blank=True, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('titel', models.CharField(max_length=400)),
-                ('bibtex', models.TextField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'Werk',
-                'verbose_name_plural': 'Werke',
-                'abstract': False,
-            },
-            bases=('apis_metainfo.rootobject', models.Model),
-        ),
-        migrations.CreateModel(
-            name='WirdGestiftetVon',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'wird vergeben von',
-                'verbose_name_plural': 'wird vergeben von',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='WirdVergebenVon',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'wird vergeben von',
-                'verbose_name_plural': 'wird vergeben von',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='WissenschaftsaustauschIn',
-            fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-            ],
-            options={
-                'verbose_name': 'Wissenschaftsaustausch in',
-                'verbose_name_plural': 'Wissenschaftsaustausch in',
-                'abstract': False,
-            },
-            bases=('relations.relation', models.Model),
-        ),
-        migrations.CreateModel(
-            name='Bild',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('art', models.CharField(choices=[('OEAW Archiv', 'OEAW Archiv'), ('Wikimedia', 'Wikimedia')], max_length=100)),
-                ('pfad', models.CharField(max_length=1024)),
-                ('credit', models.TextField(blank=True, max_length=1024)),
-                ('object_id', models.PositiveBigIntegerField()),
-                ('content_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contenttypes.contenttype')),
-            ],
-            options={
-                'verbose_name': 'Bild',
-                'verbose_name_plural': 'Bilder',
+                "verbose_name": "Beruf",
+                "verbose_name_plural": "Berufe",
             },
             bases=(apis_core.generic.abc.GenericModel, models.Model),
         ),
         migrations.CreateModel(
-            name='AusbildungAn',
+            name="EhepartnerVon",
             fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('abgeschlossen', models.BooleanField(blank=True, null=True)),
-                ('typ', models.CharField(blank=True, choices=[('Schule', 'Schule'), ('Studium', 'Studium'), ('Promotion', 'Promotion'), ('Habilitation', 'Habilitation')], max_length=15)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('fach', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='apis_ontology.fach')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'Ausbildung an',
-                'verbose_name_plural': 'Ausbildungen an',
-                'abstract': False,
+                "verbose_name": "Ehepartner von",
+                "verbose_name_plural": "Ehepartner von",
+                "abstract": False,
             },
-            bases=('relations.relation', models.Model),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='Person',
+            name="EhrentitelVon",
             fields=[
-                ('sf_befreit_ab_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('sf_befreit_ab_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('sf_befreit_ab_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('date_of_death_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('date_of_death_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('date_of_death_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('date_of_birth_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('date_of_birth_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('date_of_birth_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('rootobject_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='apis_metainfo.rootobject')),
-                ('forename', models.CharField(blank=True, default='', max_length=4096, verbose_name='forename')),
-                ('surname', models.CharField(blank=True, default='', max_length=4096, verbose_name='surname')),
-                ('gender', models.CharField(blank=True, default='', max_length=4096, verbose_name='gender')),
-                ('alternative_namen', django_json_editor_field.fields.JSONEditorField(blank=True, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('date_of_birth', django_interval.fields.FuzzyDateParserField(blank=True, verbose_name='Geburtsdatum')),
-                ('date_of_death', django_interval.fields.FuzzyDateParserField(blank=True, verbose_name='Sterbedatum')),
-                ('mitglied', models.BooleanField(default=False)),
-                ('klasse', models.CharField(blank=True, choices=[('Mathematisch-Naturwissenschaftliche Klasse', 'Mathematisch-Naturwissenschaftliche Klasse'), ('Philosophisch-Historische Klasse', 'Philosophisch-Historische Klasse'), ('Gesamtakademie', 'Gesamtakademie')], max_length=100)),
-                ('reg_pflichtig', models.BooleanField(default=False, help_text='registierungspflichtig aufgrund des Verbotsgesetzes')),
-                ('sf_befreit_ab', django_interval.fields.FuzzyDateParserField(blank=True, help_text='von Sühnefolgen befreit aufgrund Nationalsozialistengesetz oder Amnestie für minderbelastete Personen ab')),
-                ('titel', django_json_editor_field.fields.JSONEditorField(blank=True, null=True)),
-                ('beruf', models.ManyToManyField(blank=True, to='apis_ontology.beruf')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "titel",
+                    models.CharField(
+                        choices=[("Ehrenbürger(in)", "Ehrenbürger(in)")],
+                        default="Ehrenbürger(in)",
+                        max_length=150,
+                    ),
+                ),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'Person',
-                'verbose_name_plural': 'Personen',
-                'ordering': ['surname', 'forename'],
-                'abstract': False,
+                "verbose_name": "Ehrentitel von",
+                "verbose_name_plural": "Ehrentitel von",
+                "abstract": False,
             },
-            bases=('apis_metainfo.rootobject', models.Model),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='OeawMitgliedschaft',
+            name="EhrentitelVonInstitution",
             fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('beginn_typ', models.CharField(blank=True, choices=[('gewählt', 'gewählt'), ('bestätigt', 'bestätigt'), ('gewählt und bestätigt', 'gewählt und bestätigt'), ('gewählt und ernannt', 'gewählt und ernannt'), ('gewählt, nicht bestätigt', 'gewählt, nicht bestätigt'), ('ernannt', 'ernannt'), ('genehmigt', 'genehmigt'), ('eingereiht', 'eingereiht'), ('reaktiviert', 'reaktiviert'), ('unbekannt', 'unbekannt')], default='unbekannt', help_text='Art des Beginns der Mitgliedschaft', max_length=100)),
-                ('ende_typ', models.CharField(blank=True, choices=[('ausgetreten', 'ausgetreten'), ('ausgeschlossen', 'ausgeschlossen'), ('erloschen', 'erloschen'), ('ruhend gestellt', 'ruhend gestellt'), ('andere Mitgliedschaft', 'andere Mitgliedschaft'), ('Tod', 'Tod'), ('unbekannt', 'unbekannt')], default='unbekannt', help_text='Art des Endes der Mitgliedschaft', max_length=100)),
-                ('mitgliedschaft', models.CharField(choices=[('wM', 'wM'), ('oM', 'oM'), ('kM I', 'kM I'), ('kM A', 'kM A'), ('EM', 'EM'), ('JA', 'JA')], help_text='Art der Mitgliedschaft', max_length=4)),
-                ('wahlsitzung', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='apis_ontology.ereignis')),
-                ('einspruch_von', models.ManyToManyField(blank=True, help_text='gegen seine Reaktivierung wurde Einspruch erhoben durch', related_name='einspruch_von_set', to='apis_ontology.person')),
-                ('vorgeschlagen_von', models.ManyToManyField(blank=True, related_name='vorgeschlagen_von_set', to='apis_ontology.person')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("titel", models.CharField(max_length=255)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'Mitgliedschaft',
-                'verbose_name_plural': 'Mitgliedschaften',
-                'abstract': False,
+                "verbose_name": "Ehrentitel von",
+                "verbose_name_plural": "Ehrentitel von",
+                "abstract": False,
             },
-            bases=('relations.relation', models.Model),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='NichtGewaehlt',
+            name="Ereignis",
             fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('mitgliedschaft', models.CharField(choices=[('wM', 'wM'), ('oM', 'oM'), ('kM I', 'kM I'), ('kM A', 'kM A'), ('EM', 'EM'), ('JA', 'JA')], help_text='Art der Mitgliedschaft', max_length=4)),
-                ('wahlsitzung', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='apis_ontology.ereignis')),
-                ('vorgeschlagen_von', models.ManyToManyField(blank=True, to='apis_ontology.person')),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "rootobject_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.rootobject",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                (
+                    "alternative_namen",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.CharField(blank=True, max_length=255),
+                        blank=True,
+                        help_text="Alternative Namen",
+                        null=True,
+                        size=None,
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "typ",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("Wahlsitzung", "Wahlsitzung"),
+                            ("Feierliche Sitzung", "Feierliche Sitzung"),
+                            ("Gesetz", "Gesetz"),
+                        ],
+                        default="unbekannt",
+                        help_text="Art des Events",
+                        max_length=100,
+                    ),
+                ),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'Nicht gewählte Person',
-                'verbose_name_plural': 'Nicht gewählte Personen',
-                'abstract': False,
+                "verbose_name": "Ereignis",
+                "verbose_name_plural": "Ereignisse",
+                "abstract": False,
             },
-            bases=('relations.relation', models.Model),
+            bases=("apis_metainfo.rootobject", models.Model),
         ),
         migrations.CreateModel(
-            name='PositionAn',
+            name="ErwaehntIn",
             fields=[
-                ('relation_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('position', models.CharField(blank=True, choices=apis_ontology.models.get_position_choices)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('fach', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='apis_ontology.fach')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
             ],
             options={
-                'verbose_name': 'Position an',
-                'verbose_name_plural': 'Positionen an',
-                'abstract': False,
+                "verbose_name": "erwähnt in",
+                "verbose_name_plural": "erwähnt in",
+                "abstract": False,
             },
-            bases=('relations.relation', models.Model),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionAnhaengerVon',
+            name="Fach",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "rootobject_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.rootobject",
+                    ),
+                ),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("name", models.CharField(max_length=400)),
+                (
+                    "oestat",
+                    models.CharField(
+                        blank=True,
+                        choices=apis_ontology.models.get_oestat_choices,
+                        max_length=400,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Anhänger',
-                'verbose_name_plural': 'historical Anhänger',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "Fachrichtung",
+                "verbose_name_plural": "Fachrichtungen",
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("apis_metainfo.rootobject", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionAusbildungAn',
+            name="FamilienmitgliedVon",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('abgeschlossen', models.BooleanField(blank=True, null=True)),
-                ('typ', models.CharField(blank=True, choices=[('Schule', 'Schule'), ('Studium', 'Studium'), ('Promotion', 'Promotion'), ('Habilitation', 'Habilitation')], max_length=15)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('fach', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='apis_ontology.fach')),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'historical Ausbildung an',
-                'verbose_name_plural': 'historical Ausbildungen an',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "Familienmitglied von",
+                "verbose_name_plural": "Familienmitglied von",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionAutorVon',
+            name="FindetStattIn",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
             ],
             options={
-                'verbose_name': 'historical AutorIn von',
-                'verbose_name_plural': 'historical AutorIn von',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "findet statt in",
+                "verbose_name_plural": "findet statt in",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionEhepartnerVon',
+            name="FreundVon",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'historical Ehepartner von',
-                'verbose_name_plural': 'historical Ehepartner von',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "Freund von",
+                "verbose_name_plural": "Freund von",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionEhrentitelVon',
+            name="GeborenIn",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('titel', models.CharField(choices=[('Ehrenbürger(in)', 'Ehrenbürger(in)')], default='Ehrenbürger(in)', max_length=150)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
             ],
             options={
-                'verbose_name': 'historical Ehrentitel von',
-                'verbose_name_plural': 'historical Ehrentitel von',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "geboren in",
+                "verbose_name_plural": "geboren in",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionEhrentitelVonInstitution',
+            name="GelegenIn",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('titel', models.CharField(max_length=255)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
             ],
             options={
-                'verbose_name': 'historical Ehrentitel von',
-                'verbose_name_plural': 'historical Ehrentitel von',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "gelegen in",
+                "verbose_name_plural": "gelegen in",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionEreignis',
+            name="GelegenInOrt",
             fields=[
-                ('rootobject_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='apis_metainfo.rootobject')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('alternative_namen', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(blank=True, max_length=255), blank=True, help_text='Alternative Namen', null=True, size=None)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('typ', models.CharField(blank=True, choices=[('Wahlsitzung', 'Wahlsitzung'), ('Feierliche Sitzung', 'Feierliche Sitzung'), ('Gesetz', 'Gesetz')], default='unbekannt', help_text='Art des Events', max_length=100)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
             ],
             options={
-                'verbose_name': 'historical Ereignis',
-                'verbose_name_plural': 'historical Ereignisse',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "gelegen in Ort",
+                "verbose_name_plural": "gelegen in Ort",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionErwaehntIn',
+            name="GestorbenIn",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
             ],
             options={
-                'verbose_name': 'historical erwähnt in',
-                'verbose_name_plural': 'historical erwähnt in',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "gestorben in",
+                "verbose_name_plural": "gestorben in",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionFach',
+            name="Gewinnt",
             fields=[
-                ('rootobject_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='apis_metainfo.rootobject')),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('name', models.CharField(max_length=400)),
-                ('oestat', models.CharField(blank=True, choices=apis_ontology.models.get_oestat_choices, max_length=400)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'historical Fachrichtung',
-                'verbose_name_plural': 'historical Fachrichtungen',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "gewinnt",
+                "verbose_name_plural": "gewinnt",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionFamilienmitgliedVon',
+            name="HaeltRedeBei",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("titel", models.CharField(blank=True, max_length=400)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'historical Familienmitglied von',
-                'verbose_name_plural': 'historical Familienmitglied von',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "Hält Rede bei",
+                "verbose_name_plural": "Redner",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionFindetStattIn',
+            name="Institution",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "rootobject_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.rootobject",
+                    ),
+                ),
+                (
+                    "label",
+                    models.CharField(
+                        blank=True, default="", max_length=4096, verbose_name="label"
+                    ),
+                ),
+                (
+                    "alternative_namen",
+                    django_json_editor_field.fields.JSONEditorField(
+                        blank=True, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "typ",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("Kommission", "Kommission"),
+                            ("Institut", "Institut"),
+                            ("Forschungsstelle", "Forschungsstelle"),
+                            ("Klasse", "Klasse"),
+                            (
+                                "Institution der Gesamtakademie",
+                                "Institution der Gesamtakademie",
+                            ),
+                            (
+                                "Forschungsorientierte Einheit",
+                                "Forschungsorientierte Einheit",
+                            ),
+                            ("Einrichtung", "Einrichtung"),
+                            ("Komitee", "Komitee"),
+                            ("Kuratorium", "Kuratorium"),
+                            ("Beirat", "Beirat"),
+                            ("Delegation", "Delegation"),
+                            (
+                                "Internationales Forschungsprogramm",
+                                "Internationales Forschungsprogramm",
+                            ),
+                            ("Preis", "Preis"),
+                            ("Ministerium", "Ministerium"),
+                            ("Orden (geistl.)", "Orden (geistl.)"),
+                            ("Schule", "Schule"),
+                            ("Kirche", "Kirche"),
+                            ("Gymnasium", "Gymnasium"),
+                            ("Akademie (Ausland)", "Akademie (Ausland)"),
+                            ("Universität", "Universität"),
+                            ("Ministerium", "Ministerium"),
+                        ],
+                        default="unbekannt",
+                        help_text="Art der Institution",
+                        max_length=100,
+                    ),
+                ),
+                ("akademie_institution", models.BooleanField(default=False)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'historical findet statt in',
-                'verbose_name_plural': 'historical findet statt in',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "Institution",
+                "verbose_name_plural": "Institutionen",
+                "ordering": ["label"],
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("apis_metainfo.rootobject", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionFreundVon',
+            name="InstitutionHierarchie",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "relation",
+                    models.CharField(
+                        choices=apis_ontology.models.get_choices_inst_hierarchie,
+                        max_length=255,
+                    ),
+                ),
+                ("relation_reverse", models.CharField(editable=False, max_length=255)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'historical Freund von',
-                'verbose_name_plural': 'historical Freund von',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "Institutionen Hierarchie",
+                "verbose_name_plural": "Institutionen Hierarchie",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionGeborenIn',
+            name="KindVon",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
             ],
             options={
-                'verbose_name': 'historical geboren in',
-                'verbose_name_plural': 'historical geboren in',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "Kind von",
+                "verbose_name_plural": "Kind von",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionGelegenIn',
+            name="LehntPreisAb",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("grund", models.CharField(blank=True, max_length=255)),
             ],
             options={
-                'verbose_name': 'historical gelegen in',
-                'verbose_name_plural': 'historical gelegen in',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "abgelehnt von",
+                "verbose_name_plural": "abgelehnt von",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionGelegenInOrt',
+            name="LehrerVon",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "art",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("Doktorvater/mutter", "Doktorvater/mutter"),
+                            ("LehrerIn", "LehrerIn"),
+                        ],
+                    ),
+                ),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'historical gelegen in Ort',
-                'verbose_name_plural': 'historical gelegen in Ort',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "Lehrer von",
+                "verbose_name_plural": "Lehrer von",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionGestorbenIn',
+            name="Mitglied",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "art",
+                    models.CharField(
+                        blank=True,
+                        choices=apis_ontology.models.get_choices_memberships_non_oeaw,
+                        max_length=255,
+                    ),
+                ),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'historical gestorben in',
-                'verbose_name_plural': 'historical gestorben in',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "Mitglied",
+                "verbose_name_plural": "Mitglieder",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionGewinnt',
+            name="NimmtTeilAn",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'historical gewinnt',
-                'verbose_name_plural': 'historical gewinnt',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "Teilnahme an",
+                "verbose_name_plural": "Teilnahme an",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionHaeltRedeBei',
+            name="Ort",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('titel', models.CharField(blank=True, max_length=400)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "rootobject_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.rootobject",
+                    ),
+                ),
+                (
+                    "label",
+                    models.CharField(
+                        blank=True, default="", max_length=4096, verbose_name="label"
+                    ),
+                ),
+                (
+                    "latitude",
+                    models.FloatField(blank=True, null=True, verbose_name="latitude"),
+                ),
+                (
+                    "longitude",
+                    models.FloatField(blank=True, null=True, verbose_name="longitude"),
+                ),
+                (
+                    "feature_code",
+                    models.CharField(
+                        blank=True,
+                        default="",
+                        help_text='<a href="https://www.geonames.org/export/codes.html">Geonames Feature Code List</a>',
+                        max_length=16,
+                        verbose_name="feature code",
+                    ),
+                ),
+                (
+                    "alternative_namen",
+                    django_json_editor_field.fields.JSONEditorField(
+                        blank=True, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
             ],
             options={
-                'verbose_name': 'historical Hält Rede bei',
-                'verbose_name_plural': 'historical Redner',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "Ort",
+                "verbose_name_plural": "Orte",
+                "ordering": ["label"],
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("apis_metainfo.rootobject", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionInstitution',
+            name="Preis",
             fields=[
-                ('rootobject_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='apis_metainfo.rootobject')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('label', models.CharField(blank=True, default='', max_length=4096, verbose_name='label')),
-                ('alternative_namen', django_json_editor_field.fields.JSONEditorField(blank=True, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('typ', models.CharField(blank=True, choices=[('Kommission', 'Kommission'), ('Institut', 'Institut'), ('Forschungsstelle', 'Forschungsstelle'), ('Klasse', 'Klasse'), ('Institution der Gesamtakademie', 'Institution der Gesamtakademie'), ('Forschungsorientierte Einheit', 'Forschungsorientierte Einheit'), ('Einrichtung', 'Einrichtung'), ('Komitee', 'Komitee'), ('Kuratorium', 'Kuratorium'), ('Beirat', 'Beirat'), ('Delegation', 'Delegation'), ('Internationales Forschungsprogramm', 'Internationales Forschungsprogramm'), ('Preis', 'Preis'), ('Ministerium', 'Ministerium'), ('Orden (geistl.)', 'Orden (geistl.)'), ('Schule', 'Schule'), ('Kirche', 'Kirche'), ('Gymnasium', 'Gymnasium'), ('Akademie (Ausland)', 'Akademie (Ausland)'), ('Universität', 'Universität'), ('Ministerium', 'Ministerium')], default='unbekannt', help_text='Art der Institution', max_length=100)),
-                ('akademie_institution', models.BooleanField(default=False)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_ausschreibung_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_ausschreibung_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_ausschreibung_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "rootobject_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.rootobject",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                (
+                    "alternative_namen",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.CharField(blank=True, max_length=255),
+                        blank=True,
+                        help_text="Alternative Namen",
+                        null=True,
+                        size=None,
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("text", models.TextField(blank=True)),
+                (
+                    "datum_ausschreibung",
+                    django_interval.fields.FuzzyDateParserField(
+                        blank=True,
+                        help_text="Datum der Ausschreibung bei Preisaufgaben",
+                    ),
+                ),
+                (
+                    "beginn",
+                    django_interval.fields.FuzzyDateParserField(
+                        blank=True, help_text="Gründungsdatum des Preises"
+                    ),
+                ),
+                (
+                    "ende",
+                    django_interval.fields.FuzzyDateParserField(
+                        blank=True, help_text="Auflösungsdatum des Preises"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Institution',
-                'verbose_name_plural': 'historical Institutionen',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "Preis/Preisausschreiben",
+                "verbose_name_plural": "Preise/Preisausschreiben",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("apis_metainfo.rootobject", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionInstitutionHierarchie',
+            name="Religion",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('relation', models.CharField(choices=apis_ontology.models.get_choices_inst_hierarchie, max_length=255)),
-                ('relation_reverse', models.CharField(editable=False, max_length=255)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "rootobject_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.rootobject",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                (
+                    "alternative_namen",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.CharField(blank=True, max_length=255),
+                        blank=True,
+                        help_text="Alternative Namen",
+                        null=True,
+                        size=None,
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
             ],
             options={
-                'verbose_name': 'historical Institutionen Hierarchie',
-                'verbose_name_plural': 'historical Institutionen Hierarchie',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "Religionsgemeinschaft",
+                "verbose_name_plural": "Religionsgemeinschaften",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("apis_metainfo.rootobject", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionKindVon',
+            name="SchreibtAus",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'historical Kind von',
-                'verbose_name_plural': 'historical Kind von',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "schreibt aus",
+                "verbose_name_plural": "schreibt aus",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionLehntPreisAb',
+            name="StelltAntragAn",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('grund', models.CharField(blank=True, max_length=255)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("abgelehnt", "abgelehnt"),
+                            ("bewilligt", "bewilligt"),
+                            ("anderwitig erledigt", "anderweitig erledigt"),
+                            ("Förderstatus unbekannt", "Förderstatus unbekannt"),
+                        ],
+                        default="Förderstatus unbekannt",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical abgelehnt von',
-                'verbose_name_plural': 'historical abgelehnt von',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "stellt Antrag an",
+                "verbose_name_plural": "stellt Antrag an",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionLehrerVon',
+            name="Stiftet",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('art', models.CharField(blank=True, choices=[('Doktorvater/mutter', 'Doktorvater/mutter'), ('LehrerIn', 'LehrerIn')])),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'historical Lehrer von',
-                'verbose_name_plural': 'historical Lehrer von',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "stiftet",
+                "verbose_name_plural": "stiftet",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionMitglied',
+            name="Werk",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('art', models.CharField(blank=True, choices=apis_ontology.models.get_choices_memberships_non_oeaw, max_length=255)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "rootobject_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.rootobject",
+                    ),
+                ),
+                (
+                    "alternative_namen",
+                    django_json_editor_field.fields.JSONEditorField(
+                        blank=True, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("titel", models.CharField(max_length=400)),
+                ("bibtex", models.TextField(blank=True)),
             ],
             options={
-                'verbose_name': 'historical Mitglied',
-                'verbose_name_plural': 'historical Mitglieder',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "Werk",
+                "verbose_name_plural": "Werke",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("apis_metainfo.rootobject", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionNichtGewaehlt',
+            name="WirdGestiftetVon",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('mitgliedschaft', models.CharField(choices=[('wM', 'wM'), ('oM', 'oM'), ('kM I', 'kM I'), ('kM A', 'kM A'), ('EM', 'EM'), ('JA', 'JA')], help_text='Art der Mitgliedschaft', max_length=4)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('wahlsitzung', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='apis_ontology.ereignis')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'historical Nicht gewählte Person',
-                'verbose_name_plural': 'historical Nicht gewählte Personen',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "wird vergeben von",
+                "verbose_name_plural": "wird vergeben von",
+                "abstract": False,
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=("relations.relation", models.Model),
         ),
         migrations.CreateModel(
-            name='VersionNichtGewaehlt_vorgeschlagen_von',
+            name="WirdVergebenVon",
             fields=[
-                ('id', models.BigIntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('m2m_history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history', models.ForeignKey(db_constraint=False, on_delete=django.db.models.deletion.DO_NOTHING, to='apis_ontology.versionnichtgewaehlt')),
-                ('nichtgewaehlt', models.ForeignKey(blank=True, db_constraint=False, db_tablespace='', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='apis_ontology.nichtgewaehlt')),
-                ('person', models.ForeignKey(blank=True, db_constraint=False, db_tablespace='', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='apis_ontology.person')),
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
             ],
             options={
-                'verbose_name': 'VersionNichtGewaehlt_vorgeschlagen_von',
+                "verbose_name": "wird vergeben von",
+                "verbose_name_plural": "wird vergeben von",
+                "abstract": False,
+            },
+            bases=("relations.relation", models.Model),
+        ),
+        migrations.CreateModel(
+            name="WissenschaftsaustauschIn",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+            ],
+            options={
+                "verbose_name": "Wissenschaftsaustausch in",
+                "verbose_name_plural": "Wissenschaftsaustausch in",
+                "abstract": False,
+            },
+            bases=("relations.relation", models.Model),
+        ),
+        migrations.CreateModel(
+            name="Bild",
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "art",
+                    models.CharField(
+                        choices=[
+                            ("OEAW Archiv", "OEAW Archiv"),
+                            ("Wikimedia", "Wikimedia"),
+                        ],
+                        max_length=100,
+                    ),
+                ),
+                ("pfad", models.CharField(max_length=1024)),
+                ("credit", models.TextField(blank=True, max_length=1024)),
+                ("object_id", models.PositiveBigIntegerField()),
+                (
+                    "content_type",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "Bild",
+                "verbose_name_plural": "Bilder",
+            },
+            bases=(apis_core.generic.abc.GenericModel, models.Model),
+        ),
+        migrations.CreateModel(
+            name="AusbildungAn",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("abgeschlossen", models.BooleanField(blank=True, null=True)),
+                (
+                    "typ",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("Schule", "Schule"),
+                            ("Studium", "Studium"),
+                            ("Promotion", "Promotion"),
+                            ("Habilitation", "Habilitation"),
+                        ],
+                        max_length=15,
+                    ),
+                ),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                (
+                    "fach",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="apis_ontology.fach",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "Ausbildung an",
+                "verbose_name_plural": "Ausbildungen an",
+                "abstract": False,
+            },
+            bases=("relations.relation", models.Model),
+        ),
+        migrations.CreateModel(
+            name="Person",
+            fields=[
+                (
+                    "sf_befreit_ab_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "sf_befreit_ab_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "sf_befreit_ab_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "date_of_death_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "date_of_death_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "date_of_death_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "date_of_birth_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "date_of_birth_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "date_of_birth_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "rootobject_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="apis_metainfo.rootobject",
+                    ),
+                ),
+                (
+                    "forename",
+                    models.CharField(
+                        blank=True, default="", max_length=4096, verbose_name="forename"
+                    ),
+                ),
+                (
+                    "surname",
+                    models.CharField(
+                        blank=True, default="", max_length=4096, verbose_name="surname"
+                    ),
+                ),
+                (
+                    "gender",
+                    models.CharField(
+                        blank=True, default="", max_length=4096, verbose_name="gender"
+                    ),
+                ),
+                (
+                    "alternative_namen",
+                    django_json_editor_field.fields.JSONEditorField(
+                        blank=True, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "date_of_birth",
+                    django_interval.fields.FuzzyDateParserField(
+                        blank=True, verbose_name="Geburtsdatum"
+                    ),
+                ),
+                (
+                    "date_of_death",
+                    django_interval.fields.FuzzyDateParserField(
+                        blank=True, verbose_name="Sterbedatum"
+                    ),
+                ),
+                ("mitglied", models.BooleanField(default=False)),
+                (
+                    "klasse",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            (
+                                "Mathematisch-Naturwissenschaftliche Klasse",
+                                "Mathematisch-Naturwissenschaftliche Klasse",
+                            ),
+                            (
+                                "Philosophisch-Historische Klasse",
+                                "Philosophisch-Historische Klasse",
+                            ),
+                            ("Gesamtakademie", "Gesamtakademie"),
+                        ],
+                        max_length=100,
+                    ),
+                ),
+                (
+                    "reg_pflichtig",
+                    models.BooleanField(
+                        default=False,
+                        help_text="registierungspflichtig aufgrund des Verbotsgesetzes",
+                    ),
+                ),
+                (
+                    "sf_befreit_ab",
+                    django_interval.fields.FuzzyDateParserField(
+                        blank=True,
+                        help_text="von Sühnefolgen befreit aufgrund Nationalsozialistengesetz oder Amnestie für minderbelastete Personen ab",
+                    ),
+                ),
+                (
+                    "titel",
+                    django_json_editor_field.fields.JSONEditorField(
+                        blank=True, null=True
+                    ),
+                ),
+                ("beruf", models.ManyToManyField(blank=True, to="apis_ontology.beruf")),
+            ],
+            options={
+                "verbose_name": "Person",
+                "verbose_name_plural": "Personen",
+                "ordering": ["surname", "forename"],
+                "abstract": False,
+            },
+            bases=("apis_metainfo.rootobject", models.Model),
+        ),
+        migrations.CreateModel(
+            name="OeawMitgliedschaft",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                (
+                    "beginn_typ",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("gewählt", "gewählt"),
+                            ("bestätigt", "bestätigt"),
+                            ("gewählt und bestätigt", "gewählt und bestätigt"),
+                            ("gewählt und ernannt", "gewählt und ernannt"),
+                            ("gewählt, nicht bestätigt", "gewählt, nicht bestätigt"),
+                            ("ernannt", "ernannt"),
+                            ("genehmigt", "genehmigt"),
+                            ("eingereiht", "eingereiht"),
+                            ("reaktiviert", "reaktiviert"),
+                            ("unbekannt", "unbekannt"),
+                        ],
+                        default="unbekannt",
+                        help_text="Art des Beginns der Mitgliedschaft",
+                        max_length=100,
+                    ),
+                ),
+                (
+                    "ende_typ",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("ausgetreten", "ausgetreten"),
+                            ("ausgeschlossen", "ausgeschlossen"),
+                            ("erloschen", "erloschen"),
+                            ("ruhend gestellt", "ruhend gestellt"),
+                            ("andere Mitgliedschaft", "andere Mitgliedschaft"),
+                            ("Tod", "Tod"),
+                            ("unbekannt", "unbekannt"),
+                        ],
+                        default="unbekannt",
+                        help_text="Art des Endes der Mitgliedschaft",
+                        max_length=100,
+                    ),
+                ),
+                (
+                    "mitgliedschaft",
+                    models.CharField(
+                        choices=[
+                            ("wM", "wM"),
+                            ("oM", "oM"),
+                            ("kM I", "kM I"),
+                            ("kM A", "kM A"),
+                            ("EM", "EM"),
+                            ("JA", "JA"),
+                        ],
+                        help_text="Art der Mitgliedschaft",
+                        max_length=4,
+                    ),
+                ),
+                (
+                    "wahlsitzung",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="apis_ontology.ereignis",
+                    ),
+                ),
+                (
+                    "einspruch_von",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="gegen seine Reaktivierung wurde Einspruch erhoben durch",
+                        related_name="einspruch_von_set",
+                        to="apis_ontology.person",
+                    ),
+                ),
+                (
+                    "vorgeschlagen_von",
+                    models.ManyToManyField(
+                        blank=True,
+                        related_name="vorgeschlagen_von_set",
+                        to="apis_ontology.person",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "Mitgliedschaft",
+                "verbose_name_plural": "Mitgliedschaften",
+                "abstract": False,
+            },
+            bases=("relations.relation", models.Model),
+        ),
+        migrations.CreateModel(
+            name="NichtGewaehlt",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
+                (
+                    "mitgliedschaft",
+                    models.CharField(
+                        choices=[
+                            ("wM", "wM"),
+                            ("oM", "oM"),
+                            ("kM I", "kM I"),
+                            ("kM A", "kM A"),
+                            ("EM", "EM"),
+                            ("JA", "JA"),
+                        ],
+                        help_text="Art der Mitgliedschaft",
+                        max_length=4,
+                    ),
+                ),
+                (
+                    "wahlsitzung",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="apis_ontology.ereignis",
+                    ),
+                ),
+                (
+                    "vorgeschlagen_von",
+                    models.ManyToManyField(blank=True, to="apis_ontology.person"),
+                ),
+            ],
+            options={
+                "verbose_name": "Nicht gewählte Person",
+                "verbose_name_plural": "Nicht gewählte Personen",
+                "abstract": False,
+            },
+            bases=("relations.relation", models.Model),
+        ),
+        migrations.CreateModel(
+            name="PositionAn",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "position",
+                    models.CharField(
+                        blank=True, choices=apis_ontology.models.get_position_choices
+                    ),
+                ),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                (
+                    "fach",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="apis_ontology.fach",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "Position an",
+                "verbose_name_plural": "Positionen an",
+                "abstract": False,
+            },
+            bases=("relations.relation", models.Model),
+        ),
+        migrations.CreateModel(
+            name="VersionAnhaengerVon",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Anhänger",
+                "verbose_name_plural": "historical Anhänger",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionAusbildungAn",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("abgeschlossen", models.BooleanField(blank=True, null=True)),
+                (
+                    "typ",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("Schule", "Schule"),
+                            ("Studium", "Studium"),
+                            ("Promotion", "Promotion"),
+                            ("Habilitation", "Habilitation"),
+                        ],
+                        max_length=15,
+                    ),
+                ),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "fach",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="apis_ontology.fach",
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Ausbildung an",
+                "verbose_name_plural": "historical Ausbildungen an",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionAutorVon",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical AutorIn von",
+                "verbose_name_plural": "historical AutorIn von",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionEhepartnerVon",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Ehepartner von",
+                "verbose_name_plural": "historical Ehepartner von",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionEhrentitelVon",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "titel",
+                    models.CharField(
+                        choices=[("Ehrenbürger(in)", "Ehrenbürger(in)")],
+                        default="Ehrenbürger(in)",
+                        max_length=150,
+                    ),
+                ),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Ehrentitel von",
+                "verbose_name_plural": "historical Ehrentitel von",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionEhrentitelVonInstitution",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("titel", models.CharField(max_length=255)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Ehrentitel von",
+                "verbose_name_plural": "historical Ehrentitel von",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionEreignis",
+            fields=[
+                (
+                    "rootobject_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="apis_metainfo.rootobject",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                (
+                    "alternative_namen",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.CharField(blank=True, max_length=255),
+                        blank=True,
+                        help_text="Alternative Namen",
+                        null=True,
+                        size=None,
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "typ",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("Wahlsitzung", "Wahlsitzung"),
+                            ("Feierliche Sitzung", "Feierliche Sitzung"),
+                            ("Gesetz", "Gesetz"),
+                        ],
+                        default="unbekannt",
+                        help_text="Art des Events",
+                        max_length=100,
+                    ),
+                ),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Ereignis",
+                "verbose_name_plural": "historical Ereignisse",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionErwaehntIn",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical erwähnt in",
+                "verbose_name_plural": "historical erwähnt in",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionFach",
+            fields=[
+                (
+                    "rootobject_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="apis_metainfo.rootobject",
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("name", models.CharField(max_length=400)),
+                (
+                    "oestat",
+                    models.CharField(
+                        blank=True,
+                        choices=apis_ontology.models.get_oestat_choices,
+                        max_length=400,
+                    ),
+                ),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Fachrichtung",
+                "verbose_name_plural": "historical Fachrichtungen",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionFamilienmitgliedVon",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Familienmitglied von",
+                "verbose_name_plural": "historical Familienmitglied von",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionFindetStattIn",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical findet statt in",
+                "verbose_name_plural": "historical findet statt in",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionFreundVon",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Freund von",
+                "verbose_name_plural": "historical Freund von",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionGeborenIn",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical geboren in",
+                "verbose_name_plural": "historical geboren in",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionGelegenIn",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical gelegen in",
+                "verbose_name_plural": "historical gelegen in",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionGelegenInOrt",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical gelegen in Ort",
+                "verbose_name_plural": "historical gelegen in Ort",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionGestorbenIn",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical gestorben in",
+                "verbose_name_plural": "historical gestorben in",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionGewinnt",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical gewinnt",
+                "verbose_name_plural": "historical gewinnt",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionHaeltRedeBei",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("titel", models.CharField(blank=True, max_length=400)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Hält Rede bei",
+                "verbose_name_plural": "historical Redner",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionInstitution",
+            fields=[
+                (
+                    "rootobject_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="apis_metainfo.rootobject",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                (
+                    "label",
+                    models.CharField(
+                        blank=True, default="", max_length=4096, verbose_name="label"
+                    ),
+                ),
+                (
+                    "alternative_namen",
+                    django_json_editor_field.fields.JSONEditorField(
+                        blank=True, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "typ",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("Kommission", "Kommission"),
+                            ("Institut", "Institut"),
+                            ("Forschungsstelle", "Forschungsstelle"),
+                            ("Klasse", "Klasse"),
+                            (
+                                "Institution der Gesamtakademie",
+                                "Institution der Gesamtakademie",
+                            ),
+                            (
+                                "Forschungsorientierte Einheit",
+                                "Forschungsorientierte Einheit",
+                            ),
+                            ("Einrichtung", "Einrichtung"),
+                            ("Komitee", "Komitee"),
+                            ("Kuratorium", "Kuratorium"),
+                            ("Beirat", "Beirat"),
+                            ("Delegation", "Delegation"),
+                            (
+                                "Internationales Forschungsprogramm",
+                                "Internationales Forschungsprogramm",
+                            ),
+                            ("Preis", "Preis"),
+                            ("Ministerium", "Ministerium"),
+                            ("Orden (geistl.)", "Orden (geistl.)"),
+                            ("Schule", "Schule"),
+                            ("Kirche", "Kirche"),
+                            ("Gymnasium", "Gymnasium"),
+                            ("Akademie (Ausland)", "Akademie (Ausland)"),
+                            ("Universität", "Universität"),
+                            ("Ministerium", "Ministerium"),
+                        ],
+                        default="unbekannt",
+                        help_text="Art der Institution",
+                        max_length=100,
+                    ),
+                ),
+                ("akademie_institution", models.BooleanField(default=False)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Institution",
+                "verbose_name_plural": "historical Institutionen",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionInstitutionHierarchie",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "relation",
+                    models.CharField(
+                        choices=apis_ontology.models.get_choices_inst_hierarchie,
+                        max_length=255,
+                    ),
+                ),
+                ("relation_reverse", models.CharField(editable=False, max_length=255)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Institutionen Hierarchie",
+                "verbose_name_plural": "historical Institutionen Hierarchie",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionKindVon",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Kind von",
+                "verbose_name_plural": "historical Kind von",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionLehntPreisAb",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("grund", models.CharField(blank=True, max_length=255)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical abgelehnt von",
+                "verbose_name_plural": "historical abgelehnt von",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionLehrerVon",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "art",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("Doktorvater/mutter", "Doktorvater/mutter"),
+                            ("LehrerIn", "LehrerIn"),
+                        ],
+                    ),
+                ),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Lehrer von",
+                "verbose_name_plural": "historical Lehrer von",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionMitglied",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "art",
+                    models.CharField(
+                        blank=True,
+                        choices=apis_ontology.models.get_choices_memberships_non_oeaw,
+                        max_length=255,
+                    ),
+                ),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Mitglied",
+                "verbose_name_plural": "historical Mitglieder",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionNichtGewaehlt",
+            fields=[
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
+                (
+                    "mitgliedschaft",
+                    models.CharField(
+                        choices=[
+                            ("wM", "wM"),
+                            ("oM", "oM"),
+                            ("kM I", "kM I"),
+                            ("kM A", "kM A"),
+                            ("EM", "EM"),
+                            ("JA", "JA"),
+                        ],
+                        help_text="Art der Mitgliedschaft",
+                        max_length=4,
+                    ),
+                ),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "wahlsitzung",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="apis_ontology.ereignis",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Nicht gewählte Person",
+                "verbose_name_plural": "historical Nicht gewählte Personen",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
+        ),
+        migrations.CreateModel(
+            name="VersionNichtGewaehlt_vorgeschlagen_von",
+            fields=[
+                (
+                    "id",
+                    models.BigIntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("m2m_history_id", models.AutoField(primary_key=True, serialize=False)),
+                (
+                    "history",
+                    models.ForeignKey(
+                        db_constraint=False,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="apis_ontology.versionnichtgewaehlt",
+                    ),
+                ),
+                (
+                    "nichtgewaehlt",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        db_tablespace="",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="apis_ontology.nichtgewaehlt",
+                    ),
+                ),
+                (
+                    "person",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        db_tablespace="",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="apis_ontology.person",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "VersionNichtGewaehlt_vorgeschlagen_von",
             },
             bases=(simple_history.models.HistoricalChanges, models.Model),
         ),
         migrations.CreateModel(
-            name='VersionNimmtTeilAn',
+            name="VersionNimmtTeilAn",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Teilnahme an',
-                'verbose_name_plural': 'historical Teilnahme an',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical Teilnahme an",
+                "verbose_name_plural": "historical Teilnahme an",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
         ),
         migrations.CreateModel(
-            name='VersionOeawMitgliedschaft',
+            name="VersionOeawMitgliedschaft",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('beginn_typ', models.CharField(blank=True, choices=[('gewählt', 'gewählt'), ('bestätigt', 'bestätigt'), ('gewählt und bestätigt', 'gewählt und bestätigt'), ('gewählt und ernannt', 'gewählt und ernannt'), ('gewählt, nicht bestätigt', 'gewählt, nicht bestätigt'), ('ernannt', 'ernannt'), ('genehmigt', 'genehmigt'), ('eingereiht', 'eingereiht'), ('reaktiviert', 'reaktiviert'), ('unbekannt', 'unbekannt')], default='unbekannt', help_text='Art des Beginns der Mitgliedschaft', max_length=100)),
-                ('ende_typ', models.CharField(blank=True, choices=[('ausgetreten', 'ausgetreten'), ('ausgeschlossen', 'ausgeschlossen'), ('erloschen', 'erloschen'), ('ruhend gestellt', 'ruhend gestellt'), ('andere Mitgliedschaft', 'andere Mitgliedschaft'), ('Tod', 'Tod'), ('unbekannt', 'unbekannt')], default='unbekannt', help_text='Art des Endes der Mitgliedschaft', max_length=100)),
-                ('mitgliedschaft', models.CharField(choices=[('wM', 'wM'), ('oM', 'oM'), ('kM I', 'kM I'), ('kM A', 'kM A'), ('EM', 'EM'), ('JA', 'JA')], help_text='Art der Mitgliedschaft', max_length=4)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('wahlsitzung', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='apis_ontology.ereignis')),
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                (
+                    "beginn_typ",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("gewählt", "gewählt"),
+                            ("bestätigt", "bestätigt"),
+                            ("gewählt und bestätigt", "gewählt und bestätigt"),
+                            ("gewählt und ernannt", "gewählt und ernannt"),
+                            ("gewählt, nicht bestätigt", "gewählt, nicht bestätigt"),
+                            ("ernannt", "ernannt"),
+                            ("genehmigt", "genehmigt"),
+                            ("eingereiht", "eingereiht"),
+                            ("reaktiviert", "reaktiviert"),
+                            ("unbekannt", "unbekannt"),
+                        ],
+                        default="unbekannt",
+                        help_text="Art des Beginns der Mitgliedschaft",
+                        max_length=100,
+                    ),
+                ),
+                (
+                    "ende_typ",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("ausgetreten", "ausgetreten"),
+                            ("ausgeschlossen", "ausgeschlossen"),
+                            ("erloschen", "erloschen"),
+                            ("ruhend gestellt", "ruhend gestellt"),
+                            ("andere Mitgliedschaft", "andere Mitgliedschaft"),
+                            ("Tod", "Tod"),
+                            ("unbekannt", "unbekannt"),
+                        ],
+                        default="unbekannt",
+                        help_text="Art des Endes der Mitgliedschaft",
+                        max_length=100,
+                    ),
+                ),
+                (
+                    "mitgliedschaft",
+                    models.CharField(
+                        choices=[
+                            ("wM", "wM"),
+                            ("oM", "oM"),
+                            ("kM I", "kM I"),
+                            ("kM A", "kM A"),
+                            ("EM", "EM"),
+                            ("JA", "JA"),
+                        ],
+                        help_text="Art der Mitgliedschaft",
+                        max_length=4,
+                    ),
+                ),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "wahlsitzung",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="apis_ontology.ereignis",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Mitgliedschaft',
-                'verbose_name_plural': 'historical Mitgliedschaften',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical Mitgliedschaft",
+                "verbose_name_plural": "historical Mitgliedschaften",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
         ),
         migrations.CreateModel(
-            name='VersionOeawMitgliedschaft_einspruch_von',
+            name="VersionOeawMitgliedschaft_einspruch_von",
             fields=[
-                ('id', models.BigIntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('m2m_history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history', models.ForeignKey(db_constraint=False, on_delete=django.db.models.deletion.DO_NOTHING, to='apis_ontology.versionoeawmitgliedschaft')),
-                ('oeawmitgliedschaft', models.ForeignKey(blank=True, db_constraint=False, db_tablespace='', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='apis_ontology.oeawmitgliedschaft')),
-                ('person', models.ForeignKey(blank=True, db_constraint=False, db_tablespace='', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='apis_ontology.person')),
+                (
+                    "id",
+                    models.BigIntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("m2m_history_id", models.AutoField(primary_key=True, serialize=False)),
+                (
+                    "history",
+                    models.ForeignKey(
+                        db_constraint=False,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="apis_ontology.versionoeawmitgliedschaft",
+                    ),
+                ),
+                (
+                    "oeawmitgliedschaft",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        db_tablespace="",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="apis_ontology.oeawmitgliedschaft",
+                    ),
+                ),
+                (
+                    "person",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        db_tablespace="",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="apis_ontology.person",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'VersionOeawMitgliedschaft_einspruch_von',
+                "verbose_name": "VersionOeawMitgliedschaft_einspruch_von",
             },
             bases=(simple_history.models.HistoricalChanges, models.Model),
         ),
         migrations.CreateModel(
-            name='VersionOeawMitgliedschaft_vorgeschlagen_von',
+            name="VersionOeawMitgliedschaft_vorgeschlagen_von",
             fields=[
-                ('id', models.BigIntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('m2m_history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history', models.ForeignKey(db_constraint=False, on_delete=django.db.models.deletion.DO_NOTHING, to='apis_ontology.versionoeawmitgliedschaft')),
-                ('oeawmitgliedschaft', models.ForeignKey(blank=True, db_constraint=False, db_tablespace='', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='apis_ontology.oeawmitgliedschaft')),
-                ('person', models.ForeignKey(blank=True, db_constraint=False, db_tablespace='', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='apis_ontology.person')),
+                (
+                    "id",
+                    models.BigIntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("m2m_history_id", models.AutoField(primary_key=True, serialize=False)),
+                (
+                    "history",
+                    models.ForeignKey(
+                        db_constraint=False,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="apis_ontology.versionoeawmitgliedschaft",
+                    ),
+                ),
+                (
+                    "oeawmitgliedschaft",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        db_tablespace="",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="apis_ontology.oeawmitgliedschaft",
+                    ),
+                ),
+                (
+                    "person",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        db_tablespace="",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="apis_ontology.person",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'VersionOeawMitgliedschaft_vorgeschlagen_von',
+                "verbose_name": "VersionOeawMitgliedschaft_vorgeschlagen_von",
             },
             bases=(simple_history.models.HistoricalChanges, models.Model),
         ),
         migrations.CreateModel(
-            name='VersionOrt',
+            name="VersionOrt",
             fields=[
-                ('rootobject_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='apis_metainfo.rootobject')),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('label', models.CharField(blank=True, default='', max_length=4096, verbose_name='label')),
-                ('latitude', models.FloatField(blank=True, null=True, verbose_name='latitude')),
-                ('longitude', models.FloatField(blank=True, null=True, verbose_name='longitude')),
-                ('feature_code', models.CharField(blank=True, default='', help_text='<a href="https://www.geonames.org/export/codes.html">Geonames Feature Code List</a>', max_length=16, verbose_name='feature code')),
-                ('alternative_namen', django_json_editor_field.fields.JSONEditorField(blank=True, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
+                (
+                    "rootobject_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="apis_metainfo.rootobject",
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                (
+                    "label",
+                    models.CharField(
+                        blank=True, default="", max_length=4096, verbose_name="label"
+                    ),
+                ),
+                (
+                    "latitude",
+                    models.FloatField(blank=True, null=True, verbose_name="latitude"),
+                ),
+                (
+                    "longitude",
+                    models.FloatField(blank=True, null=True, verbose_name="longitude"),
+                ),
+                (
+                    "feature_code",
+                    models.CharField(
+                        blank=True,
+                        default="",
+                        help_text='<a href="https://www.geonames.org/export/codes.html">Geonames Feature Code List</a>',
+                        max_length=16,
+                        verbose_name="feature code",
+                    ),
+                ),
+                (
+                    "alternative_namen",
+                    django_json_editor_field.fields.JSONEditorField(
+                        blank=True, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Ort',
-                'verbose_name_plural': 'historical Orte',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical Ort",
+                "verbose_name_plural": "historical Orte",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
         ),
         migrations.CreateModel(
-            name='VersionPerson',
+            name="VersionPerson",
             fields=[
-                ('rootobject_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='apis_metainfo.rootobject')),
-                ('sf_befreit_ab_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('sf_befreit_ab_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('sf_befreit_ab_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('date_of_death_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('date_of_death_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('date_of_death_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('date_of_birth_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('date_of_birth_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('date_of_birth_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('forename', models.CharField(blank=True, default='', max_length=4096, verbose_name='forename')),
-                ('surname', models.CharField(blank=True, default='', max_length=4096, verbose_name='surname')),
-                ('gender', models.CharField(blank=True, default='', max_length=4096, verbose_name='gender')),
-                ('alternative_namen', django_json_editor_field.fields.JSONEditorField(blank=True, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('date_of_birth', django_interval.fields.FuzzyDateParserField(blank=True, verbose_name='Geburtsdatum')),
-                ('date_of_death', django_interval.fields.FuzzyDateParserField(blank=True, verbose_name='Sterbedatum')),
-                ('mitglied', models.BooleanField(default=False)),
-                ('klasse', models.CharField(blank=True, choices=[('Mathematisch-Naturwissenschaftliche Klasse', 'Mathematisch-Naturwissenschaftliche Klasse'), ('Philosophisch-Historische Klasse', 'Philosophisch-Historische Klasse'), ('Gesamtakademie', 'Gesamtakademie')], max_length=100)),
-                ('reg_pflichtig', models.BooleanField(default=False, help_text='registierungspflichtig aufgrund des Verbotsgesetzes')),
-                ('sf_befreit_ab', django_interval.fields.FuzzyDateParserField(blank=True, help_text='von Sühnefolgen befreit aufgrund Nationalsozialistengesetz oder Amnestie für minderbelastete Personen ab')),
-                ('titel', django_json_editor_field.fields.JSONEditorField(blank=True, null=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
+                (
+                    "rootobject_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="apis_metainfo.rootobject",
+                    ),
+                ),
+                (
+                    "sf_befreit_ab_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "sf_befreit_ab_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "sf_befreit_ab_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "date_of_death_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "date_of_death_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "date_of_death_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "date_of_birth_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "date_of_birth_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "date_of_birth_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                (
+                    "forename",
+                    models.CharField(
+                        blank=True, default="", max_length=4096, verbose_name="forename"
+                    ),
+                ),
+                (
+                    "surname",
+                    models.CharField(
+                        blank=True, default="", max_length=4096, verbose_name="surname"
+                    ),
+                ),
+                (
+                    "gender",
+                    models.CharField(
+                        blank=True, default="", max_length=4096, verbose_name="gender"
+                    ),
+                ),
+                (
+                    "alternative_namen",
+                    django_json_editor_field.fields.JSONEditorField(
+                        blank=True, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "date_of_birth",
+                    django_interval.fields.FuzzyDateParserField(
+                        blank=True, verbose_name="Geburtsdatum"
+                    ),
+                ),
+                (
+                    "date_of_death",
+                    django_interval.fields.FuzzyDateParserField(
+                        blank=True, verbose_name="Sterbedatum"
+                    ),
+                ),
+                ("mitglied", models.BooleanField(default=False)),
+                (
+                    "klasse",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            (
+                                "Mathematisch-Naturwissenschaftliche Klasse",
+                                "Mathematisch-Naturwissenschaftliche Klasse",
+                            ),
+                            (
+                                "Philosophisch-Historische Klasse",
+                                "Philosophisch-Historische Klasse",
+                            ),
+                            ("Gesamtakademie", "Gesamtakademie"),
+                        ],
+                        max_length=100,
+                    ),
+                ),
+                (
+                    "reg_pflichtig",
+                    models.BooleanField(
+                        default=False,
+                        help_text="registierungspflichtig aufgrund des Verbotsgesetzes",
+                    ),
+                ),
+                (
+                    "sf_befreit_ab",
+                    django_interval.fields.FuzzyDateParserField(
+                        blank=True,
+                        help_text="von Sühnefolgen befreit aufgrund Nationalsozialistengesetz oder Amnestie für minderbelastete Personen ab",
+                    ),
+                ),
+                (
+                    "titel",
+                    django_json_editor_field.fields.JSONEditorField(
+                        blank=True, null=True
+                    ),
+                ),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Person',
-                'verbose_name_plural': 'historical Personen',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical Person",
+                "verbose_name_plural": "historical Personen",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
         ),
         migrations.CreateModel(
-            name='VersionPerson_beruf',
+            name="VersionPerson_beruf",
             fields=[
-                ('id', models.BigIntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('m2m_history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('beruf', models.ForeignKey(blank=True, db_constraint=False, db_tablespace='', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='apis_ontology.beruf')),
-                ('history', models.ForeignKey(db_constraint=False, on_delete=django.db.models.deletion.DO_NOTHING, to='apis_ontology.versionperson')),
-                ('person', models.ForeignKey(blank=True, db_constraint=False, db_tablespace='', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='apis_ontology.person')),
+                (
+                    "id",
+                    models.BigIntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("m2m_history_id", models.AutoField(primary_key=True, serialize=False)),
+                (
+                    "beruf",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        db_tablespace="",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="apis_ontology.beruf",
+                    ),
+                ),
+                (
+                    "history",
+                    models.ForeignKey(
+                        db_constraint=False,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="apis_ontology.versionperson",
+                    ),
+                ),
+                (
+                    "person",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        db_tablespace="",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="apis_ontology.person",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'VersionPerson_beruf',
+                "verbose_name": "VersionPerson_beruf",
             },
             bases=(simple_history.models.HistoricalChanges, models.Model),
         ),
         migrations.CreateModel(
-            name='VersionPositionAn',
+            name="VersionPositionAn",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('position', models.CharField(blank=True, choices=apis_ontology.models.get_position_choices)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('fach', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='apis_ontology.fach')),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                (
+                    "position",
+                    models.CharField(
+                        blank=True, choices=apis_ontology.models.get_position_choices
+                    ),
+                ),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "fach",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="apis_ontology.fach",
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Position an',
-                'verbose_name_plural': 'historical Positionen an',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical Position an",
+                "verbose_name_plural": "historical Positionen an",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
         ),
         migrations.CreateModel(
-            name='VersionPreis',
+            name="VersionPreis",
             fields=[
-                ('rootobject_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='apis_metainfo.rootobject')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_ausschreibung_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_ausschreibung_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_ausschreibung_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('alternative_namen', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(blank=True, max_length=255), blank=True, help_text='Alternative Namen', null=True, size=None)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('text', models.TextField(blank=True)),
-                ('datum_ausschreibung', django_interval.fields.FuzzyDateParserField(blank=True, help_text='Datum der Ausschreibung bei Preisaufgaben')),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True, help_text='Gründungsdatum des Preises')),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True, help_text='Auflösungsdatum des Preises')),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
+                (
+                    "rootobject_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="apis_metainfo.rootobject",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_ausschreibung_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_ausschreibung_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_ausschreibung_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                (
+                    "alternative_namen",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.CharField(blank=True, max_length=255),
+                        blank=True,
+                        help_text="Alternative Namen",
+                        null=True,
+                        size=None,
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("text", models.TextField(blank=True)),
+                (
+                    "datum_ausschreibung",
+                    django_interval.fields.FuzzyDateParserField(
+                        blank=True,
+                        help_text="Datum der Ausschreibung bei Preisaufgaben",
+                    ),
+                ),
+                (
+                    "beginn",
+                    django_interval.fields.FuzzyDateParserField(
+                        blank=True, help_text="Gründungsdatum des Preises"
+                    ),
+                ),
+                (
+                    "ende",
+                    django_interval.fields.FuzzyDateParserField(
+                        blank=True, help_text="Auflösungsdatum des Preises"
+                    ),
+                ),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Preis/Preisausschreiben',
-                'verbose_name_plural': 'historical Preise/Preisausschreiben',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical Preis/Preisausschreiben",
+                "verbose_name_plural": "historical Preise/Preisausschreiben",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
         ),
         migrations.CreateModel(
-            name='VersionReligion',
+            name="VersionReligion",
             fields=[
-                ('rootobject_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='apis_metainfo.rootobject')),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('alternative_namen', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(blank=True, max_length=255), blank=True, help_text='Alternative Namen', null=True, size=None)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
+                (
+                    "rootobject_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="apis_metainfo.rootobject",
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                (
+                    "alternative_namen",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.CharField(blank=True, max_length=255),
+                        blank=True,
+                        help_text="Alternative Namen",
+                        null=True,
+                        size=None,
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Religionsgemeinschaft',
-                'verbose_name_plural': 'historical Religionsgemeinschaften',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical Religionsgemeinschaft",
+                "verbose_name_plural": "historical Religionsgemeinschaften",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
         ),
         migrations.CreateModel(
-            name='VersionSchreibtAus',
+            name="VersionSchreibtAus",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical schreibt aus',
-                'verbose_name_plural': 'historical schreibt aus',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical schreibt aus",
+                "verbose_name_plural": "historical schreibt aus",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
         ),
         migrations.CreateModel(
-            name='VersionStelltAntragAn',
+            name="VersionStelltAntragAn",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('status', models.CharField(choices=[('abgelehnt', 'abgelehnt'), ('bewilligt', 'bewilligt'), ('anderwitig erledigt', 'anderweitig erledigt'), ('Förderstatus unbekannt', 'Förderstatus unbekannt')], default='Förderstatus unbekannt')),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("abgelehnt", "abgelehnt"),
+                            ("bewilligt", "bewilligt"),
+                            ("anderwitig erledigt", "anderweitig erledigt"),
+                            ("Förderstatus unbekannt", "Förderstatus unbekannt"),
+                        ],
+                        default="Förderstatus unbekannt",
+                    ),
+                ),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical stellt Antrag an',
-                'verbose_name_plural': 'historical stellt Antrag an',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical stellt Antrag an",
+                "verbose_name_plural": "historical stellt Antrag an",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
         ),
         migrations.CreateModel(
-            name='VersionStiftet',
+            name="VersionStiftet",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical stiftet',
-                'verbose_name_plural': 'historical stiftet',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical stiftet",
+                "verbose_name_plural": "historical stiftet",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
         ),
         migrations.CreateModel(
-            name='VersionWerk',
+            name="VersionWerk",
             fields=[
-                ('rootobject_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='apis_metainfo.rootobject')),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('alternative_namen', django_json_editor_field.fields.JSONEditorField(blank=True, null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('titel', models.CharField(max_length=400)),
-                ('bibtex', models.TextField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
+                (
+                    "rootobject_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="apis_metainfo.rootobject",
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                (
+                    "alternative_namen",
+                    django_json_editor_field.fields.JSONEditorField(
+                        blank=True, null=True
+                    ),
+                ),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("titel", models.CharField(max_length=400)),
+                ("bibtex", models.TextField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Werk',
-                'verbose_name_plural': 'historical Werke',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical Werk",
+                "verbose_name_plural": "historical Werke",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
         ),
         migrations.CreateModel(
-            name='VersionWirdGestiftetVon',
+            name="VersionWirdGestiftetVon",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('datum_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('datum_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('datum', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "datum_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "datum_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("datum", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical wird vergeben von',
-                'verbose_name_plural': 'historical wird vergeben von',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical wird vergeben von",
+                "verbose_name_plural": "historical wird vergeben von",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
         ),
         migrations.CreateModel(
-            name='VersionWirdVergebenVon',
+            name="VersionWirdVergebenVon",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical wird vergeben von',
-                'verbose_name_plural': 'historical wird vergeben von',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical wird vergeben von",
+                "verbose_name_plural": "historical wird vergeben von",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
         ),
         migrations.CreateModel(
-            name='VersionWissenschaftsaustauschIn',
+            name="VersionWissenschaftsaustauschIn",
             fields=[
-                ('relation_ptr', models.ForeignKey(auto_created=True, blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, parent_link=True, related_name='+', to='relations.relation')),
-                ('ende_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('ende_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_to', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_from', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('beginn_date_sort', models.DateField(auto_created=True, blank=True, editable=False, null=True)),
-                ('id', models.IntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('subj_object_id', models.PositiveIntegerField(null=True)),
-                ('obj_object_id', models.PositiveIntegerField(null=True)),
-                ('notes', models.TextField(blank=True)),
-                ('references', models.TextField(blank=True)),
-                ('old_id', models.IntegerField(blank=True, editable=False, null=True)),
-                ('beginn', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('ende', django_interval.fields.FuzzyDateParserField(blank=True)),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('obj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
-                ('subj_content_type', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='contenttypes.contenttype')),
+                (
+                    "relation_ptr",
+                    models.ForeignKey(
+                        auto_created=True,
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        parent_link=True,
+                        related_name="+",
+                        to="relations.relation",
+                    ),
+                ),
+                (
+                    "ende_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "ende_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_to",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_from",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "beginn_date_sort",
+                    models.DateField(
+                        auto_created=True, blank=True, editable=False, null=True
+                    ),
+                ),
+                (
+                    "id",
+                    models.IntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("subj_object_id", models.PositiveIntegerField(null=True)),
+                ("obj_object_id", models.PositiveIntegerField(null=True)),
+                ("notes", models.TextField(blank=True)),
+                ("references", models.TextField(blank=True)),
+                ("old_id", models.IntegerField(blank=True, editable=False, null=True)),
+                ("beginn", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("ende", django_interval.fields.FuzzyDateParserField(blank=True)),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "obj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "subj_content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="contenttypes.contenttype",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Wissenschaftsaustausch in',
-                'verbose_name_plural': 'historical Wissenschaftsaustausch in',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical Wissenschaftsaustausch in",
+                "verbose_name_plural": "historical Wissenschaftsaustausch in",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
-            bases=(simple_history.models.HistoricalChanges, models.Model, apis_core.generic.abc.GenericModel),
+            bases=(
+                simple_history.models.HistoricalChanges,
+                models.Model,
+                apis_core.generic.abc.GenericModel,
+            ),
         ),
     ]

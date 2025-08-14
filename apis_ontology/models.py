@@ -114,7 +114,7 @@ class AlternativeNameMixin(models.Model):
 class LegacyFieldsMixin(models.Model):
     notes = models.TextField(blank=True)
     references = models.TextField(blank=True)
-    old_id = models.IntegerField(blank=True, null=True, editable=False)
+    old_id = models.IntegerField(blank=True, null=True, unique=True, editable=False)
 
     class Meta:
         abstract = True
@@ -152,7 +152,7 @@ def get_oestat_choices():
 
 
 class Beruf(GenericModel, models.Model):
-    old_id = models.IntegerField(blank=True, null=True, editable=False)
+    old_id = models.IntegerField(blank=True, null=True, unique=True, editable=False)
     name = models.CharField(max_length=1024)
 
     def __str__(self):
@@ -183,7 +183,7 @@ class Bild(GenericModel, models.Model):
 class Fach(AbstractEntity, VersionMixin):
     """akademische Fachrichtung"""
 
-    old_id = models.IntegerField(blank=True, null=True, editable=False)
+    old_id = models.IntegerField(blank=True, null=True, unique=True, editable=False)
     name = models.CharField(max_length=400)
     oestat = models.CharField(max_length=400, blank=True, choices=get_oestat_choices)
 
