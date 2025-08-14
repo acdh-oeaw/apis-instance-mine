@@ -1055,6 +1055,9 @@ class NichtGewaehlt(Relation, VersionMixin, LegacyFieldsMixin):
         rel.save()
         return rel
 
+    def __str__(self):
+        return f"{self.wahlsitzung} ({self.datum})"
+
 
 def get_position_choices() -> list[tuple[str, str]]:
     with open(
