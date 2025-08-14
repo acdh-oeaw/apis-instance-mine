@@ -1,16 +1,21 @@
-<!doctype html>
+<!DOCTYPE html>
 {% load static %}
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>{% block title %}Geschichte der Akademie{% endblock %}</title>
-        {% block scriptHeader %}{% endblock %}
+        <title>
+            {% block title %}Geschichte der Akademie{% endblock %}
+        </title>
+        {% block scriptHeader %}
+            {% load sass_tags %}
+            <link href="{% sass_src 'mine_frontend/css/theme.scss' %}"
+                  rel="stylesheet"
+                  type="text/css" />
+        {% endblock %}
     </head>
     <body>
         <div id="page">
@@ -19,10 +24,7 @@
                 <nav>
                     <div>
                         <a href="/" rel="home">
-                            <img
-                                src="{% static 'theme/img/MINE_test_logo.svg' %}"
-                                alt="MINE Logo"
-                            />
+                            <img src="{% static 'mine_frontend/img/MINE_logo.svg' %}" alt="MINE Logo" />
                         </a>
                         <button type="button" aria-label="Toggle navigation">
                             <span></span>
@@ -42,19 +44,15 @@
                                     <a href="ADD URL">Ereignisse</a>
                                 </li>
                             </ul>
-                            <form
-                                method="get"
-                                action=" {% if 'institution' in request.path %} /institutionen/search {% else %} /search {% endif %} "
-                                role="search"
-                            >
-                                <input
-                                    id="s"
-                                    name="q"
-                                    type="text"
-                                    placeholder=""
-                                    value=""
-                                    autocomplete="off"
-                                />
+                            <form method="get"
+                                  action=" {% if 'institution' in request.path %} /institutionen/search {% else %} /search {% endif %} "
+                                  role="search">
+                                <input id="s"
+                                       name="q"
+                                       type="text"
+                                       placeholder=""
+                                       value=""
+                                       autocomplete="off" />
                                 <button type="submit">Search</button>
                             </form>
                             <ul id="second-menu">
@@ -62,23 +60,19 @@
                                     <a href="ADD URL">Über</a>
                                 </li>
                                 <li>
-                                    <a href="ADD url"
-                                        >Kontakt</a
-                                    >
+                                    <a href="ADD url">Kontakt</a>
                                 </li>
                                 <li>
-                                    <a href="ADD URL"
-                                        >Stories</a
-                                    >
+                                    <a href="ADD URL">Stories</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </nav>
             </div>
-
-            <div id="content">{% block content %}{% endblock %}</div>
-
+            <div id="content">
+                {% block content %}{% endblock %}
+            </div>
             <div>
                 <div>
                     <div>
@@ -87,14 +81,10 @@
                                 <div>
                                     <ul>
                                         <li>
-                                            <a href="ADD URL"
-                                                >Impressum</a
-                                            >
+                                            <a href="ADD URL">Impressum</a>
                                         </li>
                                         <li>
-                                            <a href="ADD URL"
-                                                >Datenschutz</a
-                                            >
+                                            <a href="ADD URL">Datenschutz</a>
                                         </li>
                                         <li>
                                             &#xa9; Österreichische Akademie der
@@ -110,8 +100,9 @@
                     </div>
                 </div>
             </div>
-
-            {% block scripts %}{% endblock %} {% block scripts2 %}{% endblock scripts2 %}
+            {% block scripts %}{% endblock %}
+            {% block scripts2 %}
+            {% endblock scripts2 %}
         </div>
     </body>
 </html>

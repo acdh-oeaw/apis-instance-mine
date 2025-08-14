@@ -1,2 +1,6 @@
-<h1>{{ oeaw_member.forename }} {{ oeaw_member.surname }}</h1>
-<h3>{% for prof in oeaw_member.beruf.all %}{{ prof }}{% if not forloop.last %}, {% endif %}{% endfor %}</h3>
+<h1 class="font-weight-normal float-md-left pt-1 pb-4"
+    style="width:calc(100% - 110px)">
+    {{ oeaw_member.forename }}
+    <br />
+    {{ oeaw_member.surname }}
+</h1>

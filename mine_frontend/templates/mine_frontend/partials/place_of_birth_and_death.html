@@ -1,11 +1,14 @@
-{% if oeaw_member.date_of_birth %}
-    <span><abbr title="geboren">*</abbr> {{oeaw_member.date_of_birth}}</span> {% if place_of_birth %}
-        ({{ place_of_birth.first.obj }})
+<p class="profession-date-of-birth">
+    {% include 'mine_frontend/partials/profession.html' %}
+    {% if oeaw_member.date_of_birth %}
+        <span class="font-weight-normal"><abbr title="geboren">*</abbr> {{ oeaw_member.date_of_birth }}</span>
+        {% if place_of_birth %}({{ place_of_birth.first.obj }}){% endif %}
+    {% else %}
+        -
     {% endif %}
-{% endif %}
-<br>
+    <br>
     {% if oeaw_member.date_of_death %}
-        <span><abbr title="gestorben">†</abbr> {{oeaw_member.date_of_death}}</span> {% if place_of_death %}
-            ({{ place_of_death.first.obj }})
-        {% endif %}
+        <span class="font-weight-normal"><abbr title="gestorben">&dagger;</abbr> {{ oeaw_member.date_of_death }}</span>
+        {% if place_of_death %}({{ place_of_death.first.obj }}){% endif %}
     {% endif %}
+</p>

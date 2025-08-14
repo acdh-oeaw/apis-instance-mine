@@ -4,6 +4,7 @@ from django.views import generic
 
 from apis_ontology.models import (
     AusbildungAn,
+    Bild,
     GeborenIn,
     GestorbenIn,
     NichtGewaehlt,
@@ -45,4 +46,7 @@ class OEAWMemberDetailView(generic.DetailView):
         context["career"] = PositionAn.objects.filter(
             subj_object_id=self.object.id
         ).order_by("beginn_date_sort")
+        context["image"] = (
+            Bild.objects.filter(object_id=self.object.id).order_by("art").first()
+        )
         return context

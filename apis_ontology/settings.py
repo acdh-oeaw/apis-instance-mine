@@ -5,6 +5,7 @@ INSTALLED_APPS += ["apis_acdhch_django_invite"]
 INSTALLED_APPS += ["django_json_editor_field"]
 INSTALLED_APPS += ["django_interval"]
 INSTALLED_APPS += ["simple_history"]
+INSTALLED_APPS += ["sass_processor"]
 
 ROOT_URLCONF = "apis_ontology.urls"
 
@@ -17,3 +18,15 @@ MIDDLEWARE += [  # noqa: F405
 ]
 
 ADDITIONAL_MODULE_LOOKUP_PATHS = ["apis_ontology", "apis_acdhch_default_settings"]
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "sass_processor.finders.CssFinder",
+]
+# SASS_ROOT = os.path.join(BASE_DIR, "mine_frontend", "static", "theme", "css")
+# STORAGES = {
+#    "sass_processor": {
+#        "ROOT": SASS_ROOT,
+#    }
+# }
