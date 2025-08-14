@@ -1132,8 +1132,11 @@ class RelLegacyDataSingleDateMixin(RelLegacyDataBaseMixin):
         abstract = True
 
 
-class PositionAn(Relation, VersionMixin, LegacyFieldsMixin):
+class PositionAn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin):
     """Anstellung/Position in Institution"""
+
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_institution"
 
     subj_model = Person
     obj_model = Institution
@@ -1432,8 +1435,11 @@ def get_choices_memberships_non_oeaw():
     return res
 
 
-class Mitglied(Relation, VersionMixin, LegacyFieldsMixin):
+class Mitglied(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin):
     """Mitgliedschaften in anderen Institution als der ÖAW"""
+
+    SUBJ_ID_OLD = "related_person"
+    OBJ_ID_OLD = "related_institution"
 
     subj_model = Person
     obj_model = Institution
