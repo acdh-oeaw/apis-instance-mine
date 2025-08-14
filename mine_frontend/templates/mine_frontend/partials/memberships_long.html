@@ -1,0 +1,7 @@
+<ul>
+    {% for memb in membership %}<li>{% if memb.beginn_date_sort%}{{ memb.beginn_date_sort|date:"Y" }}{% else %}{{memb.datum_date_sort|date:"Y"}}{% endif %} zur
+    Wahl zum {{memb.mitgliedschaft}} der {{memb.obj}}{% if memb.vorgeschlagen_von.count > 0 %} vorgeschlagen von:
+    {% for sug in memb.vorgeschlagen_von.all %}<a href="/person/{{sug.id}}">{{sug}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %} <br>
+    als {{memb.mitgliedschaft}} {% if memb.beginn_typ %}{{memb.beginn_typ}}{% else %} nicht gewählt{% endif %}{% endfor %}
+    </li>
+</ul>

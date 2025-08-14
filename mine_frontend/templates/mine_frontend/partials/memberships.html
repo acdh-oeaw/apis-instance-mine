@@ -1,0 +1,7 @@
+<ul class="list-group">
+{% for memb in membership_short %}
+    <li class="list-group-item">
+        {{ memb.beginn_date_sort|date:"Y" }} - {{ memb.ende_date_sort|date:"Y" }} {{ memb.get_long_membership }}
+    </li>
+{% endfor %}
+</ul>

@@ -1,0 +1,5 @@
+<ul>
+    {% for position in career %}
+        <li>{{ position.funktion }}: {{ position.obj}} {% if position.beginn_date_sort or position.ende_date_sort %}({{ position.beginn_date_sort|date:"Y" }} - {{ position.ende_date_sort|date:"Y" }}){% endif %}</li>
+    {% endfor %}
+</ul>

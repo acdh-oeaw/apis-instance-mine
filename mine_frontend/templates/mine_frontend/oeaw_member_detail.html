@@ -1,0 +1,13 @@
+{% extends "mine_frontend/base.html" %} {% load static %}
+{% block title%}Details {{ oeaw_member }}{% endblock %}
+{% block content %}
+<div class="container">
+    {% include 'mine_frontend/partials/member_name.html' %}
+    {% include 'mine_frontend/partials/place_of_birth_and_death.html' %}
+
+    {% include 'mine_frontend/partials/memberships.html' %}
+    {% include 'mine_frontend/partials/memberships_long.html' %}
+    {% include 'mine_frontend/partials/education.html' %}
+    {% include 'mine_frontend/partials/career.html' %}
+</div>
+{% endblock %}
