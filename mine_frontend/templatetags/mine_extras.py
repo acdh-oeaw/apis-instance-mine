@@ -16,3 +16,16 @@ def mine_link(value):
             f'<a href="{gnd.first().uri}">{value}</a><i data-feather="external-link" style="width: 1.1em; height: 1.1em; padding-left: 0.2em; vertical-align: middle;"></i>'
         )
     return value
+
+
+@register.filter
+def zumals(value):
+    match value:
+        case "umgewidmet":
+            return "zum"
+    return "als"
+
+
+@register.filter
+def caseklasse(value):
+    return value.replace("e K", "en K")

@@ -1,3 +1,4 @@
+{% load mine_extras %}
 <ul class="pl-0 mb-0">
     {% for memb in membership %}
         <li class="font-weight-normal pb-0"
@@ -8,21 +9,24 @@
             {% else %}
                 {{ memb.datum_date_sort|date:"Y" }}
             {% endif %}
-            zur
-            Wahl zum {{ memb.mitgliedschaft }} der {{ memb.obj|title }}
-            {% if memb.vorgeschlagen_von.count > 0 %}
-                vorgeschlagen von:
-                {% for sug in memb.vorgeschlagen_von.all %}
-                    <a href="/person/{{ sug.id }}">{{ sug }}</a>
-                    {% if not forloop.last %},{% endif %}
-                {% endfor %}
-            {% endif %}
-            <br>
-            als {{ memb.mitgliedschaft }}
-            {% if memb.beginn_typ %}
-                {{ memb.beginn_typ }}
+            {% if not memb.beginn_typ or 'gewählt' in memb.beginn_typ %}
+                zur
+                Wahl zum {{ memb.mitgliedschaft }} der {{ memb.obj|title|caseklasse }}
+                {% if memb.vorgeschlagen_von.count > 0 %}
+                    vorgeschlagen von:
+                    {% for sug in memb.vorgeschlagen_von.all %}
+                        <a href="/person/{{ sug.id }}">{{ sug }}</a>
+                        {% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                {% endif %}
+                <br>
+                {% if memb.beginn_typ %}
+                    <i data-feather="arrow-right"></i> {{ memb.beginn_typ }}
+                {% else %}
+                    <i data-feather="arrow-right"></i> nicht gewählt
+                {% endif %}
             {% else %}
-                nicht gewählt
+                {{ memb.beginn_typ }} {{ memb.beginn_typ|zumals }} {{ memb.mitgliedschaft }} der {{ memb.obj|title|caseklasse }}
             {% endif %}
         {% endfor %}
     </li>

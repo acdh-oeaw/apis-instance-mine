@@ -75,18 +75,25 @@ class OEAWMemberDetailView(generic.DetailView):
         )
         context["career"] = career.exclude(_inst_akad=True)
         context["career_akad"] = {}
-        context["career_akad"]["pres"] = career.exclude(_inst_akad=False).filter(
-            position="Präsident(in)"
-        )
-        context["career_akad"]["sek"] = career.exclude(_inst_akad=False).filter(
-            position="Sekretär(in)"
-        )
-        context["career_akad"]["obm"] = career.exclude(_inst_akad=False).filter(
+
+        pres = career.exclude(_inst_akad=False).filter(position="Präsident(in)")
+        sek = career.exclude(_inst_akad=False).filter(position="Sekretär(in)")
+        obm = career.exclude(_inst_akad=False).filter(
             position="Obmann/Obfrau (Kommission)"
         )
-        context["career_akad"]["kom_mitgl"] = career.exclude(_inst_akad=False).filter(
+        kom_mitgl = career.exclude(_inst_akad=False).filter(
             position="Kommissionsmitglied"
         )
+
+        if any(qs.exists() for qs in [pres, sek, obm, kom_mitgl]):
+            context["career_akad"] = {
+                "pres": pres,
+                "sek": sek,
+                "obm": obm,
+                "kom_mitgl": kom_mitgl,
+            }
+        else:
+            context["career_akad"] = False
         context["image"] = (
             Bild.objects.filter(object_id=self.object.id).order_by("art").first()
         )
