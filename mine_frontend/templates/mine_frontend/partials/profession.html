@@ -1,8 +1,7 @@
 {% if oeaw_member.beruf.count > 0 %}
     <span class="font-weight-bold">
         {% for prof in oeaw_member.beruf.all %}
-            {{ prof }}
-            {% if not forloop.last %},{% endif %}
+            <!-- djlint:off -->{{ prof }}{% if not forloop.last %}, {% endif %}<!-- djlint:on -->
         {% endfor %}
     </span>
     <br />
