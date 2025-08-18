@@ -27,7 +27,7 @@ def get_web_object_uri(uri_obj):
         elif "parlament" in uri_obj.uri:
             return re.search(r"PAD_(\d+)", uri_obj.uri).group(1)
         elif "deutsche-biographie" in uri_obj.uri:
-            return re.search(r"/(\d+)\.html", uri_obj.uri).group(1)
+            return re.search(r"/([0-9A-Z]+)\.html", uri_obj.uri).group(1)
         else:
             return uri_obj.uri.split("/")[-1]
 
