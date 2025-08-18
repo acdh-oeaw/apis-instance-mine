@@ -1,0 +1,9 @@
+<ul class="pl-0 mb-0">
+    {% for prize in prizes %}
+        <li class="font-weight-normal pb-0"
+            style="list-style-type:none;
+                   padding-bottom: 0.5em">
+            <!-- djlint:off -->{{ prize.obj|striptags }}{% if prize.datum %}, {{ prize.datum }}{% endif %}<!-- djlint:on -->
+        </li>
+    {% endfor %}
+</ul>

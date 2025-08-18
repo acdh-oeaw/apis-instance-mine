@@ -10,7 +10,9 @@ from apis_ontology.models import (
     Bild,
     GeborenIn,
     GestorbenIn,
+    Gewinnt,
     Institution,
+    Mitglied,
     NichtGewaehlt,
     OeawMitgliedschaft,
     Person,
@@ -91,5 +93,19 @@ class OEAWMemberDetailView(generic.DetailView):
         context["reference_resources"] = [
             get_web_object_uri(x) for x in Uri.objects.filter(object_id=self.object.id)
         ]
+        context["prizes"] = Gewinnt.objects.filter(
+            subj_object_id=self.object.id
+        ).order_by("datum")
+        inst_member = Institution.objects.filter(pk=OuterRef("obj_object_id"))
+        member = (
+            Mitglied.objects.filter(subj_object_id=self.object.id)
+            .annotate(
+                _inst_kind=inst_member.values("typ"),
+                _inst_label=inst_member.values("label"),
+            )
+            .order_by("beginn_date_sort")
+        )
+        context["memb_akad"] = member.filter(_inst_kind="Akademie (Ausland)")
+        context["nazi"] = member.filter(_inst_label__icontains="nationalsozialistisch")
 
         return context

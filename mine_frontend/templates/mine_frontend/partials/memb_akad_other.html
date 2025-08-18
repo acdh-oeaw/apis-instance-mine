@@ -1,0 +1,8 @@
+{% load mine_extras %}
+<ul class="pl-0 mb-0">
+    {% for akad in memb_akad %}
+        <li class="font-weight-normal pb-0"
+            style="list-style-type:none;
+                   padding-bottom: 0.5em">{{ akad.obj|mine_link }}, {{ akad.art }}</li>
+    {% endfor %}
+</ul>

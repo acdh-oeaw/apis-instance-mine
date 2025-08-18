@@ -1,0 +1,18 @@
+{% load mine_extras %}
+Mitglied folgender nationalsozialistischer Vereinigungen:
+<ul class="pl-0 mb-0">
+    {% for member in nazi %}
+        <li class="font-weight-normal pb-0"
+            style="list-style-type:none;
+                   padding-bottom: 0.5em">
+            {{ member.obj|mine_link }}
+            {% if member.beginn or member.ende %}
+                ({{ member.beginn_date_sort|date:"d.m.Y" }} - {{ member.ende_date_sort|date:"d.m.Y" }})
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+{% if oeaw_member.reg_pflichtig %}
+    <hr>
+    Registrierungspflicht aufgrund des Verbotsgesetzes vom 1.5.1945
+{% endif %}
