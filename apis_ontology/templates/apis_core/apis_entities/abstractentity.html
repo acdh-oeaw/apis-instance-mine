@@ -1,0 +1,10 @@
+{% extends "apis_core/apis_entities/abstractentity.html" %}
+{% load mine_extras %}
+{% block card-header-content %}
+    {{ block.super }}
+    {% if object|class_name == 'Person' %}
+        <div class="text-center">
+            <a href="/person/{{ object.id }}/">link to detail view</a>
+        </div>
+    {% endif %}
+{% endblock card-header-content %}

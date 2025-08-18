@@ -29,3 +29,8 @@ def zumals(value):
 @register.filter
 def caseklasse(value):
     return value.replace("e K", "en K")
+
+
+@register.filter
+def class_name(instance):
+    return instance._meta.verbose_name
