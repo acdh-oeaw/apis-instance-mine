@@ -56,13 +56,27 @@
                                          id="daten"
                                          role="tabpanel"
                                          aria-labelledby="daten-tab">
-                                        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Ausbildung' content_partial='mine_frontend/partials/education.html' %}
-                                        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Berufslaufbahn' content_partial='mine_frontend/partials/career.html' %}
-                                        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Wahl und Mitgliedschaft' content_partial='mine_frontend/partials/memberships_long.html' %}
-                                        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Funktionen in der Akademie' content_partial='mine_frontend/partials/career_akad.html' %}
-                                        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitgliedschaften in anderen Akademien' content_partial='mine_frontend/partials/memb_akad_other.html' %}
-                                        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Auszeichnungen und Preisaufgaben' content_partial='mine_frontend/partials/prizes.html' %}
-                                        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitglied in einer nationalsozialistischen Vereinigung' content_partial='mine_frontend/partials/memb_nationalsozialistisch.html' %}
+                                        {% if education %}
+                                            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Ausbildung' content_partial='mine_frontend/partials/education.html' %}
+                                        {% endif %}
+                                        {% if career %}
+                                            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Berufslaufbahn' content_partial='mine_frontend/partials/career.html' %}
+                                        {% endif %}
+                                        {% if membership %}
+                                            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Wahl und Mitgliedschaft' content_partial='mine_frontend/partials/memberships_long.html' %}
+                                        {% endif %}
+                                        {% if career_akad %}
+                                            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Funktionen in der Akademie' content_partial='mine_frontend/partials/career_akad.html' %}
+                                        {% endif %}
+                                        {% if memb_akad %}
+                                            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitgliedschaften in anderen Akademien' content_partial='mine_frontend/partials/memb_akad_other.html' %}
+                                        {% endif %}
+                                        {% if prizes %}
+                                            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Auszeichnungen und Preisaufgaben' content_partial='mine_frontend/partials/prizes.html' %}
+                                        {% endif %}
+                                        {% if nazi %}
+                                            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitglied in einer nationalsozialistischen Vereinigung' content_partial='mine_frontend/partials/memb_nationalsozialistisch.html' %}
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
