@@ -6,6 +6,7 @@ INSTALLED_APPS += ["django_json_editor_field"]
 INSTALLED_APPS += ["django_interval"]
 INSTALLED_APPS += ["simple_history"]
 INSTALLED_APPS += ["sass_processor"]
+INSTALLED_APPS += ["mine_frontend"]
 
 ROOT_URLCONF = "apis_ontology.urls"
 
@@ -31,13 +32,13 @@ STATICFILES_FINDERS = [
 #    }
 # }
 #
-CSP_DEFAULT_SRC = CSP_DEFAULT_SRC + (
+CSP_DEFAULT_SRC = CSP_DEFAULT_SRC + (  # noqa: F405
     "*.jquery.com",
     "*.googleapis.com",
     "*.gstatic.com",
     "*.rawgit.com",
 )
 
-CSP_IMG_SRC += [
+CSP_IMG_SRC += [  # noqa: F405
     "*.wikimedia.org",
 ]
