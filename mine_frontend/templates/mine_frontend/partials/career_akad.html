@@ -1,0 +1,59 @@
+{% load mine_extras %}
+{% if career_akad.pres %}
+    <ul class="pl-0 mb-0">
+        {% for position in career_akad.pres %}
+            <li class="font-weight-normal pb-0"
+                style="list-style-type:none;
+                       padding-bottom: 0.5em">
+                Zum <b>{{ position.position }}</b> der {{ position.obj|title }} gewählt am {{ position.beginn }}, tätig bis {{ position.ende }}
+            </li>
+        {% endfor %}
+    </ul>
+    <hr>
+{% endif %}
+{% if career_akad.sek %}
+    <ul class="pl-0 mb-0">
+        {% for position in career_akad.sek %}
+            <li class="font-weight-normal pb-0"
+                style="list-style-type:none;
+                       padding-bottom: 0.5em">
+                Zum <b>{{ position.position }}</b> der {{ position.obj|title }} gewählt am {{ position.beginn }}, tätig bis {{ position.ende }}
+            </li>
+        {% endfor %}
+    </ul>
+    <hr>
+{% endif %}
+{% if career_akad.obm %}
+    <b>Obmann/Obfrau</b> der folgenden Kommission(en):
+    <ul class="pl-0 mb-0">
+        {% for position in career_akad.obm %}
+            <li class="font-weight-normal pb-0"
+                style="list-style-type:none;
+                       padding-bottom: 0.5em;
+                       padding-left: 1em">
+                {{ position.obj|mine_link }}
+                {% if position.beginn_date_sort or position.ende_date_sort %}
+                    ({{ position.beginn_date_sort|date:"Y" }} - {{ position.ende_date_sort|date:"Y" }})
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <hr>
+{% endif %}
+{% if career_akad.kom_mitgl %}
+    <b>Mitglied</b> der folgenden Kommissionen/Kuratorien:
+    <ul class="pl-0 mb-0">
+        {% for position in career_akad.kom_mitgl %}
+            <li class="font-weight-normal pb-0"
+                style="list-style-type:none;
+                       padding-bottom: 0.5em;
+                       padding-left: 1em">
+                {{ position.obj|mine_link }}
+                {% if position.beginn_date_sort or position.ende_date_sort %}
+                    ({{ position.beginn_date_sort|date:"Y" }} - {{ position.ende_date_sort|date:"Y" }})
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <hr>
+{% endif %}

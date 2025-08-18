@@ -9,7 +9,7 @@
                 {{ memb.datum_date_sort|date:"Y" }}
             {% endif %}
             zur
-            Wahl zum {{ memb.mitgliedschaft }} der {{ memb.obj }}
+            Wahl zum {{ memb.mitgliedschaft }} der {{ memb.obj|title }}
             {% if memb.vorgeschlagen_von.count > 0 %}
                 vorgeschlagen von:
                 {% for sug in memb.vorgeschlagen_von.all %}

@@ -2,6 +2,7 @@ import datetime
 import re
 
 from apis_core.apis_metainfo.models import Uri
+from django.db.models import OuterRef
 from django.views import generic
 
 from apis_ontology.models import (
@@ -9,6 +10,7 @@ from apis_ontology.models import (
     Bild,
     GeborenIn,
     GestorbenIn,
+    Institution,
     NichtGewaehlt,
     OeawMitgliedschaft,
     Person,
@@ -63,9 +65,26 @@ class OEAWMemberDetailView(generic.DetailView):
         context["education"] = AusbildungAn.objects.filter(
             subj_object_id=self.object.id
         ).order_by("beginn_date_sort")
-        context["career"] = PositionAn.objects.filter(
-            subj_object_id=self.object.id
-        ).order_by("beginn_date_sort")
+        inst_akad = Institution.objects.filter(pk=OuterRef("obj_object_id"))
+        career = (
+            PositionAn.objects.filter(subj_object_id=self.object.id)
+            .annotate(_inst_akad=inst_akad.values("akademie_institution"))
+            .order_by("beginn_date_sort")
+        )
+        context["career"] = career.exclude(_inst_akad=True)
+        context["career_akad"] = {}
+        context["career_akad"]["pres"] = career.exclude(_inst_akad=False).filter(
+            position="Präsident(in)"
+        )
+        context["career_akad"]["sek"] = career.exclude(_inst_akad=False).filter(
+            position="Sekretär(in)"
+        )
+        context["career_akad"]["obm"] = career.exclude(_inst_akad=False).filter(
+            position="Obmann/Obfrau (Kommission)"
+        )
+        context["career_akad"]["kom_mitgl"] = career.exclude(_inst_akad=False).filter(
+            position="Kommissionsmitglied"
+        )
         context["image"] = (
             Bild.objects.filter(object_id=self.object.id).order_by("art").first()
         )

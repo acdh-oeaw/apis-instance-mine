@@ -1,11 +1,11 @@
+{% load mine_extras %}
 <ul class="pl-0 mb-0">
     {% for position in career %}
         <li class="font-weight-normal pb-0"
             style="list-style-type:none;
                    padding-bottom: 0.5em">
-            {{ position.position }}
-            <!-- djlint:off -->{% if position.fach %}für {{ position.fach }}{% endif %}:<!-- djlint:on -->
-            {{ position.obj }}
+            <!-- djlint:off -->{{ position.position }}{% if position.fach %} für {{ position.fach }}{% endif %}:<!-- djlint:on -->
+            {{ position.obj|mine_link }}
             {% if position.beginn_date_sort or position.ende_date_sort %}
                 ({{ position.beginn_date_sort|date:"Y" }} - {{ position.ende_date_sort|date:"Y" }})
             {% endif %}
