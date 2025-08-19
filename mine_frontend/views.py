@@ -12,6 +12,7 @@ from apis_ontology.models import (
     GestorbenIn,
     Gewinnt,
     Institution,
+    InstitutionHierarchie,
     Mitglied,
     NichtGewaehlt,
     OeawMitgliedschaft,
@@ -116,4 +117,117 @@ class OEAWMemberDetailView(generic.DetailView):
         context["nazi"] = member.filter(_inst_label__icontains="nationalsozialistisch")
         context["entity_type"] = "person"
 
+        return context
+
+
+class OEAWInstitutionDetailView(generic.DetailView):
+    model = Institution
+    queryset = Institution.objects.filter(akademie_institution=True)
+    context_object_name = "oeaw_institution"
+    template_name = "mine_frontend/oeaw_institution_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        ids_akad = Institution.objects.filter(
+            akademie_institution=True,
+            label__in=[
+                "GESAMTAKADEMIE",
+                "GEMEINSAME KOMMISSIONEN",
+                "MATHEMATISCH-NATURWISSENSCHAFTLICHE KLASSE",
+                "PHILOSOPHISCH-HISTORISCHE KLASSE",
+            ],
+        ).values_list("id", flat=True)
+        context["entity_type"] = "institution"
+        context["branches"] = InstitutionHierarchie.objects.filter(
+            obj_object_id=self.object.id,
+            relation="hat Untereinheit",
+            subj_object_id__in=ids_akad,
+        )
+        context["structure"] = sorted(
+            [
+                {
+                    "obj": r.obj,
+                    "relation": r.relation,
+                    "beginn": r.beginn_date_sort,
+                    "ende": r.ende_date_sort,
+                }
+                for r in InstitutionHierarchie.objects.filter(
+                    subj_object_id=self.object.id,
+                    relation__in=["hat Untereinheit", "eingegliedert in"],
+                ).exclude(obj_object_id__in=ids_akad)
+            ]
+            + [
+                {
+                    "obj": r.subj,
+                    "relation": r.relation_reverse,
+                    "beginn": r.beginn_date_sort,
+                    "ende": r.ende_date_sort,
+                }
+                for r in InstitutionHierarchie.objects.filter(
+                    obj_object_id=self.object.id,
+                    relation__in=["eingegliedert in"],
+                ).exclude(subj_object_id__in=ids_akad)
+            ],
+            key=lambda x: x["beginn"],
+        )
+        context["predecessors"] = sorted(
+            [
+                {
+                    "obj": r.obj,
+                    "relation": r.relation,
+                    "beginn": r.beginn_date_sort,
+                    "ende": r.ende_date_sort,
+                }
+                for r in InstitutionHierarchie.objects.filter(
+                    subj_object_id=self.object.id,
+                    relation__in=["umbenannt von"],
+                ).exclude(obj_object_id__in=ids_akad)
+            ]
+            + [
+                {
+                    "obj": r.subj,
+                    "relation": r.relation_reverse,
+                    "beginn": r.beginn_date_sort,
+                    "ende": r.ende_date_sort,
+                }
+                for r in InstitutionHierarchie.objects.filter(
+                    obj_object_id=self.object.id,
+                    relation__in=["umbenannt von"],
+                ).exclude(subj_object_id__in=ids_akad)
+            ],
+            key=lambda x: x["beginn"],
+        )
+        context["successors"] = sorted(
+            [
+                {
+                    "obj": r.obj,
+                    "relation": r.relation,
+                    "beginn": r.beginn_date_sort,
+                    "ende": r.ende_date_sort,
+                }
+                for r in InstitutionHierarchie.objects.filter(
+                    subj_object_id=self.object.id,
+                    relation__in=["umbenannt in"],
+                ).exclude(obj_object_id__in=ids_akad)
+            ]
+            + [
+                {
+                    "obj": r.subj,
+                    "relation": r.relation_reverse,
+                    "beginn": r.beginn_date_sort,
+                    "ende": r.ende_date_sort,
+                }
+                for r in InstitutionHierarchie.objects.filter(
+                    obj_object_id=self.object.id,
+                    relation__in=["umbenannt in"],
+                ).exclude(subj_object_id__in=ids_akad)
+            ],
+            key=lambda x: x["beginn"],
+        )
+        context["presidents"] = PositionAn.objects.filter(
+            obj_object_id=self.object.id, position="Obmann/Obfrau (Kommission)"
+        ).order_by("beginn_date_sort")
+        context["members"] = PositionAn.objects.filter(
+            obj_object_id=self.object.id, position="Kommissionsmitglied"
+        ).order_by("beginn_date_sort")
         return context

@@ -1,0 +1,23 @@
+{% extends "mine_frontend/oeaw_entity_detail.html" %}
+{% load static %}
+{% load mine_extras %}
+{% block left_tab %}
+    {% include "mine_frontend/partials/inst_title.html" %}
+    {% include "mine_frontend/partials/inst_sub_short.html" %}
+    {% include "mine_frontend/partials/inst_timeframe.html" %}
+    {% include "mine_frontend/partials/inst_structure.html" %}
+{% endblock %}
+{% block right_tab %}
+    {% if predecessors %}
+        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Institutionelle Vorläufer' content_partial='mine_frontend/partials/inst_predecessors.html' %}
+    {% endif %}
+    {% if presidents %}
+        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Obfrauen / Obmänner' content_partial='mine_frontend/partials/inst_presidents.html' %}
+    {% endif %}
+    {% if members %}
+        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitglieder' content_partial='mine_frontend/partials/inst_members.html' %}
+    {% endif %}
+    {% if successors %}
+        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Institutionelle Nachfolger' content_partial='mine_frontend/partials/inst_successors.html' %}
+    {% endif %}
+{% endblock %}

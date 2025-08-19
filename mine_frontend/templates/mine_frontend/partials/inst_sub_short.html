@@ -1,0 +1,8 @@
+{% load mine_extras %}
+<p>
+    {% for branch in branches %}
+        {{ oeaw_institution.typ }} der {{ branch.subj|title|caseklasse }} {{ branch.beginn_date_sort|date:"Y" }}
+        {% if branch.ende_date_sort %}bis {{ branch.ende_date_sort|date:"Y" }}{% endif %}
+        <br>
+    {% endfor %}
+</p>

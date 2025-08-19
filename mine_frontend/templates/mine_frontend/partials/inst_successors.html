@@ -1,0 +1,15 @@
+<div class="card-body p-2 pl-3 pr-3 show-limited-number text-09">
+    <ul class="pl-0 mb-0">
+        {% for ent in successors %}
+            <li class="font-weight-normal pb-0"
+                style="list-style-type:none;
+                       padding-bottom: 0.5em">
+                {{ ent.relation }} <a href="/institution/{{ ent.obj.id }}">{{ ent.obj }}</a>
+                {% if ent.beginn or ent.ende %}
+                    {{ ent.beginn|date:"Y" }}
+                    {% if ent.ende %}- {{ ent.ende|date:"Y" }}{% endif %}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</div>

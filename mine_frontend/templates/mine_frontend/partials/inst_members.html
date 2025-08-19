@@ -1,0 +1,15 @@
+<div class="card-body p-2 pl-3 pr-3 show-limited-number text-09">
+    <ul class="pl-0 mb-0">
+        {% for ent in members %}
+            <li class="font-weight-normal pb-0"
+                style="list-style-type:none;
+                       padding-bottom: 0.5em">
+                <a href="/person/{{ ent.subj.id }}">{{ ent.subj }}</a>
+                {% if ent.beginn_date_sort or ent.ende_date_sort %}
+                    {{ ent.beginn_date_sort|date:"Y" }}
+                    {% if ent.ende_date_sort %}- {{ ent.ende_date_sort|date:"Y" }}{% endif %}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
