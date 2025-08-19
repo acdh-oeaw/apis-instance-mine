@@ -1,0 +1,70 @@
+{% extends "mine_frontend/base.html" %}
+{% load static %}
+{% load mine_extras %}
+{% block title %}{% endblock %}
+{% block content %}
+    <div id="contentDetails" class="container px-5 smaller-font-size">
+        <div class="row bio-outer">
+            <div class="col-md-12 pb-4">
+                <div class="row justify-content-between pt-3">
+                    <div class="col-md-auto">
+                        {% if prev.id %}
+                            <a class="card-link preventity"
+                               href="{% url 'theme:person-detail' pk=prev.id %}"
+                               title="{{ prev }}">&larr; {{ prev }}</a>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-auto">
+                        {% if next.id %}
+                            <a class="card-link nextentity"
+                               href="{% url 'theme:person-detail' pk=next.id %}"
+                               title="{{ next }}">{{ next }} &rarr;</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <article class="bio">
+                    <div id="main" class="card-body">
+                        <div class="row">
+                            <div class="col-md-5 pl-0 pr-0 pr-md-custom">
+                                <div class="bg-mine {% if entity_type == 'person' %}border-mine{% elif entity_type == 'institution' %}border-mine-institutions{% endif %} pl-1">
+                                    {% block left_tab %}{% endblock %}
+                                </div>
+                            </div>
+                            <div class="col-md-7 pr-0 pl-0 pl-md-custom">
+                                <ul class="nav nav-tabs border-0"
+                                    id="{% if entity_type == 'person' %}myTab{% elif entity_type == 'institution' %}institutionTab{% endif %}"
+                                    role="tablist">
+                                    <li class="nav-item p-0 font-weight-bold" role="presentation">
+                                        <a class="nav-link rounded-0 active text-uppercase"
+                                           data-toggle="tab"
+                                           id="daten-tab"
+                                           href="#daten"
+                                           role="tab"
+                                           aria-controls="home"
+                                           aria-selected="true">
+                                            {% if entity_type == 'person' %}
+                                                Biografie
+                                            {% elif entity_type == 'institution' %}
+                                                Daten
+                                            {% endif %}
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content bg-mine p-3" id="myTabContent">
+                                    <div class="tab-pane fade show active"
+                                         id="daten"
+                                         role="tabpanel"
+                                         aria-labelledby="daten-tab">
+                                        {% block right_tab %}{% endblock %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+{% endblock %}
