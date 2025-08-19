@@ -6,5 +6,9 @@
         <div class="text-center">
             <a href="/person/{{ object.id }}/">link to detail view</a>
         </div>
+    {% elif object|class_name == 'Institution' %}
+        <div class="text-center">
+            <a href="/institution/{{ object.id }}/">link to detail view</a>
+        </div>
     {% endif %}
 {% endblock card-header-content %}
