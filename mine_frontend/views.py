@@ -4,6 +4,7 @@ import re
 from apis_core.apis_metainfo.models import Uri
 from django.db.models import OuterRef
 from django.views import generic
+from django.views.generic.base import TemplateView
 
 from apis_ontology.models import (
     AusbildungAn,
@@ -19,6 +20,7 @@ from apis_ontology.models import (
     Person,
     PositionAn,
 )
+from mine_frontend.forms import MineMainform
 
 
 def get_web_object_uri(uri_obj):
@@ -230,4 +232,16 @@ class OEAWInstitutionDetailView(generic.DetailView):
         context["members"] = PositionAn.objects.filter(
             obj_object_id=self.object.id, position="Kommissionsmitglied"
         ).order_by("beginn_date_sort")
+        return context
+
+
+class IndexView(TemplateView):
+    model = Person
+    template_name = "mine_frontend/index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_form"] = MineMainform()
+        context["form_membership_end_date"] = datetime.date.today().year
+        context["form_membership_start_date"] = datetime.date.today().year - 10
         return context

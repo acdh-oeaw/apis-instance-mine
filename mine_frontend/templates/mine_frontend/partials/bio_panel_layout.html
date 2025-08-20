@@ -2,9 +2,9 @@
     <div class="card-header p-0 bg-white" id="heading{{ title }}">
         <h5 class="mb-0">
             <button type="button"
-                    class="btn btn-link text-decoration-none collapsebtn w-100 text-left collapsed show p-0 pl-1 text-09"
-                    data-toggle="collapse"
-                    data-target="#{{ title | cut:' ' }}"
+                    class="btn btn-link text-decoration-none collapsebtn w-100 text-start collapsed show p-0 ps-1 text-09"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#{{ title | cut:' ' }}"
                     aria-expanded="true"
                     aria-controls="{{ title | cut:' ' }}">
                 <b>{{ title }}</b>
@@ -15,6 +15,6 @@
     <div id="{{ title | cut:' ' }}"
          class="collapse"
          aria-labelledby="heading{{ title | cut:' ' }}">
-        <div class="card-body p-2 pl-3 pr-3 show-limited-number text-09">{% include content_partial %}</div>
+        <div class="card-body p-2 ps-3 pe-3 show-limited-number text-09">{% include content_partial %}</div>
     </div>
 </div>

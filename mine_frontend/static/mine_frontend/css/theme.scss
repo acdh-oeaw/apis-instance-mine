@@ -13,53 +13,143 @@
 */
 
 /*
- ** 01. General
+ ** 01. General - Bootstrap 5 Setup
  */
-@import "fundament/_partials/_functions";
-@import "./fundament/_partials/variables";
 
+// 1. Include functions first
+@import "bootstrap/scss/functions";
+
+// 2. Include custom variable overrides
 @import "./variables.scss";
-@import "./fundament/assets.scss";
 
-@import "./fundament/_partials/_01_mixins";
-@import "./fundament/_partials/_02_general";
+// 3. Include remaining Bootstrap stylesheets
+@import "bootstrap/scss/variables";
+
+@import "bootstrap/scss/maps";
+// 4. Include Bootstrap mixins
+@import "bootstrap/scss/mixins";
+
+// 5. Include Bootstrap utilities API
+@import "bootstrap/scss/utilities";
+
+// 6. Include Bootstrap root and reboot
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot";
+
+// 7. Include Bootstrap components
+@import "bootstrap/scss/type";
+@import "bootstrap/scss/images";
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/tables";
+@import "bootstrap/scss/forms";
+@import "bootstrap/scss/buttons";
+@import "bootstrap/scss/transitions";
+@import "bootstrap/scss/dropdown";
+@import "bootstrap/scss/button-group";
+@import "bootstrap/scss/nav";
+@import "bootstrap/scss/navbar";
+@import "bootstrap/scss/card";
+@import "bootstrap/scss/accordion";
+@import "bootstrap/scss/breadcrumb";
+@import "bootstrap/scss/pagination";
+@import "bootstrap/scss/badge";
+@import "bootstrap/scss/alert";
+@import "bootstrap/scss/progress";
+@import "bootstrap/scss/list-group";
+@import "bootstrap/scss/close";
+@import "bootstrap/scss/toasts";
+@import "bootstrap/scss/modal";
+@import "bootstrap/scss/tooltip";
+@import "bootstrap/scss/popover";
+@import "bootstrap/scss/carousel";
+@import "bootstrap/scss/spinners";
+@import "bootstrap/scss/offcanvas";
+@import "bootstrap/scss/placeholders";
+
+// 8. Include Bootstrap helpers
+@import "bootstrap/scss/helpers";
+
+// 9. Include Bootstrap utilities
+@import "bootstrap/scss/utilities/api";
+
+// Import custom general styles
 @import "./general.scss";
+
 /*
   ** 02. Header
   */
-@import "./fundament/_partials/_03_header";
 @import "./header.scss";
+
 /*
   ** 03. Blocks
   */
-
-@import "./fundament/_partials/_04_blocks";
 @import "./blocks.scss";
+
 /*
   ** 04. Single Posts
   */
-@import "./fundament/_partials/_05_posts";
+// Add custom post styles here if needed
+
 /*
   ** 05. Pages
   */
-@import "./fundament/_partials/_06_pages";
+// Add custom page styles here if needed
+
 /*
   ** 06. Widgets
   */
-@import "./fundament/_partials/_07_widgets";
+// Add custom widget styles here if needed
+
 /*
   ** 07. Footer
   */
-@import "./fundament/_partials/_08_footer";
+// Add custom footer styles here if needed
+
 /*
   ** 08. Extras
   */
-@import "./fundament/_partials/_09_extras";
 @import "./select2bootstrap4/select2-bootstrap4.scss";
 @import "./extras.scss";
-
 @import "./buttons.scss";
 @import "./spacing.scss";
 @import "./hover.scss";
 @import "./custom_slider.scss";
 @import "./badge.scss";
+
+// Bootstrap 5 compatibility fixes for legacy components
+// Update custom form controls for Bootstrap 5
+.form-check-input:checked {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.form-select:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+// Update any remaining Bootstrap 4 specific classes
+.custom-control-input:checked ~ .custom-control-label::before {
+    background-color: var(--bs-primary);
+}
+
+// Fix for select2 with Bootstrap 5
+.select2-container--bootstrap4 .select2-selection {
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+}
+
+.select2-container--bootstrap4.select2-container--focus .select2-selection {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+// Bootstrap 5 CSS custom properties override
+:root {
+    --bs-primary: #{$primary};
+    --bs-primary-rgb: #{red($primary)}, #{green($primary)}, #{blue($primary)};
+    --bs-body-bg: #{$body-bg};
+    --bs-body-color: #{$body-color};
+    --bs-font-sans-serif: #{$font-family-base};
+}

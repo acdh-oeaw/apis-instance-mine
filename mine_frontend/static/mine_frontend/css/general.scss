@@ -16,7 +16,7 @@ abbr[title] {
 }
 
 .btn-primary.disabled {
-    opacity:0.5;
+    opacity: 0.5;
 }
 
 .bg-mine {
@@ -61,7 +61,7 @@ svg.remove-badge {
 
 /*** media queries ***/
 
-@include breakpoint-up($md) {
+@include media-breakpoint-up(md) {
     .site {
         max-width: 70%;
         margin: 0 auto;
