@@ -8,13 +8,14 @@ dependencies = [
     "apis-acdhch-default-settings>=2.11.0",
     "apis-acdhch-django-auditlog>=0.2.1",
     "apis-acdhch-django-invite>=0.2.0",
-    "apis-core-rdf>=0.50.2",
+    "apis-core-rdf==0.50.2",
+    "crispy-bootstrap5>=2024.10",
     "django-compressor>=4.5.1",
     "django-interval>=0.5.1",
     "django-json-editor-field>=0.4.2",
     "django-sass-processor>=1.4.2",
     "httpx>=0.28.1",
-    "psycopg2>=2.9,<3.0",
+    "psycopg2-binary>=2.9,<3.0",
 ]
 
 [dependency-groups]
@@ -26,6 +27,7 @@ dev = [
     "pyright>=1.1.394",
     "ruff>=0.9.7",
     "libsass>=0.23.0",
+    "django-extensions>=4.1",
 ]
 [tool.pyright]
 #include = ["src"]
