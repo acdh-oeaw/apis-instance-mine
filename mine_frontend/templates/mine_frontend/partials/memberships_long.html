@@ -1,9 +1,7 @@
 {% load mine_extras %}
-<ul class="pl-0 mb-0">
+<ul class="list-unstyled ps-0 mb-0">
     {% for memb in membership %}
-        <li class="font-weight-normal pb-0"
-            style="list-style-type:none;
-                   padding-bottom: 0.5em">
+        <li class="fw-normal pb-2">
             {% if memb.beginn_date_sort %}
                 {{ memb.beginn_date_sort|date:"Y" }}
             {% else %}
@@ -28,6 +26,6 @@
             {% else %}
                 {{ memb.beginn_typ }} {{ memb.beginn_typ|zumals }} {{ memb.mitgliedschaft }} der {{ memb.obj|title|caseklasse }}
             {% endif %}
-        {% endfor %}
-    </li>
+        </li>
+    {% endfor %}
 </ul>

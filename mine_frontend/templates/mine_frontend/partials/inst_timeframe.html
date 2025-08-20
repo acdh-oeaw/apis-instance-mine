@@ -1,7 +1,7 @@
 {% if oeaw_institution.beginn_date_sort or oeaw_institution.ende_date_sort %}
     <p class="profession-date-of-birth">
-        <span class="font-weight-bold">Laufzeit:</span>
-        <span class="font-weight-normal">{{ oeaw_institution.beginn_date_sort|date:'Y' }}
+        <span class="fw-bold">Laufzeit:</span>
+        <span class="fw-normal">{{ oeaw_institution.beginn_date_sort|date:'Y' }}
             {% if oeaw_institution.ende_date_sort %}- {{ oeaw_institution.ende_date_sort|date:'Y' }}{% endif %}
         </span>
     </p>
