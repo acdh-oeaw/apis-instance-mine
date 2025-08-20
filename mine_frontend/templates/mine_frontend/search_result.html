@@ -1,0 +1,11 @@
+{% extends 'mine_frontend/base.html' %}
+{% load static %}
+{% load render_table from django_tables2 %}
+{% block content %}
+    <div class="col-md-8 mt-3" id="results">
+        <div>
+            {% render_table table %}
+            <!-- End faceting -->
+        </div>
+    </div>
+{% endblock %}

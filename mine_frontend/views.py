@@ -2,9 +2,11 @@ import datetime
 import re
 
 from apis_core.apis_metainfo.models import Uri
+from django.contrib.postgres.expressions import ArraySubquery
 from django.db.models import OuterRef
 from django.views import generic
 from django.views.generic.base import TemplateView
+from django_tables2.views import SingleTableView
 
 from apis_ontology.models import (
     AusbildungAn,
@@ -21,6 +23,7 @@ from apis_ontology.models import (
     PositionAn,
 )
 from mine_frontend.forms import MineMainform
+from mine_frontend.tables import SearchResultTable
 
 
 def get_web_object_uri(uri_obj):
@@ -245,3 +248,18 @@ class IndexView(TemplateView):
         context["form_membership_end_date"] = datetime.date.today().year
         context["form_membership_start_date"] = datetime.date.today().year - 10
         return context
+
+
+class PersonResultsView(SingleTableView):
+    table_class = SearchResultTable
+    template_name = "mine_frontend/search_result.html"
+
+    def get_queryset(self):
+        memb = OeawMitgliedschaft.objects.filter(
+            subj_object_id=OuterRef("id")
+        ).values_list("mitgliedschaft")
+        qs = Person.objects.filter(mitglied=True).annotate(
+            memberships=ArraySubquery(memb)
+        )
+
+        return qs

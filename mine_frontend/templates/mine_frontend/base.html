@@ -63,7 +63,7 @@
                              id="navbarSupportedContent">
                             <!-- Your menu goes here -->
                             <ul id="main-menu"
-                                class="navbar-nav mr-0 font-weight-bold flex-column text-uppercase">
+                                class="navbar-nav me-0 fw-bold flex-column text-uppercase">
                                 <li class="nav-item">
                                     <a title="Mitglieder" href="FIXME" class="nav-link p-0">Mitglieder</a>
                                 </li>
@@ -77,7 +77,7 @@
                                     <a title="Ereignisse" href="FIXME" class="nav-link p-0">Ereignisse</a>
                                 </li>
                             </ul>
-                            <form class="form-inline my-2 my-lg-0 pt-1 navbar-search-form"
+                            <form class="d-flex my-2 my-lg-0 pt-1 navbar-search-form"
                                   method="get"
                                   action=" {% if 'institution' in request.path %} /institutionen/search {% else %} /search {% endif %} "
                                   role="search">
@@ -93,7 +93,7 @@
                                 </button>
                             </form>
                             <ul id="second-menu"
-                                class="navbar-nav mr-0 align-top pl-lg-5 flex-column text-uppercase font-weight-light">
+                                class="navbar-nav me-0 align-top ps-lg-5 flex-column text-uppercase fw-light">
                                 <li class="nav-item">
                                     <a title="Über" href="FIXME" class="nav-link p-0">Über</a>
                                 </li>
@@ -122,18 +122,18 @@
                         <div class="row">
                             <div class="col-8 footermenu">
                                 <ul class="nav list-inline justify-content-between">
-                                    <li class="pb-1 pl-0 list-inline-item">
+                                    <li class="pb-1 ps-0 list-inline-item">
                                         <small><a title="Impressum" href="FIXME">Impressum</a></small>
                                     </li>
-                                    <li class="pb-1 pl-0 list-inline-item">
+                                    <li class="pb-1 ps-0 list-inline-item">
                                         <small><a title="Impressum" href="FIXME">Datenschutz</a></small>
                                     </li>
-                                    <li class=" pl-0 list-inline-item text-oeaw-blue">
+                                    <li class=" ps-0 list-inline-item text-oeaw-blue">
                                         <small>&#xa9; Österreichische Akademie der Wissenschaften</small>
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-4 text-right">
+                            <div class="col-4 text-end">
                                 <i onclick="scrollToTop()" data-feather="arrow-up"></i>
                             </div>
                         </div>

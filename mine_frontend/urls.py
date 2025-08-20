@@ -4,6 +4,7 @@ from mine_frontend.views import (
     IndexView,
     OEAWInstitutionDetailView,
     OEAWMemberDetailView,
+    PersonResultsView,
 )
 
 urlpatterns = [
@@ -14,4 +15,5 @@ urlpatterns = [
         OEAWInstitutionDetailView.as_view(),
         name="institution-detail",
     ),
+    path("search/", PersonResultsView.as_view(), name="search"),
 ]
