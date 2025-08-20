@@ -2,6 +2,7 @@ import datetime
 import re
 
 from apis_core.apis_metainfo.models import Uri
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.expressions import ArraySubquery
 from django.db.models import OuterRef
 from django.db.models.query import Q
@@ -45,7 +46,7 @@ def get_web_object_uri(uri_obj):
     }
 
 
-class OEAWMemberDetailView(generic.DetailView):
+class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
     model = Person
     queryset = Person.objects.filter(mitglied=True)
     context_object_name = "oeaw_member"
@@ -126,7 +127,7 @@ class OEAWMemberDetailView(generic.DetailView):
         return context
 
 
-class OEAWInstitutionDetailView(generic.DetailView):
+class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):
     model = Institution
     queryset = Institution.objects.filter(akademie_institution=True)
     context_object_name = "oeaw_institution"
@@ -239,7 +240,7 @@ class OEAWInstitutionDetailView(generic.DetailView):
         return context
 
 
-class IndexView(TemplateView):
+class IndexView(LoginRequiredMixin, TemplateView):
     model = Person
     template_name = "mine_frontend/index.html"
 
@@ -251,7 +252,7 @@ class IndexView(TemplateView):
         return context
 
 
-class PersonResultsView(SingleTableView):
+class PersonResultsView(LoginRequiredMixin, SingleTableView):
     table_class = SearchResultTable
     template_name = "mine_frontend/search_result.html"
 
