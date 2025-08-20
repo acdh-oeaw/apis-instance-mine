@@ -4,6 +4,7 @@ import re
 from apis_core.apis_metainfo.models import Uri
 from django.contrib.postgres.expressions import ArraySubquery
 from django.db.models import OuterRef
+from django.db.models.query import Q
 from django.views import generic
 from django.views.generic.base import TemplateView
 from django_tables2.views import SingleTableView
@@ -261,5 +262,27 @@ class PersonResultsView(SingleTableView):
         qs = Person.objects.filter(mitglied=True).annotate(
             memberships=ArraySubquery(memb)
         )
+        if self.request.GET.get("q"):
+            qs = qs.filter(
+                Q(forename__icontains=self.request.GET["q"])
+                | Q(surname__icontains=self.request.GET["q"])
+            )
+        if self.request.GET.get("mtgld_mitgliedschaft"):
+            selected_memberships = self.request.GET.getlist("mtgld_mitgliedschaft")
+            for membership in selected_memberships:
+                qs = qs.filter(memberships__icontains=membership)
+        if self.request.GET.get("mtgld_klasse"):
+            klasse = self.request.GET.get("mtgld_klasse")
+            query = Q()
+            match klasse:
+                case "math.-nat. Klasse":
+                    query |= Q(klasse="Mathematisch-Naturwissenschaftliche Klasse")
+                case "beide":
+                    query |= Q(klasse="Mathematisch-Naturwissenschaftliche Klasse") | Q(
+                        klasse="Philosophisch-Historische Klasse"
+                    )
+                case "phil.-hist. Klasse":
+                    query |= Q(klasse="Philosophisch-Historische Klasse")
+            qs = qs.filter(query)
 
         return qs
