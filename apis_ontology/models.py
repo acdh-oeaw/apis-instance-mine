@@ -189,13 +189,15 @@ class BaseLegacyImport(models.Model):
     def create_from_legacy_data(cls, data: dict[str, Any], logger):
         data_mapped = map_dicts(cls.MAP_FIELDS_OLD, data)
         data_mapped = clean_fields(cls, data_mapped)
-        res = cls.objects.create(**data_mapped)
+        res = cls(**data_mapped)
+        res.save()
         if "sameAs" in data:
             for u in data["sameAs"]:
                 try:
                     Uri.objects.create(uri=u, content_object=res)
                 except IntegrityError:
                     logger.warning(f"URI {u} already exists, cant create for {res}")
+        res.save()
         return res
 
     @classmethod
@@ -328,7 +330,7 @@ class Bild(GenericModel, models.Model):
                     and d2["name"] == "photocredit OEAW Archiv"
                 ):
                     data_fin["credit"] = d2["label"]
-        cls.objects.create(**data_fin)
+        cls(**data_fin).save()
 
 
 class Fach(AbstractEntity, VersionMixin, BaseLegacyImport):
@@ -680,7 +682,8 @@ class Person(
             if "GESAMTAKADEMIE" in rel["label"] and "klasse" not in data_mapped:
                 logger.info("Person has role in GESAMTAKADEMIE")
                 data_mapped["klasse"] = "GESAMTAKADEMIE"
-        pers = cls.objects.create(**data_mapped)
+        pers = cls(**data_mapped)
+        pers.save()
         pers.beruf.add(*profs)
         if "sameAs" in data:
             for u in data["sameAs"]:
@@ -688,6 +691,7 @@ class Person(
                     Uri.objects.create(uri=u, content_object=pers)
                 except IntegrityError:
                     logger.warning(f"URI {u} already exists, cant create for {pers}")
+        pers.save()
         return pers
 
 
@@ -786,13 +790,15 @@ class Institution(
                 data_mapped["typ"] = label_lst[-1]
             elif len(label_lst) == 1:
                 data_mapped["typ"] = label_lst[0]
-        res = cls.objects.create(**data_mapped)
+        res = cls(**data_mapped)
+        res.save()
         if "sameAs" in data:
             for u in data["sameAs"]:
                 try:
                     Uri.objects.create(uri=u, content_object=res)
                 except IntegrityError:
                     logger.warning(f"URI {u} already exists, cant create for {res}")
+        res.save()
         return res
 
 
@@ -806,6 +812,7 @@ class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin, BaseLegacyIm
         ("gewählt und ernannt", "gewählt und ernannt"),
         ("gewählt, nicht bestätigt", "gewählt, nicht bestätigt"),
         ("ernannt", "ernannt"),
+        ("umgewidmet", "umgewidmet"),
         ("genehmigt", "genehmigt"),
         ("eingereiht", "eingereiht"),
         ("reaktiviert", "reaktiviert"),
@@ -914,6 +921,8 @@ class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin, BaseLegacyIm
             ("id", "old_id"),
             ("start_date_written", "beginn"),
             ("end_date_written", "ende"),
+            ("references", "references"),
+            ("notes", "notes"),
         ]
         data_mapped = map_dicts(MAP_FIELDS_OLD, data)
         data_mapped = clean_fields(cls, data_mapped)
@@ -932,7 +941,8 @@ class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin, BaseLegacyIm
             data["related_institution"]["id"], logger
         )
         data_mapped["obj"] = inst
-        rel = cls.objects.create(**data_mapped)
+        rel = cls(**data_mapped)
+        rel.save()
         if "gewählt" in data_mapped["beginn_typ"].lower():
             nominees = cls._create_nominated_by(data, logger)
             rel.vorgeschlagen_von.add(*nominees)
@@ -940,7 +950,7 @@ class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin, BaseLegacyIm
                 rel.beginn_date_sort.year, logger
             )
             rel.wahlsitzung = election
-            rel.save()
+        rel.save()
         return rel
 
 
@@ -1023,6 +1033,8 @@ class NichtGewaehlt(Relation, VersionMixin, LegacyFieldsMixin):
         MAP_FIELDS_OLD = [
             ("id", "old_id"),
             ("start_date_written", "datum"),
+            ("references", "references"),
+            ("notes", "notes"),
         ]
         data_mapped = map_dicts(MAP_FIELDS_OLD, data)
         data_mapped = clean_fields(cls, data_mapped)
@@ -1046,7 +1058,8 @@ class NichtGewaehlt(Relation, VersionMixin, LegacyFieldsMixin):
         data_mapped["mitgliedschaft"] = cls._match_membership(
             data["relation_type_resolved"]
         )
-        rel = cls.objects.create(**data_mapped)
+        rel = cls(**data_mapped)
+        rel.save()
         nominees = cls._create_nominated_by(data, logger)
         rel.vorgeschlagen_von.add(*nominees)
         rel.save()
@@ -1069,6 +1082,8 @@ def get_position_choices() -> list[tuple[str, str]]:
 class RelLegacyDataBaseMixin(models.Model):
     MAP_FIELDS_OLD = [
         ("id", "old_id"),
+        ("references", "references"),
+        ("notes", "notes"),
     ]
 
     class Meta:
@@ -1106,7 +1121,8 @@ class RelLegacyDataBaseMixin(models.Model):
                 f"Relation {cls.__name__} with old_id {data_mapped['old_id']} already exists"
             )
             return cls.objects.get(old_id=data_mapped["old_id"])
-        res = cls.objects.create(**data_mapped)
+        res = cls(**data_mapped)
+        res.save()
         return res
 
 
@@ -1613,7 +1629,7 @@ class StelltAntragAn(
         rel = super().create_from_legacy_data(data, logger)
         if len(voc) == 2:
             rel.status = voc[1]["name"]
-            rel.save()
+        rel.save()
         return rel
 
 
