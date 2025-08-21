@@ -7,6 +7,9 @@
             {% if position.beginn_date_sort or position.ende_date_sort %}
                 ({{ position.beginn_date_sort|date:"Y" }} - {{ position.ende_date_sort|date:"Y" }})
             {% endif %}
+            {% if position.references %}
+                {% include 'mine_frontend/partials/tooltip_info.html' with text='{{ position.references }}' %}
+            {% endif %}
         </li>
     {% endfor %}
 </ul>

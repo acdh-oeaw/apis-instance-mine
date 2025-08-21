@@ -153,3 +153,8 @@
     --bs-body-color: #{$body-color};
     --bs-font-sans-serif: #{$font-family-base};
 }
+
+.mine-info-tooltip {
+    --bs-tooltip-bg: rgba(217, 214, 215, 1);
+    --bs-tooltip-color: rgba(0, 0, 0, 0.5);
+}

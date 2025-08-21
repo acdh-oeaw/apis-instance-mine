@@ -2,10 +2,101 @@
 {% load static %}
 {% load render_table from django_tables2 %}
 {% block content %}
+    <div class="container-fluid">
+        <div class="row mx-0 pt-1 bg-mine border-mine">
+            <div class="col-md-8">
+                <h1 class="fw-bold">Auswertungsergebnis</h1>
+                <div>
+                    {% if form.data.selected_facets|length > 0 or selected_filters|length > 0 %}
+                        <ul class="facet-group ps-2 mb-1 list-unstyled list-inline">
+                            {% for fac in form.selected_facets %}
+                                <li class="facet-group-item facet-badges list-inline-item ps-0">
+                                <a href="FIXME"
+                                   type="button"
+                                   class="badge badge-custom rounded-pill p-1 text-dark">FACET_NAEM<i class="remove-badge ms-1 align-text-bottom" data-feather="x"></i>
+                            </a>
+                        </li>
+                    {% endfor %}
+                    {% for fac in selected_filters %}
+                        <li class="facet-group-item facet-badges  list-inline-item ps-0">
+                            <a href="FIXME"
+                               type="button"
+                               class="badge badge-custom rounded-pill p-1 text-dark">
+                                {% if "date" in fac.field %}{% endif %}
+                                FACET_NAME<i class="remove-badge ms-1 align-text-bottom" data-feather="x"></i>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-4 text-end text-uppercase d-flex flex-column justify-content-between">
+        <a href="#" onclick="navigateToLandingPage()"><small class="align-top  fw-bold"><i class="chevron-left" data-feather="chevron-left"></i> Zurück zur Auswertung</small></a>
+        <!--<h1 class="text-uppercase pt-1"><a href="FIXME" type="button" class="btn btn-link btn-sm btn-right">Filter zurücksetzen<span class="icon-remove"></span></a></h1>
+     -->
+        <div class="dropdown show  mt-3 mb-2" style="float:right"></div>
+        <div class="dropdown mt-3 mb-2">
+            <div class="btn-group">
+                <a class="btn-primary btn-sm rounded-0 bg-oeaw dropdown-toggle {% if not table.rows %}disabled{% endif %}"
+                   href="#"
+                   role="button"
+                   id="dropdownMenuLinkInstitutions"
+                   data-bs-toggle="dropdown"
+                   aria-haspopup="true"
+                   {% if not table.rows %}aria-disabled="true" disabled{% endif %}
+                   aria-expanded="false">
+                    <small class="align-text-bottom">Verbindung zu Institutionen</small>
+                </a>
+                <div class="dropdown-menu rounded-0"
+                     aria-labelledby="dropdownMenuLinkInstitutions">
+                    {% for related_institution in related_institutions %}
+                        <a class="dropdown-item"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           href="/institutionen/search?{% for k, v in request.GET.items %}p_{{ k }}={{ v }}&{% endfor %}related_institution={{ related_institution.key }}">{{ related_institution.label }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="btn-group">
+                <a class="btn-primary btn-sm rounded-0 bg-oeaw dropdown-toggle {% if not table.rows %}disabled{% endif %}"
+                   href="#"
+                   role="button"
+                   id="dropdownMenuLink"
+                   data-bs-toggle="dropdown"
+                   aria-haspopup="true"
+                   {% if not table.rows %}aria-disabled="true" disabled{% endif %}
+                   aria-expanded="false">
+                    <small class="align-text-bottom">Netzwerke</small>
+                </a>
+                <div class="dropdown-menu rounded-0" aria-labelledby="dropdownMenuLink">
+                    {% for network in network_buttons %}
+                        <a class="dropdown-item"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           href="/network?{{ request.META.QUERY_STRING }}&network_type={{ network.key }}">{{ network.label }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mt-3 border-0 rounded-0 background_none">
+            <div class="card-body p-0">
+                <!-- Begin faceting. -->
+                <div class="facet"></div>
+            </div>
+        </div>
+    </div>
     <div class="col-md-8 mt-3" id="results">
         <div>
             {% render_table table %}
             <!-- End faceting -->
         </div>
     </div>
+</div>
+</div>
+<script>
 {% endblock %}

@@ -10148,3 +10148,7 @@ div.dataTables_filter {
   --bs-body-bg: #f0f0f7;
   --bs-body-color: #444444;
   --bs-font-sans-serif: Lato, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; }
+
+.mine-info-tooltip {
+  --bs-tooltip-bg: rgba(217, 214, 215, 1);
+  --bs-tooltip-color: rgba(0, 0, 0, 0.5); }

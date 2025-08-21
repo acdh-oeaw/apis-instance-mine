@@ -66,6 +66,6 @@ class SearchResultTable(tables.Table):
             "profession",
         )
         attrs = {"class": "table table-hover custom-table bg-mine", "thead": {}}
-        # template_name = "theme/custom_table.html"
+        template_name = "mine_frontend/custom_results_table.html"
         # row_attrs = {"data-member": lambda record: record.academy_member}
         empty_text = "Keine Ergebnisse"
