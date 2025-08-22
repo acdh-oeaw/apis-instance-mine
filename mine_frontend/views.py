@@ -289,7 +289,7 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             "label": "Suche",
             "field": "search_labels",
             "param": "q",
-            "lookup": "icontains",
+            "lookup": "unaccent__icontains",
             "type": "text",
         },
     }
