@@ -9891,10 +9891,19 @@ fieldset legend {
   border-spacing: 0 3.75px;
   border-collapse: separate; }
 
-.custom-table tbody tr {
+table.custom-table thead tr th {
+  background-color: transparent; }
+
+table.custom-table thead tr {
   background-color: white; }
 
-.custom-table tbody tr:hover {
+table.custom-table tbody tr td {
+  background-color: transparent; }
+
+table.custom-table tbody tr {
+  background-color: white; }
+
+table.custom-table tbody tr:hover {
   background-color: #f7f7fb; }
 
 .show-limited-number .facet-group-item:nth-child(n + 6) {

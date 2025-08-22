@@ -87,8 +87,19 @@ fieldset legend {
     border-collapse: separate;
 }
 
-.custom-table {
+table.custom-table {
+    thead {
+        tr th {
+            background-color: transparent;
+        }
+        tr {
+            background-color: white;
+        }
+    }
     tbody {
+        tr td {
+            background-color: transparent;
+        }
         tr {
             background-color: white;
         }

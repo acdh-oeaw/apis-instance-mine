@@ -10,53 +10,9 @@
                 {% include 'mine_frontend/partials/facet_filter_list.html' %}
             </div>
             <div class="col-md-4 text-end text-uppercase d-flex flex-column justify-content-between">
-                <a href="#" onclick="navigateToLandingPage()"><small class="align-top  fw-bold"><i class="chevron-left" data-feather="chevron-left"></i> Zurück zur Auswertung</small></a>
-                <!--<h1 class="text-uppercase pt-1"><a href="FIXME" type="button" class="btn btn-link btn-sm btn-right">Filter zurücksetzen<span class="icon-remove"></span></a></h1>
-     -->
+                <a href="/mine"><small class="align-top  fw-bold"><i class="chevron-left" data-feather="chevron-left"></i> Zurück zur Auswertung</small></a>
                 <div class="dropdown show  mt-3 mb-2" style="float:right"></div>
-                <div class="dropdown mt-3 mb-2">
-                    <div class="btn-group">
-                        <a class="btn-primary btn-sm rounded-0 bg-oeaw dropdown-toggle {% if not table.rows %}disabled{% endif %}"
-                           href="#"
-                           role="button"
-                           id="dropdownMenuLinkInstitutions"
-                           data-bs-toggle="dropdown"
-                           aria-haspopup="true"
-                           {% if not table.rows %}aria-disabled="true" disabled{% endif %}
-                           aria-expanded="false">
-                            <small class="align-text-bottom">Verbindung zu Institutionen</small>
-                        </a>
-                        <div class="dropdown-menu rounded-0"
-                             aria-labelledby="dropdownMenuLinkInstitutions">
-                            {% for related_institution in related_institutions %}
-                                <a class="dropdown-item"
-                                   target="_blank"
-                                   rel="noopener noreferrer"
-                                   href="/institutionen/search?{% for k, v in request.GET.items %}p_{{ k }}={{ v }}&{% endfor %}related_institution={{ related_institution.key }}">{{ related_institution.label }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="btn-group">
-                        <a class="btn-primary btn-sm rounded-0 bg-oeaw dropdown-toggle {% if not table.rows %}disabled{% endif %}"
-                           href="#"
-                           role="button"
-                           id="dropdownMenuLink"
-                           data-bs-toggle="dropdown"
-                           aria-haspopup="true"
-                           {% if not table.rows %}aria-disabled="true" disabled{% endif %}
-                           aria-expanded="false">
-                            <small class="align-text-bottom">Netzwerke</small>
-                        </a>
-                        <div class="dropdown-menu rounded-0" aria-labelledby="dropdownMenuLink">
-                            {% for network in network_buttons %}
-                                <a class="dropdown-item"
-                                   target="_blank"
-                                   rel="noopener noreferrer"
-                                   href="/network?{{ request.META.QUERY_STRING }}&network_type={{ network.key }}">{{ network.label }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
+                <div class="dropdown mt-3 mb-2"></div>
             </div>
         </div>
         <div class="row">
