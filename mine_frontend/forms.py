@@ -23,8 +23,8 @@ class MineMainFormHelper(FormHelper):
                     Div(
                         Fieldset(
                             "",
-                            "mtgld_mitgliedschaft",
-                            "mtgld_klasse",
+                            "membership",
+                            "klasse",
                             css_id="mitgliedschaft",
                             css_class="show card-body card filter-wrapper pb-1",
                         ),
@@ -197,7 +197,7 @@ class MineMainform(forms.Form):
         ),
         label="",
     )
-    mtgld_mitgliedschaft = forms.MultipleChoiceField(
+    membership = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
         required=False,
         label="Mitgliedschaft",
@@ -209,17 +209,16 @@ class MineMainform(forms.Form):
             ("Junge Kurie/Junge Akademie", "Junge Kurie/Junge Akademie"),
         ],
     )
-    mtgld_klasse = forms.ChoiceField(
-        widget=forms.RadioSelect(),
+    klasse = forms.MultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
         required=False,
         label="Klasse",
         choices=[
-            ("beide", "beide Klassen"),
             (
-                "math.-nat. Klasse",
+                "Mathematisch-Naturwissenschaftliche Klasse",
                 "Mathematisch-Naturwissenschaftliche Klasse",
             ),
-            ("phil.-hist. Klasse", "Philosophisch-Historische Klasse"),
+            ("Philosophisch-Historische Klasse", "Philosophisch-Historische Klasse"),
         ],
     )
 

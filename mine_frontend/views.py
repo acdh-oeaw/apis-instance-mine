@@ -4,8 +4,8 @@ import re
 from apis_core.apis_metainfo.models import Uri
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.expressions import ArraySubquery
-from django.db.models import OuterRef
-from django.db.models.query import Q
+from django.db.models import OuterRef, Value
+from django.db.models.functions import Concat
 from django.views import generic
 from django.views.generic.base import TemplateView
 from django_tables2.views import SingleTableView
@@ -25,6 +25,7 @@ from apis_ontology.models import (
     PositionAn,
 )
 from mine_frontend.forms import MineMainform
+from mine_frontend.mixins import FacetedSearchMixin
 from mine_frontend.tables import SearchResultTable
 
 
@@ -252,38 +253,66 @@ class IndexView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class PersonResultsView(LoginRequiredMixin, SingleTableView):
+class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView):
     table_class = SearchResultTable
     template_name = "mine_frontend/search_result.html"
 
-    def get_queryset(self):
-        memb = OeawMitgliedschaft.objects.filter(
-            subj_object_id=OuterRef("id")
-        ).values_list("mitgliedschaft")
-        qs = Person.objects.filter(mitglied=True).annotate(
-            memberships=ArraySubquery(memb)
+    facet_fields = {
+        "klasse": {
+            "label": "Klasse",
+            "field": "klasse",
+            "lookup": "exact",
+            "type": "choice",
+        },
+        "membership": {
+            "label": "Mitgliedschaft",
+            "field": "memberships",
+            "lookup": "exact",
+            "type": "array",
+        },
+        "gender": {
+            "label": "Geschlecht",
+            "field": "gender",
+            "lookup": "exact",
+            "type": "choice",
+        },
+        "profession": {
+            "label": "Beruf",
+            "field": "beruf__name",
+            "lookup": "exact",
+            "type": "choice",
+        },
+    }
+
+    filter_fields = {
+        "suche": {
+            "label": "Suche",
+            "field": "search_labels",
+            "param": "q",
+            "lookup": "icontains",
+            "type": "text",
+        },
+    }
+
+    def get_base_queryset(self):
+        """Get base queryset before any filtering"""
+        memb = (
+            OeawMitgliedschaft.objects.filter(subj_object_id=OuterRef("id"))
+            .values_list("mitgliedschaft")
+            .distinct()
         )
-        if self.request.GET.get("q"):
-            qs = qs.filter(
-                Q(forename__icontains=self.request.GET["q"])
-                | Q(surname__icontains=self.request.GET["q"])
-            )
-        if self.request.GET.get("mtgld_mitgliedschaft"):
-            selected_memberships = self.request.GET.getlist("mtgld_mitgliedschaft")
-            for membership in selected_memberships:
-                qs = qs.filter(memberships__icontains=membership)
-        if self.request.GET.get("mtgld_klasse"):
-            klasse = self.request.GET.get("mtgld_klasse")
-            query = Q()
-            match klasse:
-                case "math.-nat. Klasse":
-                    query |= Q(klasse="Mathematisch-Naturwissenschaftliche Klasse")
-                case "beide":
-                    query |= Q(klasse="Mathematisch-Naturwissenschaftliche Klasse") | Q(
-                        klasse="Philosophisch-Historische Klasse"
-                    )
-                case "phil.-hist. Klasse":
-                    query |= Q(klasse="Philosophisch-Historische Klasse")
-            qs = qs.filter(query)
+
+        return Person.objects.filter(mitglied=True).annotate(
+            memberships=ArraySubquery(memb),
+            search_labels=Concat("forename", Value(" "), "surname"),
+        )
+
+    def get_queryset(self):
+        """Get the final filtered queryset for the table"""
+        qs = self.get_base_queryset()
+
+        qs = self.apply_non_facet_filters(qs)
+
+        qs = self.apply_facet_filters_except(qs)
 
         return qs

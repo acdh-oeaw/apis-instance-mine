@@ -1,0 +1,277 @@
+{% load facet_tags %}
+<div class="facet-sidebar p-3">
+    {% for facet_key, facet_data in facets.items %}
+        <div class="facet-group mb-4 border rounded p-3">
+            <h5 class="facet-title mb-3 d-flex align-items-center">
+                {{ facet_data.label }}
+                {% if facet_data.selected %}
+                    <span class="badge bg-primary ms-2">{{ facet_data.selected|length }} selected</span>
+                {% endif %}
+            </h5>
+            {% if facet_data.values %}
+                <!-- Search box for this facet -->
+                {% if facet_data.values|length > 5 %}
+                    <div class="mb-3">
+                        <input type="text"
+                               class="form-control form-control-sm facet-search"
+                               placeholder="Suche {{ facet_data.label }}..."
+                               data-facet="{{ facet_key }}">
+                    </div>
+                {% endif %}
+                <div class="facet-container" data-facet="{{ facet_key }}">
+                    <ul class="facet-values list-unstyled mb-2">
+                        {% for item in facet_data.values %}
+                            {% if item.count > 0 %}
+                                <li class="facet-item {% if forloop.counter > 10 %}facet-item-hidden d-none{% endif %}"
+                                    data-facet="{{ facet_key }}"
+                                    data-index="{{ forloop.counter }}">
+                                    {% with value=item|get_facet_value:facet_data.field_name %}
+                                        {% if value in facet_data.selected %}
+                                            <a href="{% facet_url request facet_key value 'remove' %}"
+                                               class="facet-link active d-flex align-items-center justify-content-between py-1 px-2 rounded text-decoration-none">
+                                                <span class="d-flex align-items-center">
+                                                    <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                                    <span class="facet-value">{{ value|default:"Unknown" }}</span>
+                                                </span>
+                                                <span class="badge bg-danger">{{ item.count }}</span>
+                                            </a>
+                                        {% else %}
+                                            <a href="{% facet_url request facet_key value 'add' %}"
+                                               class="facet-link d-flex align-items-center justify-content-between py-1 px-2 rounded text-decoration-none">
+                                                <span class="facet-value">{{ value|default:"Unknown" }}</span>
+                                                <span class="badge bg-secondary">{{ item.count }}</span>
+                                            </a>
+                                        {% endif %}
+                                    {% endwith %}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    <!-- Show more button -->
+                    {% if facet_data.values|length > 10 %}
+                        <button class="btn btn-outline-primary btn-sm facet-show-more"
+                                data-facet="{{ facet_key }}"
+                                data-visible="10"
+                                data-total="{{ facet_data.values|length }}">
+                            <i class="bi bi-chevron-down me-1"></i>
+                            Zeige 10 weitere (<span class="remaining-count">{{ facet_data.values|length|add:"-10" }}</span> verbleibend)
+                        </button>
+                    {% endif %}
+                    <!-- No results message for search -->
+                    <div class="no-search-results d-none">
+                        <p class="text-muted mb-0">
+                            <i class="bi bi-search me-1"></i>
+                            Nichts gefunden
+                        </p>
+                    </div>
+                </div>
+                {% if facet_data.values|length == 0 %}
+                    <p class="text-muted mb-0">
+                        <i class="bi bi-funnel me-1"></i>
+                        Nichts gefunden
+                    </p>
+                {% endif %}
+            {% else %}
+                <p class="text-muted mb-0">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Keine Optionen verfügbar
+                </p>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+<style>
+.facet-link {
+    color: #6c757d;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.facet-link:hover {
+    color: #0d6efd;
+    background-color: #f8f9fa;
+    border-color: #e9ecef;
+}
+
+.facet-link.active {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
+
+.facet-link.active:hover {
+    background-color: #f1aeb5;
+    border-color: #ea868f;
+}
+
+.facet-search {
+    border: 1px solid #dee2e6;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.facet-search:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.facet-show-more {
+    transition: all 0.2s ease;
+}
+
+.facet-show-more:hover {
+    transform: translateY(-1px);
+}
+
+.facet-group {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: box-shadow 0.2s ease;
+}
+
+.facet-group:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.facet-title {
+    color: #495057;
+    font-weight: 600;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 0.5rem;
+}
+
+.facet-value {
+    word-break: break-word;
+}
+
+/* Highlight search matches */
+.search-highlight {
+    background-color: #fff3cd;
+    padding: 1px 2px;
+    border-radius: 2px;
+}
+
+/* Animation for new items */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.facet-item.newly-shown {
+    animation: fadeInDown 0.3s ease;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Show more functionality (incremental)
+    document.querySelectorAll('.facet-show-more').forEach(button => {
+        button.addEventListener('click', function() {
+            const facetKey = this.dataset.facet;
+            const currentVisible = parseInt(this.dataset.visible);
+            const totalItems = parseInt(this.dataset.total);
+            const nextVisible = Math.min(currentVisible + 10, totalItems);
+
+            // Show the next 10 items
+            const allItems = document.querySelectorAll(`[data-facet="${facetKey}"] .facet-item`);
+            for (let i = currentVisible; i < nextVisible; i++) {
+                if (allItems[i]) {
+                    allItems[i].classList.remove('d-none');
+                    allItems[i].classList.add('newly-shown');
+                    // Remove animation class after animation completes
+                    setTimeout(() => {
+                        allItems[i].classList.remove('newly-shown');
+                    }, 300);
+                }
+            }
+
+            // Update button state
+            this.dataset.visible = nextVisible;
+            const remaining = totalItems - nextVisible;
+            const remainingSpan = this.querySelector('.remaining-count');
+
+            if (remaining > 0) {
+                const showNext = Math.min(10, remaining);
+                this.innerHTML = `<i class="bi bi-chevron-down me-1"></i>Zeige ${showNext} weitere (<span class="remaining-count">${remaining}</span> verbleibend)`;
+            } else {
+                // All items are shown, hide the button
+                this.style.display = 'none';
+            }
+        });
+    });
+
+    // Search functionality
+    document.querySelectorAll('.facet-search').forEach(searchInput => {
+        searchInput.addEventListener('input', function() {
+            const facetKey = this.dataset.facet;
+            const searchTerm = this.value.toLowerCase();
+            const facetItems = document.querySelectorAll(`[data-facet="${facetKey}"] .facet-item`);
+            const noResultsMsg = document.querySelector(`[data-facet="${facetKey}"] .no-search-results`);
+            const showMoreButton = document.querySelector(`[data-facet="${facetKey}"] .facet-show-more`);
+
+            let matchCount = 0;
+
+            facetItems.forEach(item => {
+                const facetValue = item.querySelector('.facet-value');
+                const text = facetValue.textContent.toLowerCase();
+                const isMatch = text.includes(searchTerm);
+
+                // Remove previous highlights
+                facetValue.innerHTML = facetValue.textContent;
+
+                if (isMatch) {
+                    matchCount++;
+                    item.classList.remove('d-none');
+
+                    // Highlight search term
+                    if (searchTerm.length > 0) {
+                        const regex = new RegExp(`(${searchTerm})`, 'gi');
+                        facetValue.innerHTML = facetValue.textContent.replace(regex, '<span class="search-highlight">$1</span>');
+                    }
+                } else {
+                    item.classList.add('d-none');
+                }
+            });
+
+            // Show/hide no results message
+            if (searchTerm.length > 0 && matchCount === 0) {
+                noResultsMsg.classList.remove('d-none');
+            } else {
+                noResultsMsg.classList.add('d-none');
+            }
+
+            // Hide/show button when searching
+            if (showMoreButton) {
+                if (searchTerm.length > 0) {
+                    showMoreButton.style.display = 'none';
+                } else {
+                    // Reset to initial state when search is cleared
+                    const totalItems = parseInt(showMoreButton.dataset.total);
+
+                    // Hide items beyond first 10
+                    facetItems.forEach((item, index) => {
+                        if (index >= 10) {
+                            item.classList.add('d-none');
+                        }
+                    });
+
+                    // Reset button
+                    showMoreButton.dataset.visible = '10';
+                    const remaining = totalItems - 10;
+                    if (remaining > 0) {
+                        const showNext = Math.min(10, remaining);
+                        showMoreButton.innerHTML = `<i class="bi bi-chevron-down me-1"></i>Show ${showNext} more (<span class="remaining-count">${remaining}</span> remaining)`;
+                        showMoreButton.style.display = 'inline-block';
+                    } else {
+                        showMoreButton.style.display = 'none';
+                    }
+                }
+            }
+        });
+    });
+});
+</script>
