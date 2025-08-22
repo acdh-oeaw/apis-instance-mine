@@ -7,6 +7,7 @@ INSTALLED_APPS += ["django_interval"]
 INSTALLED_APPS += ["simple_history"]
 INSTALLED_APPS += ["sass_processor"]
 INSTALLED_APPS += ["mine_frontend"]
+INSTALLED_APPS += ["django.contrib.postgres"]
 
 ROOT_URLCONF = "apis_ontology.urls"
 
