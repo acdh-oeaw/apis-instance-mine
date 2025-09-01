@@ -8,7 +8,11 @@
                 {% elif edu.typ == "Schule" %}
                     (Abschluss {{ edu.beginn_date_sort|date:"Y" }})
                 {% else %}
-                    ({{ edu.beginn_date_sort|date:"Y" }} - {{ edu.ende_date_sort|date:"Y" }})
+                    {% if not edu.ende_date_sort %}
+                        (ab {{ edu.beginn_date_sort|date:"Y" }})
+                    {% else %}
+                        ({{ edu.beginn_date_sort|date:"Y" }} - {{ edu.ende_date_sort|date:"Y" }})
+                    {% endif %}
                 {% endif %}
             {% endif %}
         </li>
