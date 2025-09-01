@@ -1,20 +1,10 @@
+{% load mine_extras %}
 <ul class="ps-0 mb-0 list-unstyled">
     {% for edu in education %}
         <li class="fw-normal pb-1">
-            {{ edu.obj }}, {{ edu.typ }}
-            {% if edu.beginn_date_sort or edu.ende_date_sort %}
-                {% if edu.typ in types_single_date %}
-                    {% if edu.fach %}in {{ edu.fach }}{% endif %}
-                    ({{ edu.beginn_date_sort|date:"Y" }})
-                {% elif edu.typ == "Schule" %}
-                    (Abschluss {{ edu.beginn_date_sort|date:"Y" }})
-                {% else %}
-                    {% if not edu.ende_date_sort %}
-                        (ab {{ edu.beginn_date_sort|date:"Y" }})
-                    {% else %}
-                        ({{ edu.beginn_date_sort|date:"Y" }} - {{ edu.ende_date_sort|date:"Y" }})
-                    {% endif %}
-                {% endif %}
+            {{ edu.obj }}, {{ edu.typ }}{{ edu|fach }} {{ edu|mine_date }}
+            {% if edu.references %}
+                {% include 'mine_frontend/partials/tooltip_info.html' with text='{{ edu.references }}' %}
             {% endif %}
         </li>
     {% endfor %}

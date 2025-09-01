@@ -34,3 +34,32 @@ def caseklasse(value):
 @register.filter
 def class_name(instance):
     return instance._meta.verbose_name
+
+
+@register.filter
+def mine_date(value):
+    if value.beginn_date_sort or value.ende_date_sort:
+        if not value.ende_date_sort:
+            if hasattr(value, "typ"):
+                if value.typ == "Schule":
+                    return f"(Abschluss {value.beginn_date_sort.strftime('%Y')})"
+                elif value.typ in [
+                    "Habilitation",
+                    "Promotion",
+                    "Titel nostrifiziert von",
+                ]:
+                    return f"({value.beginn_date_sort.strftime('%Y')})"
+            return f"(ab {value.beginn_date_sort.strftime('%Y')})"
+        elif not value.beginn_date_sort:
+            return f"(bis {value.ende_date_sort.strftime('%Y')})"
+        else:
+            return f"({value.beginn_date_sort.strftime('%Y')} - {value.ende_date_sort.strftime('%Y')})"
+    return ""
+
+
+@register.filter
+def fach(value):
+    if hasattr(value, "fach"):
+        if value.typ in ["Promotion", "Habilitation"] and value.fach:
+            return f" in {value.fach}"
+    return ""
