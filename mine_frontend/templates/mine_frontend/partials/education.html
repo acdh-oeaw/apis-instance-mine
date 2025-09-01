@@ -3,7 +3,13 @@
         <li class="fw-normal pb-1">
             {{ edu.obj }}, {{ edu.typ }}
             {% if edu.beginn_date_sort or edu.ende_date_sort %}
-                ({{ edu.beginn_date_sort|date:"Y" }} - {{ edu.ende_date_sort|date:"Y" }})
+                {% if edu.typ in types_single_date %}
+                    ({{ edu.beginn_date_sort|date:"Y" }})
+                {% elif edu.typ == "Schule" %}
+                    (Abschluss {{ edu.beginn_date_sort|date:"Y" }})
+                {% else %}
+                    ({{ edu.beginn_date_sort|date:"Y" }} - {{ edu.ende_date_sort|date:"Y" }})
+                {% endif %}
             {% endif %}
         </li>
     {% endfor %}
