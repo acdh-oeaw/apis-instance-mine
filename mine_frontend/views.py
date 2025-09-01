@@ -4,7 +4,7 @@ import re
 from apis_core.apis_metainfo.models import Uri
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.expressions import ArraySubquery
-from django.db.models import OuterRef, Value
+from django.db.models import Case, OuterRef, Value, When
 from django.db.models.functions import Concat
 from django.views import generic
 from django.views.generic.base import TemplateView
@@ -75,7 +75,10 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         )
         context["education"] = AusbildungAn.objects.filter(
             subj_object_id=self.object.id
-        ).order_by("beginn_date_sort")
+        ).order_by(
+            Case(When(typ="Schule", then=Value(0)), default=Value(1)),
+            "beginn_date_sort",
+        )
         inst_akad = Institution.objects.filter(pk=OuterRef("obj_object_id"))
         career = (
             PositionAn.objects.filter(subj_object_id=self.object.id)
