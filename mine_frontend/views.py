@@ -127,7 +127,6 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         context["memb_akad"] = member.filter(_inst_kind="Akademie (Ausland)")
         context["nazi"] = member.filter(_inst_label__icontains="nationalsozialistisch")
         context["entity_type"] = "person"
-        context["types_single_date"] = ["Promotion", "Habilitation"]
 
         return context
 
