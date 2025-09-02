@@ -7,9 +7,9 @@
             </li>
         {% endfor %}
     </ul>
-    <hr>
 {% endif %}
 {% if career_akad.sek %}
+    <hr>
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.sek %}
             <li class="fw-normal pb-1">
@@ -17,9 +17,9 @@
             </li>
         {% endfor %}
     </ul>
-    <hr>
 {% endif %}
 {% if career_akad.obm %}
+    <hr>
     <b>Obmann/Obfrau</b> der folgenden Kommission(en):
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.obm %}
@@ -31,9 +31,9 @@
             </li>
         {% endfor %}
     </ul>
-    <hr>
 {% endif %}
 {% if career_akad.kom_mitgl %}
+    <hr>
     <b>Mitglied</b> der folgenden Kommissionen/Kuratorien:
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.kom_mitgl %}
@@ -45,5 +45,26 @@
             </li>
         {% endfor %}
     </ul>
+{% endif %}
+{% if career_akad.proposed_success %}
     <hr>
+    Hat zur Wahl erfolgreich <b>vorgeschlagen</b>:
+    <ul class="list-unstyled ps-0 mb-0">
+        {% for position in career_akad.proposed_success %}
+            <li class="fw-normal pb-1 ps-3">
+                {{ position.subj|mine_link }} als {{ position.mitgliedschaft }} der {{ position.obj.abbrv }} ({{ position.beginn_date_sort|date:"Y" }})
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% if career_akad.proposed_unsuccess %}
+    <hr>
+    Hat zur Wahl <b>nicht</b> erfolgreich <b>vorgeschlagen</b>:
+    <ul class="list-unstyled ps-0 mb-0">
+        {% for position in career_akad.proposed_unsuccess %}
+            <li class="fw-normal pb-1 ps-3">
+                {{ position.subj|mine_link }} als {{ position.mitgliedschaft }} der {{ position.obj.abbrv }} ({{ position.datum_date_sort|date:"Y" }})
+            </li>
+        {% endfor %}
+    </ul>
 {% endif %}

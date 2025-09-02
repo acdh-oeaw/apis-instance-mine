@@ -96,13 +96,24 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         kom_mitgl = career.exclude(_inst_akad=False).filter(
             position="Kommissionsmitglied"
         )
+        proposed_success = OeawMitgliedschaft.objects.filter(
+            vorgeschlagen_von=self.object.id
+        ).order_by("beginn_date_sort")
+        proposed_unsuccess = NichtGewaehlt.objects.filter(
+            vorgeschlagen_von=self.object.id
+        ).order_by("datum_date_sort")
 
-        if any(qs.exists() for qs in [pres, sek, obm, kom_mitgl]):
+        if any(
+            qs.exists()
+            for qs in [pres, sek, obm, kom_mitgl, proposed_success, proposed_unsuccess]
+        ):
             context["career_akad"] = {
                 "pres": pres,
                 "sek": sek,
                 "obm": obm,
                 "kom_mitgl": kom_mitgl,
+                "proposed_success": proposed_success,
+                "proposed_unsuccess": proposed_unsuccess,
             }
         else:
             context["career_akad"] = False

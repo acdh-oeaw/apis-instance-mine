@@ -429,6 +429,16 @@ class Institution(
     beginn = FuzzyDateParserField(blank=True)
     ende = FuzzyDateParserField(blank=True)
 
+    def abbrv(self):
+        match self.label.lower():
+            case "philosophisch-historische klasse":
+                return "phil.hist Klasse"
+            case "mathematisch-naturwissenschaftliche klasse":
+                return "math.nat Klasse"
+            case "gesamtakademie":
+                return "Gesamtakademie"
+        return self.label
+
     class Meta(VersionMixin.Meta, E74_Group.Meta, AbstractEntity.Meta):
         verbose_name = "Institution"
         verbose_name_plural = "Institutionen"

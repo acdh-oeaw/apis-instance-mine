@@ -7,6 +7,9 @@ register = template.Library()
 
 @register.filter()
 def mine_link(value):
+    if hasattr(value, "mitglied"):
+        if value.mitglied:
+            return mark_safe(f'<a href="/person/{value.pk}">{value}</a>')
     if hasattr(value, "akademie_institution"):
         if value.akademie_institution:
             return mark_safe(f'<a href="/institution/{value.pk}">{value}</a>')
