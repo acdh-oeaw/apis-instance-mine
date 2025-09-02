@@ -13,10 +13,10 @@
 {% endblock %}
 {% block right_tab %}
     {% if education %}
-        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Ausbildung' content_partial='mine_frontend/partials/education.html' %}
+        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Ausbildung' tooltip='Daten laut Selbstbiographie Akademiearchiv' content_partial='mine_frontend/partials/education.html' %}
     {% endif %}
     {% if career %}
-        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Berufslaufbahn' content_partial='mine_frontend/partials/career.html' %}
+        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Berufslaufbahn' tooltip='Daten laut Selbstbiographie Akademiearchiv' content_partial='mine_frontend/partials/career.html' %}
     {% endif %}
     {% if membership %}
         {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Wahl und Mitgliedschaft' content_partial='mine_frontend/partials/memberships_long.html' %}

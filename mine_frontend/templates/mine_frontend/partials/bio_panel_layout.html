@@ -7,7 +7,10 @@
                     data-bs-target="#{{ title | cut:' ' }}"
                     aria-expanded="true"
                     aria-controls="{{ title | cut:' ' }}">
-                <b>{{ title }}</b>
+                <b data-bs-toggle="tooltip"
+                   data-bs-placement="top"
+                   data-bs-custom-class="mine-info-tooltip"
+                   title="{{ tooltip }}">{{ title }}</b>
                 <i class="chevron-up" data-feather="chevron-up"></i>
             </button>
         </h5>
