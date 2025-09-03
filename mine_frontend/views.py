@@ -26,6 +26,7 @@ from apis_ontology.models import (
     OeawMitgliedschaft,
     Person,
     PositionAn,
+    Werk,
 )
 from mine_frontend.forms import MineMainform
 from mine_frontend.mixins import FacetedSearchMixin
@@ -85,7 +86,10 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         inst_akad = Institution.objects.filter(pk=OuterRef("obj_object_id"))
         career = (
             PositionAn.objects.filter(subj_object_id=self.object.id)
-            .annotate(_inst_akad=inst_akad.values("akademie_institution"))
+            .annotate(
+                _inst_akad=inst_akad.values("akademie_institution"),
+                _inst_typ=inst_akad.values("typ"),
+            )
             .order_by("beginn_date_sort")
         )
         context["career"] = career.exclude(_inst_akad=True)
@@ -105,10 +109,19 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         proposed_unsuccess = NichtGewaehlt.objects.filter(
             vorgeschlagen_von=self.object.id
         ).order_by("datum_date_sort")
+        delegations = career.filter(_inst_typ="Delegation")
 
         if any(
             qs.exists()
-            for qs in [pres, sek, obm, kom_mitgl, proposed_success, proposed_unsuccess]
+            for qs in [
+                pres,
+                sek,
+                obm,
+                kom_mitgl,
+                proposed_success,
+                proposed_unsuccess,
+                delegations,
+            ]
         ):
             context["career_akad"] = {
                 "pres": pres,
@@ -117,6 +130,7 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
                 "kom_mitgl": kom_mitgl,
                 "proposed_success": proposed_success,
                 "proposed_unsuccess": proposed_unsuccess,
+                "delegations": delegations,
             }
         else:
             context["career_akad"] = False
@@ -140,16 +154,21 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         )
         context["memb_akad"] = member.filter(_inst_kind="Akademie (Ausland)")
         context["nazi"] = member.filter(_inst_label__icontains="nationalsozialistisch")
-        aut_nekro_pre = AutorVon.objects.filter(subj_object_id=self.object.id).values(
-            "obj_object_id"
+        nekrolog = Werk.objects.filter(pk=OuterRef("obj_object_id"))
+        aut_nekro_pre = (
+            AutorVon.objects.filter(subj_object_id=self.object.id)
+            .annotate(_title=nekrolog.values("titel"))
+            .values("obj_object_id")
+            .filter(_title__icontains="nekrolog")
         )
         context["nekrologe_verfasst"] = ErwaehntIn.objects.filter(
             obj_object_id__in=aut_nekro_pre
         )
         own_nekro_pre = AutorVon.objects.filter(
-            obj_object_id__in=ErwaehntIn.objects.filter(
-                subj_object_id=self.object.id
-            ).values("obj_object_id")
+            obj_object_id__in=ErwaehntIn.objects.filter(subj_object_id=self.object.id)
+            .annotate(_title=nekrolog.values("titel"))
+            .filter(_title__icontains="nekrolog")
+            .values("obj_object_id")
         )
         if own_nekro_pre.exists():
             context["own_nekro"] = own_nekro_pre.first()

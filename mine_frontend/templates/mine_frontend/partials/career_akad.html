@@ -68,3 +68,17 @@
         {% endfor %}
     </ul>
 {% endif %}
+{% if career_akad.delegations %}
+    <hr>
+    <b>Mitglied</b> in folgenden Delegationen:
+    <ul class="list-unstyled ps-0 mb-0">
+        {% for position in career_akad.delegations %}
+            <li class="fw-normal pb-1 ps-3">
+                {{ position.obj|mine_link }}
+                {% if position.beginn_date_sort or position.ende_date_sort %}
+                    ({{ position.beginn_date_sort|date:"Y" }} - {{ position.ende_date_sort|date:"Y" }})
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
