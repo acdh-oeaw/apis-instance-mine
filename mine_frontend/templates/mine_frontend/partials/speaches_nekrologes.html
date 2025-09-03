@@ -1,0 +1,34 @@
+{% load mine_extras %}
+{% if speaches %}
+    Hat Reden auf folgenden Veranstaltungen gehalten:
+    <ul class="ps-0 mb-0 list-unstyled">
+        {% for speach in speaches %}
+            <li class="fw-normal pb-1">
+                {{ speach.obj }}
+                {% if speach.obj.datum %}({{ speach.obj.datum_date_sort|date:"Y" }}){% endif %}
+                {% if speach.references %}
+                    {% include 'mine_frontend/partials/tooltip_info.html' with text='{{ speach.references }}' %}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% if nekrologe_verfasst %}
+    {% if speaches %}<hr>{% endif %}
+    Hat Nachrufe für folgende Mitglieder verfasst:
+    <ul class="ps-0 mb-0 list-unstyled">
+        {% for nekro in nekrologe_verfasst %}
+            <li class="fw-normal pb-1">
+                {{ nekro.subj|mine_link }}
+                {% if nekro.obj.datum %}({{ nekro.obj.datum_date_sort|date:"Y" }}){% endif %}
+                {% if edu.references %}
+                    {% include 'mine_frontend/partials/tooltip_info.html' with text='{{ edu.references }}' %}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% if own_nekro %}
+    <hr>
+    <p>Der Nachruf auf {{ oeaw_member }} wurde von {{ own_nekro.subj|mine_link }} verfasst</p>
+{% endif %}

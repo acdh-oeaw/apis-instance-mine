@@ -219,7 +219,7 @@ class Ereignis(
     datum = FuzzyDateParserField(blank=True)
 
     def __str__(self):
-        return f"{self.name} ({self.pk})"
+        return f"{self.name}"
 
     class Meta(
         VersionMixin.Meta, AbstractEntity.Meta, NameMixin.Meta, LegacyFieldsMixin.Meta

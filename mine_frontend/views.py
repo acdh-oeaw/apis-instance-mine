@@ -12,10 +12,13 @@ from django_tables2.views import SingleTableView
 
 from apis_ontology.models import (
     AusbildungAn,
+    AutorVon,
     Bild,
+    ErwaehntIn,
     GeborenIn,
     GestorbenIn,
     Gewinnt,
+    HaeltRedeBei,
     Institution,
     InstitutionHierarchie,
     Mitglied,
@@ -137,6 +140,20 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         )
         context["memb_akad"] = member.filter(_inst_kind="Akademie (Ausland)")
         context["nazi"] = member.filter(_inst_label__icontains="nationalsozialistisch")
+        aut_nekro_pre = AutorVon.objects.filter(subj_object_id=self.object.id).values(
+            "obj_object_id"
+        )
+        context["nekrologe_verfasst"] = ErwaehntIn.objects.filter(
+            obj_object_id__in=aut_nekro_pre
+        )
+        own_nekro_pre = AutorVon.objects.filter(
+            obj_object_id__in=ErwaehntIn.objects.filter(
+                subj_object_id=self.object.id
+            ).values("obj_object_id")
+        )
+        if own_nekro_pre.exists():
+            context["own_nekro"] = own_nekro_pre.first()
+        context["speaches"] = HaeltRedeBei.objects.filter(subj_object_id=self.object.id)
         context["entity_type"] = "person"
 
         return context
