@@ -6,7 +6,7 @@
             {{ position.obj|mine_link }}
             {{ position|mine_date }}
             {% if position.references %}
-                {% include 'mine_frontend/partials/tooltip_info.html' with text='{{ position.references }}' %}
+                {% include 'mine_frontend/partials/tooltip_info.html' with text=position.references %}
             {% endif %}
         </li>
     {% endfor %}

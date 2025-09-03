@@ -4,7 +4,7 @@
         <li class="fw-normal pb-1">
             {{ edu.obj }}, {{ edu.typ }}{{ edu|fach }} {{ edu|mine_date }}
             {% if edu.references %}
-                {% include 'mine_frontend/partials/tooltip_info.html' with text='{{ edu.references }}' %}
+                {% include 'mine_frontend/partials/tooltip_info.html' with text=edu.references %}
             {% endif %}
         </li>
     {% endfor %}
