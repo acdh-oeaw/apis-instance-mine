@@ -7,7 +7,7 @@
                 {{ speach.obj }}
                 {% if speach.obj.datum %}({{ speach.obj.datum_date_sort|date:"Y" }}){% endif %}
                 {% if speach.references %}
-                    {% include 'mine_frontend/partials/tooltip_info.html' with text='{{ speach.references }}' %}
+                    {% include 'mine_frontend/partials/tooltip_info.html' with text=speach.references %}
                 {% endif %}
             </li>
         {% endfor %}
@@ -21,8 +21,8 @@
             <li class="fw-normal pb-1">
                 {{ nekro.subj|mine_link }}
                 {% if nekro.obj.datum %}({{ nekro.obj.datum_date_sort|date:"Y" }}){% endif %}
-                {% if edu.references %}
-                    {% include 'mine_frontend/partials/tooltip_info.html' with text='{{ edu.references }}' %}
+                {% if nekro.references %}
+                    {% include 'mine_frontend/partials/tooltip_info.html' with text=nekro.references %}
                 {% endif %}
             </li>
         {% endfor %}
