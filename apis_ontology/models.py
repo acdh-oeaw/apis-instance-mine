@@ -266,8 +266,28 @@ class Werk(
     LegacyFieldsMixin,
     AlternativeNameMixin,
 ):
+    TYP_CHOICES = [
+        ("Buch", "Buch"),
+        ("Zeitschrift", "Zeitschrift"),
+        ("Zeitschriftenartikel", "Zeitschriftenartikel"),
+        ("Monographie", "Monographie"),
+        ("Konferenzband", "Konferenzband"),
+        ("Konferenzbeitrag", "Konferenzbeitrag"),
+        ("Dissertation", "Dissertation"),
+        ("Habilitation", "Habilitation"),
+        ("Patent", "Patent"),
+        ("Nekrolog", "Nekrolog"),
+        ("Sonstiges", "Sonstiges"),
+    ]
     titel = models.CharField(max_length=400)
     bibtex = models.TextField(blank=True)
+    typ = models.CharField(
+        max_length=100,
+        choices=TYP_CHOICES,
+        default="Sonstiges",
+        blank=True,
+        help_text="Art des Werks",
+    )
 
     class Meta(VersionMixin.Meta, AbstractEntity.Meta):
         verbose_name = _("Werk")
@@ -1115,8 +1135,16 @@ class AutorVon(Relation, VersionMixin, LegacyFieldsMixin):
 
 
 class ErwaehntIn(Relation, VersionMixin, LegacyFieldsMixin):
+    TYP_CHOICES = (("erwähnt", "erwähnt"), ("behandelt", "behandelt"))
     subj_model = Person
     obj_model = Werk
+    typ = models.CharField(
+        max_length=100,
+        choices=TYP_CHOICES,
+        default="erwähnt",
+        blank=True,
+        help_text="Art der Erwähnung",
+    )
 
     @classmethod
     def name(cls) -> str:
