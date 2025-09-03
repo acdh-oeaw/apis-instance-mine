@@ -5,7 +5,7 @@ from apis_core.apis_metainfo.models import Uri
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.expressions import ArraySubquery
 from django.db.models import Case, OuterRef, Value, When
-from django.db.models.functions import Concat
+from django.db.models.functions import Concat, Lower
 from django.views import generic
 from django.views.generic.base import TemplateView
 from django_tables2.views import SingleTableView
@@ -89,19 +89,46 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
             .annotate(
                 _inst_akad=inst_akad.values("akademie_institution"),
                 _inst_typ=inst_akad.values("typ"),
+                _inst_name=Lower(inst_akad.values("label")),
             )
             .order_by("beginn_date_sort")
         )
         context["career"] = career.exclude(_inst_akad=True)
         context["career_akad"] = {}
 
-        pres = career.exclude(_inst_akad=False).filter(position="Präsident(in)")
-        sek = career.exclude(_inst_akad=False).filter(position="Sekretär(in)")
+        pres = career.exclude(_inst_akad=False).filter(
+            position="Präsident(in)",
+            _inst_name__in=[
+                "gesamtakademie",
+                "junge akademie",
+                "junge kurie",
+                "mathematisch-naturwissenschaftliche klasse",
+                "philosophisch-historische klasse",
+            ],
+        )
+        sek = career.exclude(_inst_akad=False).filter(
+            position="Sekretär(in)",
+            _inst_name__in=[
+                "gesamtakademie",
+                "junge akademie",
+                "junge kurie",
+                "mathematisch-naturwissenschaftliche klasse",
+                "philosophisch-historische klasse",
+            ],
+        )
         obm = career.exclude(_inst_akad=False).filter(
             position="Obmann/Obfrau (Kommission)"
         )
         kom_mitgl = career.exclude(_inst_akad=False).filter(
             position="Kommissionsmitglied"
+        )
+        pos_other_inst = (
+            career.exclude(_inst_akad=False)
+            .exclude(position="Sekretär(in)")
+            .exclude(position="Präsident(in)")
+            .exclude(position="Vizepräsident(in)")
+            .exclude(position="Kommissionsmitglied")
+            .exclude(position="Obmann/Obfrau (Kommission)")
         )
         proposed_success = OeawMitgliedschaft.objects.filter(
             vorgeschlagen_von=self.object.id
@@ -121,6 +148,7 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
                 proposed_success,
                 proposed_unsuccess,
                 delegations,
+                pos_other_inst,
             ]
         ):
             context["career_akad"] = {
@@ -128,6 +156,7 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
                 "sek": sek,
                 "obm": obm,
                 "kom_mitgl": kom_mitgl,
+                "pos_other_inst": pos_other_inst,
                 "proposed_success": proposed_success,
                 "proposed_unsuccess": proposed_unsuccess,
                 "delegations": delegations,

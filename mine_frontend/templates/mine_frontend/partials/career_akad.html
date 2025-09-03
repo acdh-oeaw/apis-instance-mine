@@ -9,7 +9,7 @@
     </ul>
 {% endif %}
 {% if career_akad.sek %}
-    <hr>
+    {% if career_akad.pres %}<hr>{% endif %}
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.sek %}
             <li class="fw-normal pb-1">
@@ -19,35 +19,34 @@
     </ul>
 {% endif %}
 {% if career_akad.obm %}
-    <hr>
+    {% if career_akad.pres or career_akad.sek %}<hr>{% endif %}
     <b>Obmann/Obfrau</b> der folgenden Kommission(en):
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.obm %}
-            <li class="fw-normal pb-1 ps-3">
-                {{ position.obj|mine_link }}
-                {% if position.beginn_date_sort or position.ende_date_sort %}
-                    ({{ position.beginn_date_sort|date:"Y" }} - {{ position.ende_date_sort|date:"Y" }})
-                {% endif %}
-            </li>
+            <li class="fw-normal pb-1 ps-3">{{ position.obj|mine_link }} {{ position|mine_date }}</li>
         {% endfor %}
     </ul>
 {% endif %}
 {% if career_akad.kom_mitgl %}
-    <hr>
+    {% if career_akad.pres or career_akad.sek or career_akad.obm %}<hr>{% endif %}
     <b>Mitglied</b> der folgenden Kommissionen/Kuratorien:
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.kom_mitgl %}
-            <li class="fw-normal pb-1 ps-3">
-                {{ position.obj|mine_link }}
-                {% if position.beginn_date_sort or position.ende_date_sort %}
-                    ({{ position.beginn_date_sort|date:"Y" }} - {{ position.ende_date_sort|date:"Y" }})
-                {% endif %}
-            </li>
+            <li class="fw-normal pb-1 ps-3">{{ position.obj|mine_link }} {{ position|mine_date }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% if career_akad.pos_other_inst %}
+    {% if career_akad.pres or career_akad.sek or career_akad.obm %}<hr>{% endif %}
+    <b>Leitende Position</b> an folgenden Institutionen:
+    <ul class="list-unstyled ps-0 mb-0">
+        {% for position in career_akad.pos_other_inst %}
+            <li class="fw-normal pb-1 ps-3">{{ position.position }}, {{ position.obj|mine_link }} {{ position|mine_date }}</li>
         {% endfor %}
     </ul>
 {% endif %}
 {% if career_akad.proposed_success %}
-    <hr>
+    {% if career_akad.pres or career_akad.sek or career_akad.obm or career_akad.kom_mitgl %}<hr>{% endif %}
     Hat zur Wahl erfolgreich <b>vorgeschlagen</b>:
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.proposed_success %}
