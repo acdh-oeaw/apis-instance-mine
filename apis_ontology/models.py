@@ -1238,6 +1238,8 @@ class AusbildungAn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDates
             rel.typ = "Schule"
         elif voc[0]["id"] == 1369:
             rel.typ = "Studium"
+        elif voc[0]["id"] == 1371:
+            rel.typ = "Studienaufenthalt"
         else:
             rel.typ = voc[-1]["name"]
             logger.warning(f"Unknown relation type {voc[0]['id']} for AusbildungAn")
