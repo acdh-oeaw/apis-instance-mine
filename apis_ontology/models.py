@@ -318,7 +318,7 @@ class Bild(GenericModel, models.Model):
     @classmethod
     def create_from_legacy_data(cls, obj, data, data_full):
         data_fin = {
-            "pfad": data["label"],
+            "pfad": data["label"].replace("http://", "https://"),
             "content_object": obj,
             "art": "Wikimedia",
         }
