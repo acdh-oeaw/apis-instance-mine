@@ -530,6 +530,14 @@ class Werk(
     def __str__(self):
         return self.titel
 
+    @classmethod
+    def create_from_legacy_data(cls, data, logger):
+        obj = super().create_from_legacy_data(data, logger)
+        if "nekrolog" in str(obj.titel).lower():
+            obj.typ = "Nekrolog"
+            obj.save()
+        return obj
+
 
 class Person(
     VersionMixin,
@@ -1866,7 +1874,7 @@ class AutorVon(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataBaseMixin
         verbose_name_plural = _("AutorIn von")
 
 
-class ErwaehntIn(Relation, VersionMixin, LegacyFieldsMixin):
+class ErwaehntIn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataBaseMixin):
     SUBJ_ID_OLD = "related_person"
     OBJ_ID_OLD = "related_work"
     TYP_CHOICES = (("erwähnt", "erwähnt"), ("behandelt", "behandelt"))
@@ -1891,6 +1899,14 @@ class ErwaehntIn(Relation, VersionMixin, LegacyFieldsMixin):
     class Meta(LegacyFieldsMixin.Meta):
         verbose_name = _("erwähnt in")
         verbose_name_plural = _("erwähnt in")
+
+    @classmethod
+    def create_from_legacy_data(cls, data, logger):
+        obj = super().create_from_legacy_data(data, logger)
+        if "nekrolog" in str(obj.obj.titel).lower():
+            obj.typ = "behandelt"
+            obj.save()
+        return obj
 
 
 class FindetStattIn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataBaseMixin):
