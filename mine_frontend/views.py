@@ -129,6 +129,7 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
             .exclude(position="Vizepräsident(in)")
             .exclude(position="Kommissionsmitglied")
             .exclude(position="Obmann/Obfrau (Kommission)")
+            .exclude(position="Delegierte(r)")
         )
         proposed_success = OeawMitgliedschaft.objects.filter(
             vorgeschlagen_von=self.object.id
