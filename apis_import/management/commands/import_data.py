@@ -67,6 +67,11 @@ def import_person(id: int, voc_file: dict) -> Person:
     return person
 
 
+def post_import_fixes():
+    for uri in Uri.objects.filter(uri__contains="example"):
+        uri.delete()
+
+
 class Command(BaseCommand):
     help = "Import a person from the APIS API by ID"
 
