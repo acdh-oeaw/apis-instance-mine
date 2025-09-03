@@ -1,23 +1,21 @@
-<div class="card mt-2 mb-4 rounded-0">
-    <div class="card-header p-0 bg-white" id="heading{{ title }}">
-        <h5 class="mb-0">
-            <button type="button"
-                    class="btn btn-link text-decoration-none collapsebtn w-100 text-start collapsed show p-0 ps-1 text-09"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#{{ title | cut:' ' }}"
-                    aria-expanded="true"
-                    aria-controls="{{ title | cut:' ' }}">
-                <b data-bs-toggle="tooltip"
-                   data-bs-placement="top"
-                   data-bs-custom-class="mine-info-tooltip"
-                   title="{{ tooltip }}">{{ title }}</b>
-                <i class="chevron-up" data-feather="chevron-up"></i>
-            </button>
-        </h5>
-    </div>
+<div class="accordion-item mt-2 mb-4">
+    <h5 class="accordion-header" id="heading{{ title }}">
+        <button class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#{{ title | cut:' ' }}"
+                aria-expanded="false"
+                aria-controls="{{ title | cut:' ' }}">
+            <b data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               data-bs-custom-class="mine-info-tooltip"
+               title="{{ tooltip }}">{{ title }}</b>
+        </button>
+    </h5>
     <div id="{{ title | cut:' ' }}"
-         class="collapse"
-         aria-labelledby="heading{{ title | cut:' ' }}">
-        <div class="card-body p-2 ps-3 pe-3 show-limited-number text-09">{% include content_partial %}</div>
+         class="accordion-collapse collapse"
+         aria-labelledby="heading{{ title | cut:' ' }}"
+         data-bs-parent="#{{ accordion_id|default:"bioAccordion" }}">
+        <div class="accordion-body p-2 ps-3 pe-3">{% include content_partial %}</div>
     </div>
 </div>

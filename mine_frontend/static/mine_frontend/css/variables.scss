@@ -90,6 +90,12 @@ $form-select-focus-box-shadow: none;
 $nav-tabs-link-active-bg: $mine-bg;
 $nav-tabs-link-hover-border-color: transparent;
 
+$accordion-button-color: $body-color;
+$accordion-button-bg: $mine-bg;
+$accordion-bg: $mine-lighter;
+$accordion-border-width: 0px;
+$accordion-button-active-bg: rgba($oeaw-blue, 0.3);
+
 // Dropdown
 $dropdown-padding-y: 0.15rem;
 $dropdown-item-padding-x: 0.75rem;

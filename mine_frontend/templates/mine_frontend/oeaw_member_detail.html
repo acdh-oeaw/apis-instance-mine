@@ -12,28 +12,30 @@
     {% include "mine_frontend/partials/section_downloads.html" with type='person' %}
 {% endblock %}
 {% block right_tab %}
-    {% if education %}
-        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Ausbildung' tooltip='Daten laut Selbstbiographie Akademiearchiv' content_partial='mine_frontend/partials/education.html' %}
-    {% endif %}
-    {% if career %}
-        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Berufslaufbahn' tooltip='Daten laut Selbstbiographie Akademiearchiv' content_partial='mine_frontend/partials/career.html' %}
-    {% endif %}
-    {% if membership %}
-        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Wahl und Mitgliedschaft' content_partial='mine_frontend/partials/memberships_long.html' %}
-    {% endif %}
-    {% if career_akad %}
-        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Funktionen in der Akademie' content_partial='mine_frontend/partials/career_akad.html' %}
-    {% endif %}
-    {% if nekrologe_verfasst %}
-        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Reden und Nachrufe in der Akademie' content_partial='mine_frontend/partials/speaches_nekrologes.html' %}
-    {% endif %}
-    {% if memb_akad %}
-        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitgliedschaften in anderen Akademien' content_partial='mine_frontend/partials/memb_akad_other.html' %}
-    {% endif %}
-    {% if prizes %}
-        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Auszeichnungen und Preisaufgaben' content_partial='mine_frontend/partials/prizes.html' %}
-    {% endif %}
-    {% if nazi %}
-        {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitglied in einer nationalsozialistischen Vereinigung' content_partial='mine_frontend/partials/memb_nationalsozialistisch.html' %}
-    {% endif %}
+    <div class="accordion" id="bioAccordion">
+        {% if education %}
+            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Ausbildung' tooltip='Daten laut Selbstbiographie Akademiearchiv' content_partial='mine_frontend/partials/education.html' %}
+        {% endif %}
+        {% if career %}
+            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Berufslaufbahn' tooltip='Daten laut Selbstbiographie Akademiearchiv' content_partial='mine_frontend/partials/career.html' %}
+        {% endif %}
+        {% if membership %}
+            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Wahl und Mitgliedschaft' content_partial='mine_frontend/partials/memberships_long.html' %}
+        {% endif %}
+        {% if career_akad %}
+            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Funktionen in der Akademie' content_partial='mine_frontend/partials/career_akad.html' %}
+        {% endif %}
+        {% if nekrologe_verfasst %}
+            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Reden und Nachrufe in der Akademie' content_partial='mine_frontend/partials/speaches_nekrologes.html' %}
+        {% endif %}
+        {% if memb_akad %}
+            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitgliedschaften in anderen Akademien' content_partial='mine_frontend/partials/memb_akad_other.html' %}
+        {% endif %}
+        {% if prizes %}
+            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Auszeichnungen und Preisaufgaben' content_partial='mine_frontend/partials/prizes.html' %}
+        {% endif %}
+        {% if nazi %}
+            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitglied in einer nationalsozialistischen Vereinigung' content_partial='mine_frontend/partials/memb_nationalsozialistisch.html' %}
+        {% endif %}
+    </div>
 {% endblock %}
