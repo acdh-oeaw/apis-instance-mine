@@ -4,7 +4,7 @@
         <li class="fw-normal pb-1">
             <!-- djlint:off -->{{ position.position }}{% if position.fach %} für {{ position.fach }}{% endif %}:<!-- djlint:on -->
             {{ position.obj|mine_link }}
-            {{ position|mine_date }}
+            {{ position|mine_date:"()" }}
             {% if position.references %}
                 {% include 'mine_frontend/partials/tooltip_info.html' with text=position.references %}
             {% endif %}

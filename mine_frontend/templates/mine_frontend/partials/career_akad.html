@@ -23,7 +23,7 @@
     <b>Obmann/Obfrau</b> der folgenden Kommission(en):
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.obm %}
-            <li class="fw-normal pb-1 ps-3">{{ position.obj|mine_link }} {{ position|mine_date }}</li>
+            <li class="fw-normal pb-1 ps-3">{{ position.obj|mine_link }} {{ position|mine_date:"()" }}</li>
         {% endfor %}
     </ul>
 {% endif %}
@@ -32,7 +32,7 @@
     <b>Mitglied</b> der folgenden Kommissionen/Kuratorien:
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.kom_mitgl %}
-            <li class="fw-normal pb-1 ps-3">{{ position.obj|mine_link }} {{ position|mine_date }}</li>
+            <li class="fw-normal pb-1 ps-3">{{ position.obj|mine_link }} {{ position|mine_date:"()" }}</li>
         {% endfor %}
     </ul>
 {% endif %}
@@ -41,7 +41,9 @@
     <b>Leitende Position</b> an folgenden Institutionen:
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.pos_other_inst %}
-            <li class="fw-normal pb-1 ps-3">{{ position.position }}, {{ position.obj|mine_link }} {{ position|mine_date }}</li>
+            <li class="fw-normal pb-1 ps-3">
+                {{ position.position }}, {{ position.obj|mine_link }} {{ position|mine_date:"()" }}
+            </li>
         {% endfor %}
     </ul>
 {% endif %}

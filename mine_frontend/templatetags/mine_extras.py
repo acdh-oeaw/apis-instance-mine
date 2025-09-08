@@ -40,24 +40,32 @@ def class_name(instance):
 
 
 @register.filter
-def mine_date(value):
-    if value.beginn_date_sort or value.ende_date_sort:
+def mine_date(value, brackets=False):
+    res = ""
+    if hasattr(value, "datum"):
+        if value.datum_date_sort:
+            res = value.datum_date_sort.strftime("%Y")
+        else:
+            res = value.datum
+    if hasattr(value, "beginn") and (value.beginn_date_sort or value.ende_date_sort):
         if not value.ende_date_sort:
             if hasattr(value, "typ"):
                 if value.typ == "Schule":
-                    return f"(Abschluss {value.beginn_date_sort.strftime('%Y')})"
+                    res = f"Abschluss {value.beginn_date_sort.strftime('%Y')}"
                 elif value.typ in [
                     "Habilitation",
                     "Promotion",
                     "Titel nostrifiziert von",
                 ]:
-                    return f"({value.beginn_date_sort.strftime('%Y')})"
-            return f"(ab {value.beginn_date_sort.strftime('%Y')})"
+                    res = f"{value.beginn_date_sort.strftime('%Y')}"
+            res = f"ab {value.beginn_date_sort.strftime('%Y')}"
         elif not value.beginn_date_sort:
-            return f"(bis {value.ende_date_sort.strftime('%Y')})"
+            res = f"bis {value.ende_date_sort.strftime('%Y')}"
         else:
-            return f"({value.beginn_date_sort.strftime('%Y')} - {value.ende_date_sort.strftime('%Y')})"
-    return ""
+            res = f"{value.beginn_date_sort.strftime('%Y')} - {value.ende_date_sort.strftime('%Y')}"
+    if brackets and res:
+        res = f"{brackets[0]}{res}{brackets[1]}"
+    return res
 
 
 @register.filter

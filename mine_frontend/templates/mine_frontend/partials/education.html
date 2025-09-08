@@ -2,7 +2,7 @@
 <ul class="ps-0 mb-0 list-unstyled">
     {% for edu in education %}
         <li class="fw-normal pb-1">
-            {{ edu.obj|mine_link }}, {{ edu.typ }}{{ edu|fach }} {{ edu|mine_date }}
+            {{ edu.obj|mine_link }}, {{ edu.typ }}{{ edu|fach }} {{ edu|mine_date:"()" }}
             {% if edu.references %}
                 {% include 'mine_frontend/partials/tooltip_info.html' with text=edu.references %}
             {% endif %}
