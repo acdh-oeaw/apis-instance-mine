@@ -35,7 +35,7 @@
             {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Auszeichnungen und Preisaufgaben' content_partial='mine_frontend/partials/prizes.html' %}
         {% endif %}
         {% if nazi %}
-            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitglied in einer nationalsozialistischen Vereinigung' content_partial='mine_frontend/partials/memb_nationalsozialistisch.html' %}
+            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitglied in einer nationalsozialistischen Vereinigung' content_partial='mine_frontend/partials/memb_nationalsozialistisch.html' tooltip='Daten zu nationalsozialistischen Vereinigungen nicht systematisch erhoben' %}
         {% endif %}
     </div>
 {% endblock %}
