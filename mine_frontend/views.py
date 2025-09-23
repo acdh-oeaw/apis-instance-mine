@@ -14,6 +14,7 @@ from apis_ontology.models import (
     AusbildungAn,
     AutorVon,
     Bild,
+    EhrentitelVonInstitution,
     ErwaehntIn,
     GeborenIn,
     GestorbenIn,
@@ -82,6 +83,9 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         ).order_by(
             Case(When(typ="Schule", then=Value(0)), default=Value(1)),
             "beginn_date_sort",
+        )
+        context["honour_titles"] = EhrentitelVonInstitution.objects.filter(
+            subj_object_id=self.object.id
         )
         inst_akad = Institution.objects.filter(pk=OuterRef("obj_object_id"))
         career = (
