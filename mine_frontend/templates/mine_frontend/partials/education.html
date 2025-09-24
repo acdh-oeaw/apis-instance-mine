@@ -9,16 +9,3 @@
         </li>
     {% endfor %}
 </ul>
-{% if honour_titles %}
-    <hr>
-    <ul class="ps-0 mb-0 list-unstyled">
-        {% for title in honour_titles %}
-            <li class="fw-normal pb-1">
-                {{ title.titel|default:"Ehrentitel" }} von {{ title.obj|mine_link }} {{ title|mine_date:"()" }}
-                {% if title.references %}
-                    {% include 'mine_frontend/partials/tooltip_info.html' with text=title.references %}
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-{% endif %}
