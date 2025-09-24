@@ -31,7 +31,7 @@
         {% if memb_akad %}
             {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitgliedschaften in anderen Akademien' content_partial='mine_frontend/partials/memb_akad_other.html' %}
         {% endif %}
-        {% if prizes %}
+        {% if prizes or honour_titles %}
             {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Auszeichnungen und Preisaufgaben' content_partial='mine_frontend/partials/prizes.html' %}
         {% endif %}
         {% if nazi %}
