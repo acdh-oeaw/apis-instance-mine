@@ -32,7 +32,7 @@
             {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitgliedschaften in anderen Akademien' tooltip='Daten laut Selbstbiographie Akademiearchiv' content_partial='mine_frontend/partials/memb_akad_other.html' %}
         {% endif %}
         {% if prizes or honour_titles %}
-            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Auszeichnungen und Preisaufgaben' content_partial='mine_frontend/partials/prizes.html' %}
+            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Auszeichnungen und Preisaufgaben' tooltip='Auswahl' content_partial='mine_frontend/partials/prizes.html' %}
         {% endif %}
         {% if nazi %}
             {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitglied in einer nationalsozialistischen Vereinigung' content_partial='mine_frontend/partials/memb_nationalsozialistisch.html' tooltip='Daten zu nationalsozialistischen Vereinigungen nicht systematisch erhoben' %}
