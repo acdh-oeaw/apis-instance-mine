@@ -5,7 +5,9 @@
     {% include "mine_frontend/partials/inst_title.html" %}
     {% include "mine_frontend/partials/inst_sub_short.html" %}
     {% include "mine_frontend/partials/inst_timeframe.html" %}
-    {% include "mine_frontend/partials/inst_structure.html" %}
+    {% if structure %}
+        {% include "mine_frontend/partials/inst_structure.html" %}
+    {% endif %}
 {% endblock %}
 {% block right_tab %}
     <div class="accordion" id="institutionAccordion">
