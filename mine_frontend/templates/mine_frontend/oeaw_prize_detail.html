@@ -1,0 +1,20 @@
+{% extends "mine_frontend/oeaw_entity_detail.html" %}
+{% load static %}
+{% load mine_extras %}
+{% block left_tab %}
+    {% include "mine_frontend/partials/prize_title.html" %}
+    {% include "mine_frontend/partials/prize_timeframe.html" %}
+    {% if awarded_by %}
+        {% include "mine_frontend/partials/prize_awarded_by.html" %}
+    {% endif %}
+    {% if structure %}
+        {% include "mine_frontend/partials/inst_structure.html" %}
+    {% endif %}
+{% endblock %}
+{% block right_tab %}
+    <div class="accordion" id="institutionAccordion">
+        {% if laureates %}
+            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='PreisträgerInnen' content_partial='mine_frontend/partials/prize_laureates.html' accordion_id='institutionAccordion' %}
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% load mine_extras %}
+<div class="card-body p-2 ps-3 pe-3 show-limited-number text-09">
+    <ul class="ps-0 mb-0 list-unstyled">
+        {% for ent in laureates %}
+            <li class="fw-normal pb-1">{{ ent.subj|mine_link }} {{ ent|mine_date:"()" }}</li>
+        {% endfor %}
+    </ul>
+</div>

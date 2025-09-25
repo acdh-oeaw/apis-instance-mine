@@ -2,7 +2,7 @@
 <ul class="ps-0 mb-0 list-unstyled">
     {% for prize in prizes %}
         <li class="fw-normal pb-1">
-            <!-- djlint:off -->{{ prize.obj|striptags }}{% if prize.datum %}, {{ prize|mine_date }}{% endif %}<!-- djlint:on -->
+            <!-- djlint:off -->{{ prize.obj|mine_link }}{% if prize.datum %}, {{ prize|mine_date }}{% endif %}<!-- djlint:on -->
         </li>
     {% endfor %}
 </ul>
