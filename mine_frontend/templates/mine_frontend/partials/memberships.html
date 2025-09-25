@@ -7,6 +7,13 @@
                     {{ memb.beginn_date_sort|date:"Y" }} - {{ memb.ende_date_sort|date:"Y" }} ruhend gestellt
                     {% include 'mine_frontend/partials/tooltip_info.html' with text='Mitgliedschaft wegen nationalsozialistischer Aktivitäten ruhend gestellt.' %}
                 </li>
+            {% elif memb.beginn_typ == 'mitgliedschaft erloschen' %}
+                <li class="ps-0 fw-normal pb-2">
+                    {{ memb.beginn_date_sort|date:"Y" }} Mitgliedschaft erloschen
+                    {% include 'mine_frontend/partials/tooltip_info.html' with text='Mitgliedschaft wegen nationalsozialistischer Aktivitäten erloschen.' %}
+                </li>
+            {% elif memb.beginn_typ == 'reaktiviert' %}
+                <li class="ps-0 fw-normal pb-2">{{ memb.beginn_date_sort|date:"Y" }} reaktiviert</li>
             {% else %}
                 <li class="ps-0 fw-normal pb-2">
                     {{ memb.beginn_date_sort|date:"Y" }} - {{ memb.ende_date_sort|date:"Y" }} {{ memb.get_long_membership }}
