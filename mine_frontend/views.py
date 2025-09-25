@@ -4,7 +4,7 @@ import re
 from apis_core.apis_metainfo.models import Uri
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.expressions import ArraySubquery
-from django.db.models import Case, OuterRef, Value, When
+from django.db.models import Case, Exists, OuterRef, Value, When
 from django.db.models.functions import Concat, Lower
 from django.views import generic
 from django.views.generic.base import TemplateView
@@ -27,7 +27,9 @@ from apis_ontology.models import (
     OeawMitgliedschaft,
     Person,
     PositionAn,
+    Preis,
     Werk,
+    WirdVergebenVon,
 )
 from mine_frontend.forms import MineMainform
 from mine_frontend.mixins import FacetedSearchMixin
@@ -322,6 +324,33 @@ class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):
         context["members"] = PositionAn.objects.filter(
             obj_object_id=self.object.id,
             position__in=["Kommissionsmitglied", "Delegierte(r)"],
+        ).order_by("beginn_date_sort")
+        return context
+
+
+class OEAWPrizeDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Preis
+    queryset = Preis.objects.annotate(
+        academy_prize=Exists(
+            WirdVergebenVon.objects.filter(
+                subj_object_id=OuterRef("pk"),
+                obj_object_id__in=Institution.objects.filter(
+                    akademie_institution=True
+                ).values_list("id", flat=True),
+            )
+        )
+    ).filter(academy_prize=True)
+    context_object_name = "oeaw_prize"
+    template_name = "mine_frontend/oeaw_prize_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["entity_type"] = "institution"
+        context["laureates"] = Gewinnt.objects.filter(
+            obj_object_id=self.object.id,
+        ).order_by("datum_date_sort")
+        context["awarded_by"] = WirdVergebenVon.objects.filter(
+            subj_object_id=self.object.id
         ).order_by("beginn_date_sort")
         return context
 

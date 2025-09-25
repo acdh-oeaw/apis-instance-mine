@@ -1,0 +1,7 @@
+{% load mine_extras %}
+{% if oeaw_prize.beginn_date_sort or oeaw_prize.ende_date_sort %}
+    <p class="profession-date-of-birth">
+        <span class="fw-bold">Laufzeit:</span>
+        <span class="fw-normal">{{ oeaw_prize|mine_date }}</span>
+    </p>
+{% endif %}

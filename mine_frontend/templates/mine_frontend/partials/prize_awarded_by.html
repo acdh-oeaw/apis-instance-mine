@@ -1,0 +1,7 @@
+{% load mine_extras %}
+<div class="section">
+    <span class="fw-bold">Vergeben von</span>
+    <ul class="relentities list-unstyled">
+        {% for x in awarded_by %}<li class="ps-0 fw-normal pb-2">{{ x.obj|mine_link }} {{ x|mine_date }}</li>{% endfor %}
+    </ul>
+</div>
