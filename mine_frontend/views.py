@@ -71,9 +71,11 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
             or getattr(obj, "datum_date_sort", None)
             or datetime.date.today(),
         )
-        context["membership_short"] = OeawMitgliedschaft.objects.filter(
-            subj_object_id=self.object.id
-        ).order_by("beginn_date_sort")
+        context["membership_short"] = (
+            OeawMitgliedschaft.objects.filter(subj_object_id=self.object.id)
+            .exclude(beginn_typ="gewählt, nicht bestätigt")
+            .order_by("beginn_date_sort")
+        )
         context["place_of_birth"] = GeborenIn.objects.filter(
             subj_object_id=self.object.id
         )
