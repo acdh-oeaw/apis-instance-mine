@@ -12,6 +12,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from django_interval.fields import FuzzyDateParserField
 from django_json_editor_field.fields import JSONEditorField
@@ -228,6 +229,24 @@ class Ereignis(
         verbose_name_plural = "Ereignisse"
 
 
+class PreisManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .annotate(
+                academy_prize=models.Exists(
+                    WirdVergebenVon.objects.filter(
+                        subj_object_id=models.OuterRef("pk"),
+                        obj_object_id__in=Institution.objects.filter(
+                            akademie_institution=True
+                        ).values_list("id", flat=True),
+                    )
+                )
+            )
+        )
+
+
 class Preis(
     VersionMixin,
     AbstractEntity,
@@ -236,6 +255,17 @@ class Preis(
     AlternativeNameMixin,
 ):
     """Auschreibung eines Preises oder Preisaufgabe"""
+
+    objects = PreisManager()
+
+    @cached_property
+    def academy_prize(self):
+        return WirdVergebenVon.objects.filter(
+            subj_object_id=self.pk,
+            obj_object_id__in=Institution.objects.filter(
+                akademie_institution=True
+            ).values_list("id", flat=True),
+        ).exists()
 
     text = models.TextField(blank=True)
     datum_ausschreibung = FuzzyDateParserField(

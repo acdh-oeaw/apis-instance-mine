@@ -13,6 +13,8 @@ def mine_link(value):
     if hasattr(value, "akademie_institution"):
         if value.akademie_institution:
             return mark_safe(f'<a href="/institution/{value.pk}">{value}</a>')
+    if hasattr(value, "academy_prize") and value.academy_prize:
+        return mark_safe(f'<a href="/preis/{value.pk}">{value}</a>')
     gnd = Uri.objects.filter(uri__contains="d-nb.info", object_id=value.pk)
     if gnd.exists():
         return mark_safe(
