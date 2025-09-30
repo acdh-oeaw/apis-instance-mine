@@ -18,8 +18,18 @@
         {% endfor %}
     </ul>
 {% endif %}
-{% if career_akad.obm %}
+{% if career_akad.gen_sek %}
     {% if career_akad.pres or career_akad.sek %}<hr>{% endif %}
+    <ul class="list-unstyled ps-0 mb-0">
+        {% for position in career_akad.gen_sek %}
+            <li class="fw-normal pb-1">
+                Zum <b>{{ position.position }}</b> der {{ position.obj|title }} gewählt am {{ position.beginn }}, tätig bis {{ position.ende }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% if career_akad.obm %}
+    {% if career_akad.pres or career_akad.sek or career_akad.gen_sek %}<hr>{% endif %}
     <b>Obmann/Obfrau</b> der folgenden Kommission(en):
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.obm %}
