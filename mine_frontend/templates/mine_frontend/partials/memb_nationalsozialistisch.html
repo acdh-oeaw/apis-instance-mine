@@ -1,12 +1,13 @@
 {% load mine_extras %}
-Mitglied folgender nationalsozialistischer Vereinigungen:
 <ul class="ps-0 mb-0 list-unstyled">
     {% for member in nazi %}
         <li class="fw-normal pb-1">
-            {{ member.obj|mine_link }}
-            {% if member.beginn or member.ende %}
-                ({{ member.beginn_date_sort|date:"d.m.Y" }} - {{ member.ende_date_sort|date:"d.m.Y" }})
+            {% if "Anwärter(In)" in member.art %}
+                Anwärter(In)
+            {% else %}
+                Mitglied
             {% endif %}
+            {{ member.obj|mine_link }} {{ member|mine_date:"()" }}
         </li>
     {% endfor %}
 </ul>
