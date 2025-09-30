@@ -122,6 +122,16 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
                 "philosophisch-historische klasse",
             ],
         )
+        gen_sek = career.exclude(_inst_akad=False).filter(
+            position="Generalsekretär(in)",
+            _inst_name__in=[
+                "gesamtakademie",
+                "junge akademie",
+                "junge kurie",
+                "mathematisch-naturwissenschaftliche klasse",
+                "philosophisch-historische klasse",
+            ],
+        )
         obm = career.exclude(_inst_akad=False).filter(
             position="Obmann/Obfrau (Kommission)"
         )
@@ -136,6 +146,7 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
             .exclude(position="Kommissionsmitglied")
             .exclude(position="Obmann/Obfrau (Kommission)")
             .exclude(position="Delegierte(r)")
+            .exclude(position="Generalsekretär(in)")
         )
         proposed_success = OeawMitgliedschaft.objects.filter(
             vorgeschlagen_von=self.object.id
@@ -150,6 +161,7 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
             for qs in [
                 pres,
                 sek,
+                gen_sek,
                 obm,
                 kom_mitgl,
                 proposed_success,
@@ -161,6 +173,7 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
             context["career_akad"] = {
                 "pres": pres,
                 "sek": sek,
+                "gen_sek": gen_sek,
                 "obm": obm,
                 "kom_mitgl": kom_mitgl,
                 "pos_other_inst": pos_other_inst,
