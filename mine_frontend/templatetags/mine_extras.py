@@ -60,7 +60,8 @@ def mine_date(value, brackets=False):
                     "Titel nostrifiziert von",
                 ]:
                     res = f"{value.beginn_date_sort.strftime('%Y')}"
-            res = f"ab {value.beginn_date_sort.strftime('%Y')}"
+            else:
+                res = f"ab {value.beginn_date_sort.strftime('%Y')}"
         elif not value.beginn_date_sort:
             res = f"bis {value.ende_date_sort.strftime('%Y')}"
         else:
