@@ -4,7 +4,7 @@ import re
 from apis_core.apis_metainfo.models import Uri
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.expressions import ArraySubquery
-from django.db.models import Case, Exists, OuterRef, Value, When
+from django.db.models import Case, OuterRef, Value, When
 from django.db.models.functions import Concat, Lower
 from django.views import generic
 from django.views.generic.base import TemplateView
@@ -330,16 +330,7 @@ class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):
 
 class OEAWPrizeDetailView(LoginRequiredMixin, generic.DetailView):
     model = Preis
-    queryset = Preis.objects.annotate(
-        academy_prize=Exists(
-            WirdVergebenVon.objects.filter(
-                subj_object_id=OuterRef("pk"),
-                obj_object_id__in=Institution.objects.filter(
-                    akademie_institution=True
-                ).values_list("id", flat=True),
-            )
-        )
-    ).filter(academy_prize=True)
+    queryset = Preis.objects.filter(academy_prize=True)
     context_object_name = "oeaw_prize"
     template_name = "mine_frontend/oeaw_prize_detail.html"
 
