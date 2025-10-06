@@ -98,8 +98,12 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
                 _inst_akad=inst_akad.values("akademie_institution"),
                 _inst_typ=inst_akad.values("typ"),
                 _inst_name=Lower(inst_akad.values("label")),
+                _sort_date=Case(
+                    When(beginn_date_sort__isnull=False, then="beginn_date_sort"),
+                    default="ende_date_sort",
+                ),
             )
-            .order_by("beginn_date_sort")
+            .order_by("_sort_date")
         )
         context["career"] = career.exclude(_inst_akad=True)
         context["career_akad"] = {}
