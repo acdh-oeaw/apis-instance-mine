@@ -43,3 +43,7 @@ CSP_DEFAULT_SRC = CSP_DEFAULT_SRC + (  # noqa: F405
 CSP_IMG_SRC += [  # noqa: F405
     "*.wikimedia.org",
 ]
+
+STATICFILES_DIRS = [
+    "/data/static_files/",
+]
