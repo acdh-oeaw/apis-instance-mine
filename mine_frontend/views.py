@@ -1,7 +1,7 @@
 import datetime
 import re
 
-from apis_core.apis_metainfo.models import Uri
+from apis_core.uris.models import Uri
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.expressions import ArraySubquery
 from django.db.models import Case, OuterRef, Value, When

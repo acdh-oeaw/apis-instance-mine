@@ -1,4 +1,4 @@
-from apis_core.apis_metainfo.models import Uri
+from apis_core.uris.models import Uri
 from django import template
 from django.utils.html import mark_safe
 
