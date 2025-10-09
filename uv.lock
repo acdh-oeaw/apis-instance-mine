@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.11"
 
 [[package]]
@@ -30,7 +30,7 @@ wheels = [
 
 [[package]]
 name = "apis-acdhch-default-settings"
-version = "2.11.0"
+version = "2.14.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "apis-acdhch-django-auditlog" },
@@ -52,9 +52,9 @@ dependencies = [
     { name = "requests" },
     { name = "whitenoise" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/79/21/71d7589da1410564b5d4884fa038057a518c4cb837704873d407424b627a/apis_acdhch_default_settings-2.11.0.tar.gz", hash = "sha256:617f4c44b8427022e674b4dea5d8e6b5742a97847f1d2c38157b239182a406a9", size = 14057, upload-time = "2025-06-26T08:25:17.242Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/de/7d/38fe19f6e1ce2e8c6585435df96aeb685b90de262ed14a1223723e5d2a70/apis_acdhch_default_settings-2.14.0.tar.gz", hash = "sha256:b3eb36e68607a44a078fd339ddb3f173b5528f0329f90f81721deb640a8c892f", size = 15012, upload-time = "2025-09-24T11:11:32.67Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/01/fa/a4014b0e13e78db10b61c7a767cc23a77b1df7fa8fe2d53b1316747c0c6e/apis_acdhch_default_settings-2.11.0-py3-none-any.whl", hash = "sha256:921adc977879ad82a95055fed261f015c256c3cde3a4fee44336cd825f080e3f", size = 10737, upload-time = "2025-06-26T08:25:15.839Z" },
+    { url = "https://files.pythonhosted.org/packages/5e/b0/f1398efed8699d8cc86abc94de01c8483958553dd9add49fbb5f44c86e90/apis_acdhch_default_settings-2.14.0-py3-none-any.whl", hash = "sha256:6eb729c696a417104cb323f216aaff7f40dcc0fc20597da87bd0735315475b56", size = 11416, upload-time = "2025-09-24T11:11:31.429Z" },
 ]
 
 [[package]]
@@ -84,11 +84,10 @@ wheels = [
 
 [[package]]
 name = "apis-core-rdf"
-version = "0.50.2"
+version = "0.55.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "acdh-arche-assets" },
-    { name = "crispy-bootstrap4" },
     { name = "crispy-bootstrap5" },
     { name = "django" },
     { name = "django-autocomplete-light" },
@@ -105,9 +104,9 @@ dependencies = [
     { name = "rdflib" },
     { name = "tablib" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/dc/f9/833b39167261899ed1bb6e3f5f10733b09e37dea65036ec6cd036db993e5/apis_core_rdf-0.50.2.tar.gz", hash = "sha256:d86e91ea61510d27e922d0d20a08b7a8f74ecdf1c13f63351b15d3ba556f210f", size = 3356830, upload-time = "2025-08-04T10:20:16.289Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c6/f0/dd5d029b32b01a849ee6b1cca7d8e1c7c318eaf3f21f501ad36ee1bfa60a/apis_core_rdf-0.55.1.tar.gz", hash = "sha256:4305d4a0d69a86b5fdc6f5b73e7abc4f953121efdca76df10e9f96bc4ffd03f0", size = 271153, upload-time = "2025-09-30T13:05:24.883Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/88/a5/addaebe33116b822e5da5785156fe461c5c9ca475cbf967219ca6fbfbcd3/apis_core_rdf-0.50.2-py3-none-any.whl", hash = "sha256:bb822e7fe82eaa5b400c580697211be5d77868d18ca230a85cf5ef6084e3ee8a", size = 3324385, upload-time = "2025-08-04T10:20:14.357Z" },
+    { url = "https://files.pythonhosted.org/packages/8b/8e/ba84d7a20e8586592b01155f7546cc43043a23d7b48addd1ab57840c09cf/apis_core_rdf-0.55.1-py3-none-any.whl", hash = "sha256:bfd1b274a97e21574fb500976aad865580d4acbe7282aca0708bdb5390fb4261", size = 241299, upload-time = "2025-09-30T13:05:23.169Z" },
 ]
 
 [[package]]
@@ -207,19 +206,6 @@ wheels = [
 ]
 
 [[package]]
-name = "crispy-bootstrap4"
-version = "2024.10"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "django" },
-    { name = "django-crispy-forms" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/69/0b/6a3e2ab27d9eab3fd95628e45212454ac486b2c501def355f3c425cf4ae3/crispy-bootstrap4-2024.10.tar.gz", hash = "sha256:503e8922b0f3b5262a6fdf303a3a94eb2a07514812f1ca130b88f7c02dd25e2b", size = 35301, upload-time = "2024-10-05T15:41:50.457Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/de/a9/2a22c0e6b72323205a6780f9a93e8121bc2c81338d34a0ddc1f6d1a958e7/crispy_bootstrap4-2024.10-py3-none-any.whl", hash = "sha256:138a97884044ae4c4799c80595b36c42066e4e933431e2e971611e251c84f96c", size = 23060, upload-time = "2024-10-05T15:41:48.907Z" },
-]
-
-[[package]]
 name = "crispy-bootstrap5"
 version = "2024.10"
 source = { registry = "https://pypi.org/simple" }
@@ -294,16 +280,16 @@ wheels = [
 
 [[package]]
 name = "django"
-version = "5.1.6"
+version = "5.2.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asgiref" },
     { name = "sqlparse" },
     { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6d/e4/901f54ee114a080371a49bd08fa688d301aaffd9751febaf4ae855fc8fcd/Django-5.1.6.tar.gz", hash = "sha256:1e39eafdd1b185e761d9fab7a9f0b9fa00af1b37b25ad980a8aa0dac13535690", size = 10700620, upload-time = "2025-02-05T14:16:25.948Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b1/96/bd84e2bb997994de8bcda47ae4560991084e86536541d7214393880f01a8/django-5.2.7.tar.gz", hash = "sha256:e0f6f12e2551b1716a95a63a1366ca91bbcd7be059862c1b18f989b1da356cdd", size = 10865812, upload-time = "2025-10-01T14:22:12.081Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/75/6f/d2c216d00975e2604b10940937b0ba6b2c2d9b3cc0cc633e414ae3f14b2e/Django-5.1.6-py3-none-any.whl", hash = "sha256:8d203400bc2952fbfb287c2bbda630297d654920c72a73cc82a9ad7926feaad5", size = 8277066, upload-time = "2025-02-05T14:16:00.563Z" },
+    { url = "https://files.pythonhosted.org/packages/8f/ef/81f3372b5dd35d8d354321155d1a38894b2b766f576d0abffac4d8ae78d9/django-5.2.7-py3-none-any.whl", hash = "sha256:59a13a6515f787dec9d97a0438cd2efac78c8aca1c80025244b0fe507fe0754b", size = 8307145, upload-time = "2025-10-01T14:22:49.476Z" },
 ]
 
 [[package]]
@@ -842,10 +828,10 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "apis-acdhch-default-settings", specifier = ">=2.11.0" },
+    { name = "apis-acdhch-default-settings", specifier = ">=2.14.0" },
     { name = "apis-acdhch-django-auditlog", specifier = ">=0.2.1" },
     { name = "apis-acdhch-django-invite", specifier = ">=0.2.0" },
-    { name = "apis-core-rdf", specifier = "==0.50.2" },
+    { name = "apis-core-rdf", specifier = "==0.55.1" },
     { name = "crispy-bootstrap5", specifier = ">=2024.10" },
     { name = "django-compressor", specifier = ">=4.5.1" },
     { name = "django-interval", specifier = ">=0.5.1" },
