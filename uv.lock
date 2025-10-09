@@ -31,7 +31,7 @@ wheels = [
 [[package]]
 name = "apis-acdhch-default-settings"
 version = "2.14.0"
-source = { git = "https://github.com/acdh-oeaw/apis-acdhch-default-settings?branch=birger%2Fldap-users-file#5cfe9f650a2ea6d62a71ff8c0bab4a94cc27a020" }
+source = { git = "https://github.com/acdh-oeaw/apis-acdhch-default-settings.git?rev=birger%2Fldap-users-file#4e36384330bb50666487d9b03abc7b9b9ed31159" }
 dependencies = [
     { name = "apis-acdhch-django-auditlog" },
     { name = "apis-core-rdf" },
@@ -824,7 +824,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "apis-acdhch-default-settings", git = "https://github.com/acdh-oeaw/apis-acdhch-default-settings?branch=birger%2Fldap-users-file" },
+    { name = "apis-acdhch-default-settings", git = "https://github.com/acdh-oeaw/apis-acdhch-default-settings.git?rev=birger%2Fldap-users-file" },
     { name = "apis-acdhch-django-auditlog", specifier = ">=0.2.1" },
     { name = "apis-acdhch-django-invite", specifier = ">=0.2.0" },
     { name = "apis-core-rdf", specifier = "==0.55.1" },
