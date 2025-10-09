@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "apis-acdhch-default-settings>=2.14.0",
+    "apis-acdhch-default-settings",
     "apis-acdhch-django-auditlog>=0.2.1",
     "apis-acdhch-django-invite>=0.2.0",
     "apis-core-rdf==0.55.1",
@@ -29,6 +29,9 @@ dev = [
     "libsass>=0.23.0",
     "django-extensions>=4.1",
 ]
+[tool.uv.sources]
+apis-acdhch-default-settings = { git = "https://github.com/acdh-oeaw/apis-acdhch-default-settings", branch = "birger/ldap-users-file"}
+
 [tool.pyright]
 #include = ["src"]
 #exclude = ["**/node_modules",
