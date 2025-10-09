@@ -31,7 +31,7 @@ wheels = [
 [[package]]
 name = "apis-acdhch-default-settings"
 version = "2.14.0"
-source = { registry = "https://pypi.org/simple" }
+source = { git = "https://github.com/acdh-oeaw/apis-acdhch-default-settings?branch=birger%2Fldap-users-file#5cfe9f650a2ea6d62a71ff8c0bab4a94cc27a020" }
 dependencies = [
     { name = "apis-acdhch-django-auditlog" },
     { name = "apis-core-rdf" },
@@ -51,10 +51,6 @@ dependencies = [
     { name = "opentelemetry-instrumentation-wsgi" },
     { name = "requests" },
     { name = "whitenoise" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/de/7d/38fe19f6e1ce2e8c6585435df96aeb685b90de262ed14a1223723e5d2a70/apis_acdhch_default_settings-2.14.0.tar.gz", hash = "sha256:b3eb36e68607a44a078fd339ddb3f173b5528f0329f90f81721deb640a8c892f", size = 15012, upload-time = "2025-09-24T11:11:32.67Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/5e/b0/f1398efed8699d8cc86abc94de01c8483958553dd9add49fbb5f44c86e90/apis_acdhch_default_settings-2.14.0-py3-none-any.whl", hash = "sha256:6eb729c696a417104cb323f216aaff7f40dcc0fc20597da87bd0735315475b56", size = 11416, upload-time = "2025-09-24T11:11:31.429Z" },
 ]
 
 [[package]]
@@ -828,7 +824,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "apis-acdhch-default-settings", specifier = ">=2.14.0" },
+    { name = "apis-acdhch-default-settings", git = "https://github.com/acdh-oeaw/apis-acdhch-default-settings?branch=birger%2Fldap-users-file" },
     { name = "apis-acdhch-django-auditlog", specifier = ">=0.2.1" },
     { name = "apis-acdhch-django-invite", specifier = ">=0.2.0" },
     { name = "apis-core-rdf", specifier = "==0.55.1" },
