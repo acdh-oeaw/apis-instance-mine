@@ -8,17 +8,17 @@ from urllib.parse import urlencode
 
 from apis_core.apis_entities.abc import E21_Person, E53_Place, E74_Group
 from apis_core.apis_entities.models import AbstractEntity
-from apis_core.apis_metainfo.models import Uri
 from apis_core.generic.abc import GenericModel
 from apis_core.history.models import VersionMixin
 from apis_core.relations.models import Relation
+from apis_core.uris.models import Uri
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils.functional import cached_property
 from django.db.utils import IntegrityError
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from django_interval.fields import FuzzyDateParserField
 from django_json_editor_field.fields import JSONEditorField
