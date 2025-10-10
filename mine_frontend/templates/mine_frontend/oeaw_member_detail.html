@@ -25,7 +25,7 @@
         {% if career_akad %}
             {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Funktionen in der Akademie' content_partial='mine_frontend/partials/career_akad.html' %}
         {% endif %}
-        {% if nekrologe_verfasst %}
+        {% if nekrologe_verfasst or own_nekro %}
             {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Reden und Nachrufe in der Akademie' content_partial='mine_frontend/partials/speaches_nekrologes.html' %}
         {% endif %}
         {% if memb_akad %}
