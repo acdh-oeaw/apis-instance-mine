@@ -1157,6 +1157,12 @@ class RelLegacyDataSingleDateMixin(RelLegacyDataBaseMixin):
     class Meta:
         abstract = True
 
+    @classmethod
+    def create_from_legacy_data(cls, data: dict[str, Any], logger):
+        rel = super().create_from_legacy_data(data, logger)
+        rel.save()
+        return rel
+
 
 class PositionAn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMixin):
     """Anstellung/Position in Institution"""
