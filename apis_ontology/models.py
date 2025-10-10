@@ -664,7 +664,11 @@ class Person(
         for rel in data["relations"]:
             if (
                 ("(gewählt und" in rel["label"])
-                or ("(Gewählt)" in rel["label"] or "(ernannt)" in rel["label"].lower())
+                or (
+                    "(Gewählt)" in rel["label"]
+                    or "(ernannt)" in rel["label"].lower()
+                    or "genehmigt" in rel["label"].lower()
+                )
                 and (("KLASSE" in rel["label"]) or ("GESAMTAKADEMIE" in rel["label"]))
             ):
                 logger.info("Person is member of the academy")
