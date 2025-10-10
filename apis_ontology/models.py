@@ -934,6 +934,9 @@ class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin, BaseLegacyIm
             ("references", "references"),
             ("notes", "notes"),
         ]
+        if data["related_institution"]["id"] not in [2, 3, 500]:
+            return Mitglied.create_from_legacy_data(data, logger)
+
         data_mapped = map_dicts(MAP_FIELDS_OLD, data)
         data_mapped = clean_fields(cls, data_mapped)
 
