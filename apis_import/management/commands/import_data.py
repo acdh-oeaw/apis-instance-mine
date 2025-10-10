@@ -9,7 +9,6 @@ import django
 from apis_core.apis_metainfo.models import RootObject
 from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand, CommandError
-from django.db.models import Q
 
 from apis_import.utils import BASE_URL, api_request, get_vocab
 
@@ -218,23 +217,11 @@ class Command(BaseCommand):
         with open(labels_file, newline="") as inp:
             logger.info(f"Reading labels from file: {labels_file}")
             labels_res = csv.DictReader(inp, delimiter=",", quotechar='"')
-            for row in labels_res:
-                old_id = row["temp_entity_id"]
-                obj = RootObject.objects_inheritance.filter(
-                    Q(ereignis__old_id=old_id)
-                    | Q(person__old_id=old_id)
-                    | Q(institution__old_id=old_id)
-                    | Q(ort__old_id=old_id)
-                    | Q(preis__old_id=old_id)
-                    | Q(werk__old_id=old_id)
-                ).select_subclasses()
-                if not obj.exists():
-                    logger.warning(
-                        f"Object with old_id {old_id} not found, skipping label"
-                    )
-                    continue
-                obj = obj.first()
-                if row["name"] in ["Wikicommons Image", "filename OEAW Archiv"]:
-                    Bild.create_from_legacy_data(obj, row, labels_res)
-                else:
-                    obj.add_alternative_label(row)
+            for obj in RootObject.objects_inheritance.all().select_subclasses():
+                for row in labels_res:
+                    if obj.old_id != int(row["temp_entity_id"]):
+                        continue
+                    if row["name"] in ["Wikicommons Image", "filename OEAW Archiv"]:
+                        Bild.create_from_legacy_data(obj, row, labels_res)
+                    else:
+                        obj.add_alternative_label(row)
