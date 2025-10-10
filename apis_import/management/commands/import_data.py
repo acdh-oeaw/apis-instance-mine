@@ -15,7 +15,7 @@ from apis_import.utils import BASE_URL, api_request, get_vocab
 
 django.setup()
 
-from apis_ontology.models import Bild, Person  # noqa: E402
+from apis_ontology.models import Bild, Person, additional_orig_person_ids  # noqa: E402
 
 # BASE_URL = os.getenv("APIS_BASE_URL", "https://mine.acdh-ch-dev.oeaw.ac.at")
 logger = logging.getLogger("import_person")
@@ -211,6 +211,10 @@ class Command(BaseCommand):
                 pers_list = None
 
         self.add_non_person_relations(voc_file)
+        for pers in set(additional_orig_person_ids):
+            if not Person.objects.filter(old_id=pers).exists():
+                import_person(pers, voc_file)
+
         with open(labels_file, newline="") as inp:
             logger.info(f"Reading labels from file: {labels_file}")
             labels_res = csv.DictReader(inp, delimiter=",", quotechar='"')

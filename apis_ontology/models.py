@@ -25,6 +25,8 @@ from django_json_editor_field.fields import JSONEditorField
 
 from apis_import.utils import BASE_URL, api_request
 
+additional_orig_person_ids = []
+
 
 def map_dicts(map: list, data: dict) -> dict:
     res = {}
@@ -1906,6 +1908,10 @@ class ErwaehntIn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataBaseMix
         if "nekrolog" in str(obj.obj.titel).lower():
             obj.typ = "behandelt"
             obj.save()
+            req_url = f"{BASE_URL}/apis/api/entities/work/{obj.obj.old_id}/"
+            nek = api_request(url=req_url, logger=logger)
+            ids = [x["related_entity"]["id"] for x in nek["relations"]]
+            additional_orig_person_ids.extend(ids)
         return obj
 
 
