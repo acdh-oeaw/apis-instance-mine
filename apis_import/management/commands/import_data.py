@@ -1,20 +1,17 @@
 import csv
-import json
 import logging
 import os
-from datetime import datetime
-from urllib.parse import urlencode
 
 import django
 from apis_core.apis_metainfo.models import RootObject
 from django.contrib.contenttypes.models import ContentType
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from apis_import.utils import BASE_URL, api_request, get_vocab
 
 django.setup()
 
-from apis_ontology.models import Bild, Person, additional_orig_person_ids  # noqa: E402
+from apis_ontology.models import Bild, Person  # noqa: E402
 
 # BASE_URL = os.getenv("APIS_BASE_URL", "https://mine.acdh-ch-dev.oeaw.ac.at")
 logger = logging.getLogger("import_person")
@@ -95,7 +92,7 @@ class Command(BaseCommand):
         parser.add_argument(
             "--labels-file",
             dest="labels_file",
-            default="resources/labels_mine_export_20250807.csv",
+            default="resources/labels_mine_export_20251012.csv",
             help="location of the labels matching file",
         )
         parser.add_argument(
@@ -161,67 +158,69 @@ class Command(BaseCommand):
         voc_file = options.get("voc_file")
         labels_file = options.get("labels_file")
 
-        # Parse person_query - could be a simple ID or JSON
-        query_params = json.loads(person_query)
-        with open(voc_file, newline="") as inp:
-            voc_file = csv.DictReader(inp, delimiter=",", quotechar='"')
-            voc_file = {x["id"]: x for x in voc_file}
+        # # Parse person_query - could be a simple ID or JSON
+        # query_params = json.loads(person_query)
+        # with open(voc_file, newline="") as inp:
+        #     voc_file = csv.DictReader(inp, delimiter=",", quotechar='"')
+        #     voc_file = {x["id"]: x for x in voc_file}
 
-        # Set up logging
-        global logger
-        logger = self.setup_logging(log_file, log_level)
-        params_str = "?" + urlencode(query_params)
-        pers_list = api_request(
-            f"{BASE_URL}/apis/api/entities/person" + params_str, logger
-        )
-        logger.info(
-            f"Starting import of persons with query {query_params}, found {pers_list['count']} persons"
-        )
-        while pers_list:
-            for pers in pers_list["results"]:
-                try:
-                    person_id = pers["id"]
-                    logger.info(f"Starting import of person with ID {person_id}")
-                    start_time = datetime.now()
+        # # Set up logging
+        # global logger
+        # logger = self.setup_logging(log_file, log_level)
+        # params_str = "?" + urlencode(query_params)
+        # pers_list = api_request(
+        #     f"{BASE_URL}/apis/api/entities/person" + params_str, logger
+        # )
+        # logger.info(
+        #     f"Starting import of persons with query {query_params}, found {pers_list['count']} persons"
+        # )
+        # while pers_list:
+        #     for pers in pers_list["results"]:
+        #         try:
+        #             person_id = pers["id"]
+        #             logger.info(f"Starting import of person with ID {person_id}")
+        #             start_time = datetime.now()
 
-                    person = import_person(person_id, voc_file)
+        #             person = import_person(person_id, voc_file)
 
-                    end_time = datetime.now()
-                    duration = (end_time - start_time).total_seconds()
-                    success_message = f"Successfully imported person: {person} (took {duration:.2f} seconds)"
+        #             end_time = datetime.now()
+        #             duration = (end_time - start_time).total_seconds()
+        #             success_message = f"Successfully imported person: {person} (took {duration:.2f} seconds)"
 
-                    logger.info(success_message)
-                    self.stdout.write(self.style.SUCCESS(success_message))
+        #             logger.info(success_message)
+        #             self.stdout.write(self.style.SUCCESS(success_message))
 
-                except CommandError as e:
-                    # CommandError is already formatted properly, just pass it through
-                    logger.error(str(e), exc_info=True)
-                    raise e
+        #         except CommandError as e:
+        #             # CommandError is already formatted properly, just pass it through
+        #             logger.error(str(e), exc_info=True)
+        #             raise e
 
-                except Exception as e:
-                    error_message = f"Error importing person with ID {person_id}: {e}"
-                    logger.error(error_message, exc_info=True)
-                    raise CommandError(error_message)
-            if pers_list["next"] is not None:
-                logger.info(f"Fetching next page of persons: {pers_list['next']}")
-                pers_list = api_request(pers_list["next"], logger)
-            else:
-                logger.info("No more pages to fetch")
-                pers_list = None
+        #         except Exception as e:
+        #             error_message = f"Error importing person with ID {person_id}: {e}"
+        #             logger.error(error_message, exc_info=True)
+        #             raise CommandError(error_message)
+        #     if pers_list["next"] is not None:
+        #         logger.info(f"Fetching next page of persons: {pers_list['next']}")
+        #         pers_list = api_request(pers_list["next"], logger)
+        #     else:
+        #         logger.info("No more pages to fetch")
+        #         pers_list = None
 
-        self.add_non_person_relations(voc_file)
-        for pers in set(additional_orig_person_ids):
-            if not Person.objects.filter(old_id=pers).exists():
-                import_person(pers, voc_file)
+        # self.add_non_person_relations(voc_file)
+        # for pers in set(additional_orig_person_ids):
+        #     if not Person.objects.filter(old_id=pers).exists():
+        #         import_person(pers, voc_file)
 
         with open(labels_file, newline="") as inp:
             logger.info(f"Reading labels from file: {labels_file}")
-            labels_res = csv.DictReader(inp, delimiter=",", quotechar='"')
+            labels_data = list(csv.DictReader(inp, delimiter=",", quotechar='"'))
             for obj in RootObject.objects_inheritance.all().select_subclasses():
-                for row in labels_res:
-                    if obj.old_id != int(row["temp_entity_id"]):
-                        continue
+                for row in filter(
+                    lambda x: x["temp_entity_id"] == str(obj.old_id), labels_data
+                ):
                     if row["name"] in ["Wikicommons Image", "filename OEAW Archiv"]:
-                        Bild.create_from_legacy_data(obj, row, labels_res)
-                    else:
+                        Bild.create_from_legacy_data(obj, row, labels_data)
+                    elif row["name"] == "photocredit OEAW Archiv":
+                        continue
+                    elif hasattr(obj, "add_alternative_label"):
                         obj.add_alternative_label(row)

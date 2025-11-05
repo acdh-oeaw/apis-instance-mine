@@ -326,13 +326,14 @@ class Bild(GenericModel, models.Model):
         }
         if data["name"] == "filename OEAW Archiv":
             data_fin["art"] = "OEAW Archiv"
-            for d2 in data_full:
-                if (
-                    d2["temp_entity_id"] == data["temp_entity_id"]
-                    and d2["name"] == "photocredit OEAW Archiv"
-                ):
-                    data_fin["credit"] = d2["label"]
-        cls(**data_fin).save()
+            for d2 in filter(
+                lambda d: d["temp_entity_id"] == data["temp_entity_id"]
+                and d["name"] == "photocredit OEAW Archiv"
+                and "wikimedia" not in d["label"].lower(),
+                data_full,
+            ):
+                data_fin["credit"] = d2["label"]
+        return cls(**data_fin).save()
 
 
 class Fach(AbstractEntity, VersionMixin, BaseLegacyImport):
