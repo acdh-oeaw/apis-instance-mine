@@ -40,23 +40,23 @@
         {% endfor %}
     </ul>
 {% endif %}
-{% if career_akad.kom_mitgl %}
-    {% if career_akad.pres or career_akad.sek or career_akad.obm %}<hr>{% endif %}
-    <b>Mitglied</b> der folgenden Kommissionen/Kuratorien:
-    <ul class="list-unstyled ps-0 mb-0">
-        {% for position in career_akad.kom_mitgl %}
-            <li class="fw-normal pb-1 ps-3">{{ position.obj|mine_link }} {{ position|mine_date:"()" }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
 {% if career_akad.pos_other_inst %}
-    {% if career_akad.pres or career_akad.sek or career_akad.obm %}<hr>{% endif %}
-    <b>Position</b> an folgenden Institutionen:
+    {% if career_akad.pres or career_akad.sek %}<hr>{% endif %}
+    <b>Weitere</b> Funktionen:
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.pos_other_inst %}
             <li class="fw-normal pb-1 ps-3">
                 {{ position.position }}, {{ position.obj|mine_link }} {{ position|mine_date:"()" }}
             </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% if career_akad.kom_mitgl or career_akad.pos_other_inst %}
+    {% if career_akad.pres or career_akad.sek or career_akad.obm %}<hr>{% endif %}
+    <b>Mitglied</b> der folgenden Kommissionen/Kuratorien:
+    <ul class="list-unstyled ps-0 mb-0">
+        {% for position in career_akad.kom_mitgl %}
+            <li class="fw-normal pb-1 ps-3">{{ position.obj|mine_link }} {{ position|mine_date:"()" }}</li>
         {% endfor %}
     </ul>
 {% endif %}
