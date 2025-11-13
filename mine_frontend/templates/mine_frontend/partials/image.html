@@ -2,7 +2,8 @@
 <div class="imgcontainer">
     {% if image %}
         <figure class="float-md-end mt-0" style="max-width:110px;">
-            <a href="{% static image.pfad %}" data-lightbox="images">
+            <a href="{% if image.art == 'Wikimedia' %}{{ image.pfad }}{% else %}/static/portraits_members/{{ image.pfad }}{% endif %}"
+               data-lightbox="images">
                 <img src="{% if image.art == 'Wikimedia' %}{{ image.pfad }}{% else %}/static/portraits_members/{{ image.pfad }}{% endif %}"
                      class="mw-100"
                      style="max-width:110px">
