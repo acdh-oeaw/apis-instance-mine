@@ -3,7 +3,8 @@
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.pres %}
             <li class="fw-normal pb-2">
-                Zum <b>{{ position.position }}</b> der {{ position.obj|title }} gewählt am {{ position.beginn }}, tätig bis {{ position.ende }}
+                Zum <b>{{ position.position }}</b> der {{ position.obj|title }} gewählt am {{ position.beginn }}
+                {% if position.ende %}, tätig bis {{ position.ende }}{% endif %}
             </li>
         {% endfor %}
     </ul>
@@ -13,7 +14,8 @@
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.sek %}
             <li class="fw-normal pb-1">
-                Zum <b>{{ position.position }}</b> der {{ position.obj|title }} gewählt am {{ position.beginn }}, tätig bis {{ position.ende }}
+                Zum <b>{{ position.position }}</b> der {{ position.obj|title }} gewählt am {{ position.beginn }}
+                {% if position.ende %}, tätig bis {{ position.ende }}{% endif %}
             </li>
         {% endfor %}
     </ul>
@@ -23,7 +25,8 @@
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.gen_sek %}
             <li class="fw-normal pb-1">
-                Zum <b>{{ position.position }}</b> der {{ position.obj|title }} gewählt am {{ position.beginn }}, tätig bis {{ position.ende }}
+                Zum <b>{{ position.position }}</b> der {{ position.obj|title }} gewählt am {{ position.beginn }}
+                {% if position.ende %}, tätig bis {{ position.ende }}{% endif %}
             </li>
         {% endfor %}
     </ul>
