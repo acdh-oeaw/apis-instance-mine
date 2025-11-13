@@ -8,14 +8,16 @@
                 {{ memb.datum_date_sort|date:"Y" }}
             {% endif %}
             {% if not memb.beginn_typ or 'gewählt' in memb.beginn_typ %}
-                zur
-                Wahl zum {{ memb.mitgliedschaft }} der {{ memb.obj|title|caseklasse }}
                 {% if memb.vorgeschlagen_von.count > 0 %}
+                    zur
+                    Wahl zum {{ memb.mitgliedschaft }} der {{ memb.obj|title|caseklasse }}
                     vorgeschlagen von:
                     {% for sug in memb.vorgeschlagen_von.all %}
                         <a href="/person/{{ sug.id }}">{{ sug }}</a>
                         {% if not forloop.last %},{% endif %}
                     {% endfor %}
+                {% else %}
+                    Zum {{ memb.mitgliedschaft }} der {{ memb.obj|title|caseklasse }}
                 {% endif %}
                 <br>
                 {% if memb.beginn_typ %}
