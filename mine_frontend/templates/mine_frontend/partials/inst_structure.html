@@ -3,7 +3,9 @@
     <ul class="relentities list-unstyled">
         {% for x in structure %}
             <li class="ps-0 fw-normal pb-2">
-                {{ x.relation }} <a href="{{ x.obj.id }}" target="_blank" rel="noopener noreferrer">{{ x.obj }}</a> {{ x.beginn|date:"Y" }}
+                {{ x.relation }} <a href="/institution/{{ x.obj.id }}"
+    target="_blank"
+    rel="noopener noreferrer">{{ x.obj }}</a> {{ x.beginn|date:"Y" }}
                 {% if x.ende %}- {{ x.ende|date:"Y" }}{% endif %}
             </li>
         {% endfor %}
