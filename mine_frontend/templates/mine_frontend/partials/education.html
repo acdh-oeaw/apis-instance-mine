@@ -6,6 +6,12 @@
             {% if edu.references %}
                 {% include 'mine_frontend/partials/tooltip_info.html' with text=edu.references %}
             {% endif %}
+            {% if has_edit_permissions %}
+                {% include 'mine_frontend/partials/edit_button.html' with url_name='mine_edit:education_edit' id=edu.id ct='PositionAn' text='Edit' %}
+            {% endif %}
         </li>
     {% endfor %}
+    {% if has_edit_permissions %}
+        {% include 'mine_frontend/partials/edit_button.html' with url_name='mine_edit:education_create' ct='PositionAn' id_subj=object.id text='Add' add=True %}
+    {% endif %}
 </ul>

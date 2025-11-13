@@ -8,6 +8,8 @@ from mine_frontend.views import (
     PersonResultsView,
 )
 
+app_name = "mine_frontend"
+
 urlpatterns = [
     path("mine/", IndexView.as_view(), name="index"),
     path("person/<int:pk>/", OEAWMemberDetailView.as_view(), name="person-detail"),
