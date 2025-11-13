@@ -64,6 +64,10 @@ def mine_date(value, brackets=False):
                 res = f"ab {value.beginn_date_sort.strftime('%Y')}"
         elif not value.beginn_date_sort:
             res = f"bis {value.ende_date_sort.strftime('%Y')}"
+        elif value.beginn_date_sort.strftime("%Y") == value.ende_date_sort.strftime(
+            "%Y"
+        ):
+            res = f"{value.beginn_date_sort.strftime('%Y')}"
         else:
             res = f"{value.beginn_date_sort.strftime('%Y')} - {value.ende_date_sort.strftime('%Y')}"
     if brackets and res:
