@@ -8,6 +8,9 @@
                 Mitglied
             {% endif %}
             {{ member.obj|mine_link }} {{ member|mine_date:"()" }}
+            {% if member.references %}
+                {% include 'mine_frontend/partials/tooltip_info.html' with text=member.references %}
+            {% endif %}
         </li>
     {% endfor %}
 </ul>
