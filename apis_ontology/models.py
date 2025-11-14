@@ -939,7 +939,7 @@ class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin, BaseLegacyIm
             ("references", "references"),
             ("notes", "notes"),
         ]
-        if data["related_institution"]["id"] not in [2, 3, 500]:
+        if data["related_institution"]["id"] not in [2, 3, 500, 59131, 501]:
             return Mitglied.create_from_legacy_data(data, logger)
 
         data_mapped = map_dicts(MAP_FIELDS_OLD, data)
@@ -948,11 +948,18 @@ class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin, BaseLegacyIm
         memb = re.search(r"\((.*?)\)", data["relation_type_resolved"][1]["name"])
         if memb:
             data_mapped["mitgliedschaft"] = memb.group(1)
+        elif (
+            data["relation_type_resolved"][1]["name"].lower()
+            == "mitglied der jungen kurie"
+        ):
+            data_mapped["mitgliedschaft"] = "JA"
+            data_mapped["beginn_typ"] = "gewählt"
         else:
             data_mapped["mitgliedschaft"] = "unknown"
-        data_mapped["beginn_typ"] = (
-            data["relation_type_resolved"][-1]["name"].strip().lower()
-        )
+        if "beginn_typ" not in data_mapped:
+            data_mapped["beginn_typ"] = (
+                data["relation_type_resolved"][-1]["name"].strip().lower()
+            )
         pers = Person.get_or_create_from_legacy_id(data["related_person"]["id"], logger)
         data_mapped["subj"] = pers
         inst = Institution.get_or_create_from_legacy_id(
