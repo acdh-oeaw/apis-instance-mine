@@ -1,13 +1,12 @@
 import django_tables2 as tables
 
-from apis_ontology.models import Person
-
 
 class SearchResultTable(tables.Table):
     name = tables.TemplateColumn(
-        template_code='<a class="text-oeaw-blau semi-bold" href="/person/{{record.pk}}">{{record}}</a>',
+        template_code='<a class="text-oeaw-blau semi-bold" href="/person/{{record.pk}}">{{record.surname}}, {{record.forename}}</a>',
         verbose_name="Name",
         attrs={"a": {"class": ".text-oeaw-blau semi-bold"}},
+        order_by=("surname", "forename"),
     )
 
     profession = tables.Column(accessor="beruf", verbose_name="Beruf")
@@ -29,12 +28,14 @@ class SearchResultTable(tables.Table):
         accessor="date_of_birth",
         verbose_name="geboren",
         attrs={"td": {"class": "no-wrap"}},
+        order_by="date_of_birth_date_sort",
     )
 
     death_date = tables.Column(
         accessor="date_of_death",
         verbose_name="gestorben",
         attrs={"td": {"class": "no-wrap"}},
+        order_by="date_of_death_date_sort",
     )
 
     mitgliedschaft = tables.Column(
@@ -56,7 +57,6 @@ class SearchResultTable(tables.Table):
         return separator.join(value)
 
     class Meta:
-        model = Person
         fields = (
             "name",
             "birth_date",
