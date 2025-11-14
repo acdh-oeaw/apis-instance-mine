@@ -29,6 +29,6 @@
     </ul>
 {% endif %}
 {% if own_nekro %}
-    <hr>
+    {% if nekrologe_verfasst or speaches %}<hr>{% endif %}
     <p>Der Nachruf auf {{ oeaw_member }} wurde von {{ own_nekro.subj|mine_link }} verfasst</p>
 {% endif %}
