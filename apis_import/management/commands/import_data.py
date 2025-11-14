@@ -1,4 +1,5 @@
 import csv
+import json
 import logging
 import os
 
@@ -10,6 +11,8 @@ from django.core.management.base import BaseCommand
 from apis_import.utils import BASE_URL, api_request, get_vocab
 
 django.setup()
+
+from apis_core.uris.models import Uri  # noqa: E402
 
 from apis_ontology.models import Bild, Person  # noqa: E402
 
@@ -64,8 +67,9 @@ def import_person(id: int, voc_file: dict) -> Person:
 
 
 def post_import_fixes():
-    for uri in Uri.objects.filter(uri__contains="example"):
-        uri.delete()
+    for u_stub in ["example", "paas", "apis"]:
+        for uri in Uri.objects.filter(uri__contains=u_stub):
+            uri.delete()
 
 
 class Command(BaseCommand):
@@ -158,58 +162,58 @@ class Command(BaseCommand):
         voc_file = options.get("voc_file")
         labels_file = options.get("labels_file")
 
-        # # Parse person_query - could be a simple ID or JSON
-        # query_params = json.loads(person_query)
-        # with open(voc_file, newline="") as inp:
-        #     voc_file = csv.DictReader(inp, delimiter=",", quotechar='"')
-        #     voc_file = {x["id"]: x for x in voc_file}
+        # Parse person_query - could be a simple ID or JSON
+        query_params = json.loads(person_query)
+        with open(voc_file, newline="") as inp:
+            voc_file = csv.DictReader(inp, delimiter=",", quotechar='"')
+            voc_file = {x["id"]: x for x in voc_file}
 
-        # # Set up logging
-        # global logger
-        # logger = self.setup_logging(log_file, log_level)
-        # params_str = "?" + urlencode(query_params)
-        # pers_list = api_request(
-        #     f"{BASE_URL}/apis/api/entities/person" + params_str, logger
-        # )
-        # logger.info(
-        #     f"Starting import of persons with query {query_params}, found {pers_list['count']} persons"
-        # )
-        # while pers_list:
-        #     for pers in pers_list["results"]:
-        #         try:
-        #             person_id = pers["id"]
-        #             logger.info(f"Starting import of person with ID {person_id}")
-        #             start_time = datetime.now()
+        # Set up logging
+        global logger
+        logger = self.setup_logging(log_file, log_level)
+        params_str = "?" + urlencode(query_params)
+        pers_list = api_request(
+            f"{BASE_URL}/apis/api/entities/person" + params_str, logger
+        )
+        logger.info(
+            f"Starting import of persons with query {query_params}, found {pers_list['count']} persons"
+        )
+        while pers_list:
+            for pers in pers_list["results"]:
+                try:
+                    person_id = pers["id"]
+                    logger.info(f"Starting import of person with ID {person_id}")
+                    start_time = datetime.now()
 
-        #             person = import_person(person_id, voc_file)
+                    person = import_person(person_id, voc_file)
 
-        #             end_time = datetime.now()
-        #             duration = (end_time - start_time).total_seconds()
-        #             success_message = f"Successfully imported person: {person} (took {duration:.2f} seconds)"
+                    end_time = datetime.now()
+                    duration = (end_time - start_time).total_seconds()
+                    success_message = f"Successfully imported person: {person} (took {duration:.2f} seconds)"
 
-        #             logger.info(success_message)
-        #             self.stdout.write(self.style.SUCCESS(success_message))
+                    logger.info(success_message)
+                    self.stdout.write(self.style.SUCCESS(success_message))
 
-        #         except CommandError as e:
-        #             # CommandError is already formatted properly, just pass it through
-        #             logger.error(str(e), exc_info=True)
-        #             raise e
+                except CommandError as e:
+                    # CommandError is already formatted properly, just pass it through
+                    logger.error(str(e), exc_info=True)
+                    raise e
 
-        #         except Exception as e:
-        #             error_message = f"Error importing person with ID {person_id}: {e}"
-        #             logger.error(error_message, exc_info=True)
-        #             raise CommandError(error_message)
-        #     if pers_list["next"] is not None:
-        #         logger.info(f"Fetching next page of persons: {pers_list['next']}")
-        #         pers_list = api_request(pers_list["next"], logger)
-        #     else:
-        #         logger.info("No more pages to fetch")
-        #         pers_list = None
+                except Exception as e:
+                    error_message = f"Error importing person with ID {person_id}: {e}"
+                    logger.error(error_message, exc_info=True)
+                    raise CommandError(error_message)
+            if pers_list["next"] is not None:
+                logger.info(f"Fetching next page of persons: {pers_list['next']}")
+                pers_list = api_request(pers_list["next"], logger)
+            else:
+                logger.info("No more pages to fetch")
+                pers_list = None
 
-        # self.add_non_person_relations(voc_file)
-        # for pers in set(additional_orig_person_ids):
-        #     if not Person.objects.filter(old_id=pers).exists():
-        #         import_person(pers, voc_file)
+        self.add_non_person_relations(voc_file)
+        for pers in set(additional_orig_person_ids):
+            if not Person.objects.filter(old_id=pers).exists():
+                import_person(pers, voc_file)
 
         with open(labels_file, newline="") as inp:
             logger.info(f"Reading labels from file: {labels_file}")
