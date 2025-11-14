@@ -197,7 +197,7 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         ]
         context["prizes"] = Gewinnt.objects.filter(
             subj_object_id=self.object.id
-        ).order_by("datum")
+        ).order_by("datum_date_sort")
         inst_member = Institution.objects.filter(pk=OuterRef("obj_object_id"))
         member = (
             Mitglied.objects.filter(subj_object_id=self.object.id)
