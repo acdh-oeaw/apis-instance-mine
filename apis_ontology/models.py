@@ -1216,7 +1216,10 @@ class PositionAn(Relation, VersionMixin, LegacyFieldsMixin, RelLegacyDataDatesMi
                 rel.fach = Fach.get_or_create_from_legacy_id(voc[2]["id"], logger)
             else:
                 rel.position = voc[1]["name"]
-        elif voc[0]["id"] in [102]:  # positions that need first element
+        elif voc[0]["id"] in [
+            102,
+            104,
+        ]:  # positions that need first element, Präsident, Vizepräsident
             rel.position = voc[0]["name"]
         else:
             rel.position = voc[-1]["name"]
