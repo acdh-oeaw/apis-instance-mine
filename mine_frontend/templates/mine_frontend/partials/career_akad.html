@@ -9,8 +9,19 @@
         {% endfor %}
     </ul>
 {% endif %}
-{% if career_akad.sek %}
+{% if career_akad.viz_pres %}
     {% if career_akad.pres %}<hr>{% endif %}
+    <ul class="list-unstyled ps-0 mb-0">
+        {% for position in career_akad.viz_pres %}
+            <li class="fw-normal pb-2">
+                Zum <b>{{ position.position }}</b> der {{ position.obj|title }} gewählt am {{ position.beginn }}
+                {% if position.ende %}, tätig bis {{ position.ende }}{% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% if career_akad.sek %}
+    {% if career_akad.pres or career_akad.viz_pres %}<hr>{% endif %}
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.sek %}
             <li class="fw-normal pb-1">
@@ -21,7 +32,7 @@
     </ul>
 {% endif %}
 {% if career_akad.gen_sek %}
-    {% if career_akad.pres or career_akad.sek %}<hr>{% endif %}
+    {% if career_akad.pres or career_akad.sek or career_akad.viz_pres %}<hr>{% endif %}
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.gen_sek %}
             <li class="fw-normal pb-1">
@@ -32,7 +43,7 @@
     </ul>
 {% endif %}
 {% if career_akad.obm %}
-    {% if career_akad.pres or career_akad.sek or career_akad.gen_sek %}<hr>{% endif %}
+    {% if career_akad.pres or career_akad.sek or career_akad.gen_sek or career_akad.viz_pres %}<hr>{% endif %}
     <b>Obmann/Obfrau</b> der folgenden Kommission(en):
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.obm %}
@@ -41,7 +52,7 @@
     </ul>
 {% endif %}
 {% if career_akad.pos_other_inst %}
-    {% if career_akad.pres or career_akad.sek %}<hr>{% endif %}
+    {% if career_akad.pres or career_akad.sek or career_akad.gen_sek or career_akad.viz_pres %}<hr>{% endif %}
     <b>Weitere</b> Funktionen:
     <ul class="list-unstyled ps-0 mb-0">
         {% for position in career_akad.pos_other_inst %}
