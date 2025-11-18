@@ -1,17 +1,8 @@
-{% load mine_extras %}
 <ul class="ps-0 mb-0 list-unstyled">
     {% for edu in education %}
-        <li class="fw-normal pb-1">
-            {{ edu.obj|mine_link }}, {{ edu.typ }}{{ edu|fach }} {{ edu|mine_date:"()" }}
-            {% if edu.references %}
-                {% include 'mine_frontend/partials/tooltip_info.html' with text=edu.references %}
-            {% endif %}
-            {% if has_edit_permissions %}
-                {% include 'mine_frontend/partials/edit_button.html' with url_name='mine_edit:education_edit' id=edu.id ct='PositionAn' text='Edit' %}
-            {% endif %}
-        </li>
+        {% include 'mine_frontend/partials/education_li.html' with edu=edu %}
     {% endfor %}
     {% if has_edit_permissions %}
-        {% include 'mine_frontend/partials/edit_button.html' with url_name='mine_edit:education_create' ct='PositionAn' id_subj=object.id text='Add' add=True %}
+        {% include 'mine_frontend/partials/edit_button.html' with url_name='mine_edit:education_create' ct='AusbildungAn' id_subj=object.id text='Add' add=True %}
     {% endif %}
 </ul>

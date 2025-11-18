@@ -163,7 +163,11 @@
       $('body,html').animate({
         scrollTop : 0
     }, 500);
-    }
+    };
+    document.body.addEventListener("closeRelationDialog", function(evt){
+      const dialog = document.getElementById("relationdialog");
+      dialog.close();
+    })
 
             </script>
             {% block scripts %}{% endblock %}
