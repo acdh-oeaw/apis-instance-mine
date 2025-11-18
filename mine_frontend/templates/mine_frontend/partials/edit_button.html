@@ -1,5 +1,10 @@
 <button type="button"
-        class="btn btn-primary btn-sm"
         hx-get="{% if id %}{% url url_name id %}{% else %}{% url url_name id_subj %}{% endif %}{% if add %}?subj_object_id={{ object.id }}&subj_content_type={{ object.content_type }}{% endif %}"
         hx-target="#relation-dialog-content"
-        onclick="relationdialog.showModal();">{{ text }}</button>
+        style="border: none;
+               background: none;
+               scale: 0.8"
+        alt="{{ text }}"
+        onclick="relationdialog.showModal();">
+    <i data-feather="edit"></i>
+</button>
