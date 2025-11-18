@@ -1,4 +1,5 @@
 <button type="button"
+        id="{{ id_button }}"
         hx-get="{% if id %}{% url url_name id %}{% else %}{% url url_name id_subj %}{% endif %}{% if add %}?subj_object_id={{ object.id }}&subj_content_type={{ object.content_type }}{% endif %}"
         hx-target="#relation-dialog-content"
         style="border: none;
