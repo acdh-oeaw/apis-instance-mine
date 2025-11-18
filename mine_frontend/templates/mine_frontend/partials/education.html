@@ -3,6 +3,6 @@
         {% include 'mine_frontend/partials/education_li.html' with edu=edu %}
     {% endfor %}
     {% if has_edit_permissions %}
-        {% include 'mine_frontend/partials/edit_button.html' with url_name='mine_edit:education_create' ct='AusbildungAn' id_subj=object.id text='Add' add=True id_button='add_education_button' %}
+        {% include 'mine_frontend/partials/edit_button.html' with url_name='mine_edit:education_create' ct='AusbildungAn' id_subj=object.id text='Add' add=True id_button='add_education_button' fa_icon='plus' %}
     {% endif %}
 </ul>
