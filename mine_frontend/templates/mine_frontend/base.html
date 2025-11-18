@@ -24,15 +24,22 @@
             <link rel="stylesheet"
                   href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
             <link rel="stylesheet" href="{% static 'lightbox/css/lightbox.min.css' %}" />
+            <link href="{% sass_src 'mine_frontend/css/theme.scss' %}"
+                  rel="stylesheet"
+                  type="text/css" />
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <!-- Select2 CSS -->
+            <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+                  rel="stylesheet" />
+            <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
+                  rel="stylesheet" />
+            <!-- Select2 JS -->
+            <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
             <script src="{% static 'bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
             <!-- Custom styles for this template -->
             <script src="{% static 'feather/feather.min.js' %}"></script>
             <!-- lightbox -->
             <script src="{% static 'lightbox/js/lightbox.min.js' %}"></script>
-            <link href="{% sass_src 'mine_frontend/css/theme.scss' %}"
-                  rel="stylesheet"
-                  type="text/css" />
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/leaflet.js"></script>
             <script src="https://unpkg.com/htmx.org@2.0.4" defer></script>
@@ -155,10 +162,14 @@
                     </footer>
                 </div>
             </div>
-            <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script>
-            <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script> -->
-            <script>feather.replace()</script>
-            <script>
+            <button type="button" class="btn btn-floating btn-lg" id="btn-back-to-top">
+                <span>↑</span>
+            </button>
+        <!-- <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script>
+                                                    <script type="text/javascript"
+                                                            src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script> -->
+        <script>feather.replace()</script>
+        <script>
     function scrollToTop() {
       $('body,html').animate({
         scrollTop : 0
@@ -169,10 +180,10 @@
       dialog.close();
     })
 
-            </script>
-            {% block scripts %}{% endblock %}
-            {% block scripts2 %}
-            {% endblock scripts2 %}
-        </div>
-    </body>
+        </script>
+        {% block scripts %}{% endblock %}
+        {% block scripts2 %}
+        {% endblock scripts2 %}
+    </div>
+</body>
 </html>
