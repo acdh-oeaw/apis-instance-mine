@@ -1,8 +1,8 @@
-<ul class="ps-0 mb-0 list-unstyled">
+<ul id="education-list" class="ps-0 mb-0 list-unstyled">
     {% for edu in education %}
         {% include 'mine_frontend/partials/education_li.html' with edu=edu %}
     {% endfor %}
     {% if has_edit_permissions %}
-        {% include 'mine_frontend/partials/edit_button.html' with url_name='mine_edit:education_create' ct='AusbildungAn' id_subj=object.id text='Add' add=True %}
+        {% include 'mine_frontend/partials/edit_button.html' with url_name='mine_edit:education_create' ct='AusbildungAn' id_subj=object.id text='Add' add=True id_button='add_education_button' %}
     {% endif %}
 </ul>
