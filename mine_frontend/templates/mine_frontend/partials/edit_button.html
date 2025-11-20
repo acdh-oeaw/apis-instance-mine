@@ -9,3 +9,20 @@
         onclick="relationdialog.showModal();">
     <i data-feather="{{ fa_icon }}"></i>
 </button>
+{% if id %}
+    <button type="button"
+            id="{{ id_button }}_delete"
+            hx-delete="{% if id %}{% url url_name id %}{% else %}{% url url_name id_subj %}{% endif %}"
+            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+            hx-confirm="Are you sure you want to delete this item?"
+            hx-target="closest li"
+            hx-swap="outerHTML"
+            style="border: none;
+                   background: none;
+                   scale: 0.8;
+                   color: #dc3545"
+            alt="Delete {{ text }}"
+            title="Delete">
+        <i data-feather="trash-2"></i>
+    </button>
+{% endif %}
