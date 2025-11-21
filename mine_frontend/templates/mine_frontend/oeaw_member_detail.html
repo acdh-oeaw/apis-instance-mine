@@ -2,9 +2,7 @@
 {% load static %}
 {% load mine_extras %}
 {% block left_tab %}
-    {% include 'mine_frontend/partials/member_name.html' %}
-    {% include 'mine_frontend/partials/image.html' %}
-    {% include 'mine_frontend/partials/place_of_birth_and_death.html' %}
+    {% include 'mine_frontend/partials/memb_left_panel_editable.html' %}
     {% if membership_short %}
         {% include 'mine_frontend/partials/memberships.html' %}
     {% endif %}

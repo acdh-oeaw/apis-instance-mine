@@ -5,6 +5,7 @@ from mine_edit.views import (
     CareerEditView,
     EducationCreateView,
     EducationEditView,
+    PersonEditView,
 )
 
 app_name = "mine_edit"
@@ -22,5 +23,10 @@ urlpatterns = [
         "career/<int:pk_subj>/create/",
         CareerCreateView.as_view(),
         name="career_create",
+    ),
+    path(
+        "member/<int:pk>/edit/",
+        PersonEditView.as_view(),
+        name="member_edit",
     ),
 ]
