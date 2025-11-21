@@ -9,7 +9,7 @@
         onclick="relationdialog.showModal();">
     <i data-feather="{{ fa_icon }}"></i>
 </button>
-{% if id %}
+{% if delete_button %}
     <button type="button"
             id="{{ id_button }}_delete"
             hx-delete="{% if id %}{% url url_name id %}{% else %}{% url url_name id_subj %}{% endif %}"

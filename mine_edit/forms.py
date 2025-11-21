@@ -1,8 +1,17 @@
+from apis_core.generic.forms.fields import ModelImportChoiceField
 from apis_core.relations.forms import RelationForm
 from django import forms
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import QuerySet
 
-from apis_ontology.models import AusbildungAn, PositionAn
+from apis_ontology.models import (
+    AusbildungAn,
+    GeborenIn,
+    GestorbenIn,
+    Ort,
+    Person,
+    PositionAn,
+)
 
 
 class BaseEditForm(RelationForm):
@@ -31,9 +40,10 @@ class BaseEditForm(RelationForm):
         ):
             kwargs["initial"]["collections"] = None
         super().__init__(*args, **kwargs)
-        self.fields["subj_object_id"].widget = forms.HiddenInput()
-        self.fields["subj_content_type"].widget = forms.HiddenInput()
-        self.fields["collections"].widget = forms.HiddenInput()
+        if "subj_object_id" in self.fields:
+            self.fields["subj_object_id"].widget = forms.HiddenInput()
+            self.fields["subj_content_type"].widget = forms.HiddenInput()
+            self.fields["collections"].widget = forms.HiddenInput()
 
 
 class EducationForm(BaseEditForm):
@@ -92,3 +102,66 @@ class CareerForm(BaseEditForm):
         else:
             self.helper.attrs["hx-target"] = "#add_career_button"
             self.helper.attrs["hx-swap"] = "beforebegin"
+
+
+class PersonEditForm(BaseEditForm):
+    relation_name = "Person"
+    description = """
+    Please use this form to enter any person information.
+    """
+    place_of_birth = ModelImportChoiceField(
+        queryset=Ort.objects.all(),
+        required=False,
+        label="Place of Birth",
+    )
+    place_of_death = ModelImportChoiceField(
+        queryset=Ort.objects.all(),
+        required=False,
+        label="Place of Death",
+    )
+
+    class Meta:
+        model = Person
+        fields = [
+            "forename",
+            "surname",
+            "date_of_birth",
+            "date_of_death",
+            "beruf",
+        ]
+
+    def save(self, commit=True):
+        instance = super().save(commit=commit)
+        if "place_of_birth" in self.changed_data:
+            if place_of_birth := self.cleaned_data.get("place_of_birth"):
+                pb, created = GeborenIn.objects.get_or_create(
+                    subj_object_id=instance.id,
+                    subj_content_type=ContentType.objects.get_for_model(instance),
+                    defaults={
+                        "obj_object_id": place_of_birth.id,
+                        "obj_content_type": ContentType.objects.get_for_model(
+                            place_of_birth
+                        ),
+                    },
+                )
+            else:
+                GeborenIn.objects.get(subj_object_id=instance.id).delete()
+        if "place_of_death" in self.changed_data:
+            if place_of_death := self.cleaned_data.get("place_of_death"):
+                pd, created = GestorbenIn.objects.get_or_create(
+                    subj_object_id=instance.id,
+                    subj_content_type=ContentType.objects.get_for_model(instance),
+                    defaults={
+                        "obj_object_id": place_of_death.id,
+                        "obj_content_type": ContentType.objects.get_for_model(
+                            place_of_death
+                        ),
+                    },
+                )
+            else:
+                GestorbenIn.objects.get(subj_object_id=instance.id).delete()
+        return instance
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper.attrs["hx-target"] = "#person-meta-left-panel"

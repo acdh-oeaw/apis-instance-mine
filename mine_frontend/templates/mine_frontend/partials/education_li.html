@@ -5,7 +5,7 @@
         {% include 'mine_frontend/partials/tooltip_info.html' with text=edu.references %}
     {% endif %}
     {% if has_edit_permissions %}
-        {% include 'mine_frontend/partials/edit_button.html' with url_name='mine_edit:education_edit' id=edu.id ct='AusbildungAn' text='Edit' fa_icon='edit' %}
+        {% include 'mine_frontend/partials/edit_button.html' with url_name='mine_edit:education_edit' id=edu.id ct='AusbildungAn' text='Edit' fa_icon='edit' delete_button=True %}
     {% endif %}
 </li>
 <script>feather.replace();</script>
