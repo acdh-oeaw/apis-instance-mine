@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from apis_core.generic.views import Update
 from apis_core.relations.views import CreateRelationForm
 from django.contrib.contenttypes.models import ContentType
@@ -15,6 +17,7 @@ from apis_ontology.models import (
 )
 from mine_edit.forms import CareerForm, EducationForm, PersonEditForm
 from mine_edit.utils import user_edit_permissions
+from mine_frontend.utils import create_thumbnail
 
 
 class EditView(Update):
@@ -155,6 +158,18 @@ class CareerCreateView(CreateView):
         return response
 
 
+def save_image(person, image):
+    file_path = Path(f"media/{person.id}")
+    file_path.mkdir(parents=True, exist_ok=True)
+    with open(file_path / image.name, "wb") as f:
+        f.write(image.read())
+    fn = image.name.split(".")
+    create_thumbnail(file_path / image.name, file_path / f"{fn[0]}_thumb.png")
+    Bild.objects.create(
+        content_object=person, pfad=file_path / image.name, credit="user upload"
+    )
+
+
 class PersonEditView(EditView):
     model = Person
     form_class = PersonEditForm
@@ -177,6 +192,10 @@ class PersonEditView(EditView):
     def form_valid(self, form):
         response = super().form_valid(form)
         if self.request.headers.get("HX-Request"):
+            if self.request.method == "POST":
+                image = form.cleaned_data.get("image")
+                if image:
+                    save_image(self.object, image)
             place_of_birth = GeborenIn.objects.filter(subj_object_id=self.object.id)
             place_of_death = GestorbenIn.objects.filter(subj_object_id=self.object.id)
             html_temp = render(
