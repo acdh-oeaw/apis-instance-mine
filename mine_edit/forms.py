@@ -119,6 +119,10 @@ class PersonEditForm(BaseEditForm):
         required=False,
         label="Place of Death",
     )
+    image = forms.FileField(
+        required=False,
+        label="Image",
+    )
 
     class Meta:
         model = Person

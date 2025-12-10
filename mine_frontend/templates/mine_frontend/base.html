@@ -98,11 +98,13 @@
                             <ul id="main-menu"
                                 class="navbar-nav me-0 fw-bold flex-column text-uppercase">
                                 <li class="nav-item">
-                                    <a title="Mitglieder" href="{% url 'index' %}" class="nav-link p-0">Mitglieder</a>
+                                    <a title="Mitglieder"
+                                       href="{% url 'mine_frontend:index' %}"
+                                       class="nav-link p-0">Mitglieder</a>
                                 </li>
                                 <li class="nav-item">
                                     <a title="Institutionen"
-                                       href="{% url 'institution-index' %}"
+                                       href="{% url 'mine_frontend:institution-index' %}"
                                        class="nav-link p-0">Institutionen</a>
                                 </li>
                                 <li class="nav-item nav-link p-0" style="color: grey">Netzwerke</li>
@@ -126,7 +128,9 @@
                             <ul id="second-menu"
                                 class="navbar-nav me-0 align-top ps-lg-5 flex-column text-uppercase fw-light">
                                 <li class="nav-item">
-                                    <a title="Über" href="{% url 'about' %}" class="nav-link p-0">Über</a>
+                                    <a title="Über"
+                                       href="{% url 'mine_frontend:about' %}"
+                                       class="nav-link p-0">Über</a>
                                 </li>
                                 <li class="nav-item">
                                     <a title="Kontakt" href="FIXME" class="nav-link p-0">Kontakt</a>
@@ -178,8 +182,8 @@
                 <span>↑</span>
             </button>
         <!-- <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script>
-                                                                    <script type="text/javascript"
-                                                                            src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script> -->
+                                                                                                    <script type="text/javascript"
+                                                                                                            src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script> -->
         <script>feather.replace()</script>
         <script>
     function scrollToTop() {
@@ -193,7 +197,8 @@
     })
 
         </script>
-        {% block scripts %}{% endblock %}
+        {% block scripts %}
+        {% endblock %}
         {% block scripts2 %}
         {% endblock scripts2 %}
     </div>

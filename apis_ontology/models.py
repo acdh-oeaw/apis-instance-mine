@@ -168,7 +168,11 @@ class Beruf(GenericModel, models.Model):
 
 
 class Bild(GenericModel, models.Model):
-    BILD_KIND_CHOICES = (("OEAW Archiv", "OEAW Archiv"), ("Wikimedia", "Wikimedia"))
+    BILD_KIND_CHOICES = (
+        ("OEAW Archiv", "OEAW Archiv"),
+        ("Wikimedia", "Wikimedia"),
+        ("User", "User"),
+    )
     art = models.CharField(max_length=100, choices=BILD_KIND_CHOICES)
     pfad = models.CharField(max_length=1024)
     credit = models.TextField(max_length=1024, blank=True)
