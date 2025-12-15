@@ -65,17 +65,15 @@
                             <ul id="main-menu"
                                 class="navbar-nav me-0 fw-bold flex-column text-uppercase">
                                 <li class="nav-item">
-                                    <a title="Mitglieder" href="FIXME" class="nav-link p-0">Mitglieder</a>
+                                    <a title="Mitglieder" href="{% url 'index' %}" class="nav-link p-0">Mitglieder</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a title="Institutionen" href="FIXME" class="nav-link p-0">Institutionen</a>
+                                    <a title="Institutionen"
+                                       href="{% url 'institution-index' %}"
+                                       class="nav-link p-0">Institutionen</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a title="Netzwerke" href="FIXME" class="nav-link p-0">Netzwerke</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a title="Ereignisse" href="FIXME" class="nav-link p-0">Ereignisse</a>
-                                </li>
+                                <li class="nav-item nav-link p-0" style="color: grey">Netzwerke</li>
+                                <li class="nav-item nav-link p-0" style="color: grey">Ereignisse</li>
                             </ul>
                             <form class="d-flex my-2 my-lg-0 pt-1 navbar-search-form"
                                   method="get"
@@ -151,7 +149,8 @@
     }
 
             </script>
-            {% block scripts %}{% endblock %}
+            {% block scripts %}
+            {% endblock %}
             {% block scripts2 %}
             {% endblock scripts2 %}
         </div>
