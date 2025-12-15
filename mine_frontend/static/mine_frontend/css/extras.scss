@@ -82,9 +82,18 @@ fieldset legend {
     }
 }
 
+.label-truncate span {
+  display: block;           /* or inline-block */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .custom-table {
     border-spacing: 0 $spacer * 0.25;
     border-collapse: separate;
+    table-layout: fixed;
+    width: 100%;
 }
 
 table.custom-table {

@@ -23,9 +23,11 @@
         </div>
         <div class="wrapper pt-0" id="index-wrapper">
             <div class="container pl-5 pr-5" id="content" tabindex="-1">
+	     {% block search-form %}
                 <form action="/search?" class="w-100" method="get">
                     <div id="search_form">{% crispy search_form search_form.helper %}</div>
                 </form>
+	     {% endblock search-form %}
             </div>
         </div>
     </div>

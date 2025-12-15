@@ -4,7 +4,7 @@ import re
 from apis_core.uris.models import Uri
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.expressions import ArraySubquery
-from django.db.models import Case, OuterRef, Value, When
+from django.db.models import Case, F, OuterRef, Q, Subquery, Value, When
 from django.db.models.functions import Concat, Lower
 from django.views import generic
 from django.views.generic.base import TemplateView
@@ -31,9 +31,9 @@ from apis_ontology.models import (
     Werk,
     WirdVergebenVon,
 )
-from mine_frontend.forms import MineMainform
+from mine_frontend.forms import InstitutionMainForm, MineMainform
 from mine_frontend.mixins import FacetedSearchMixin
-from mine_frontend.tables import SearchResultTable
+from mine_frontend.tables import SearchResultInstitutionTable, SearchResultTable
 
 
 def get_web_object_uri(uri_obj):
@@ -389,6 +389,16 @@ class IndexView(LoginRequiredMixin, TemplateView):
         return context
 
 
+class InstitutionIndexView(LoginRequiredMixin, TemplateView):
+    model = Institution
+    template_name = "mine_frontend/index_institution.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_form"] = InstitutionMainForm()
+        return context
+
+
 class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView):
     table_class = SearchResultTable
     template_name = "mine_frontend/search_result.html"
@@ -450,5 +460,76 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
         qs = self.apply_non_facet_filters(qs)
 
         qs = self.apply_facet_filters_except(qs)
+        return qs
+
+
+class InstitutionResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView):
+    table_class = SearchResultInstitutionTable
+    template_name = "mine_frontend/search_result.html"
+
+    facet_fields = {
+        "klasse": {
+            "label": "Klasse",
+            "field": "klasse_label",
+            "lookup": "exact",
+            "type": "choice",
+        },
+        "typ": {
+            "label": "Art",
+            "field": "typ",
+            "lookup": "exact",
+            "type": "choice",
+        },
+    }
+
+    filter_fields = {
+        "suche": {
+            "label": "Suche",
+            "field": "label",
+            "param": "q",
+            "lookup": "unaccent__icontains",
+            "type": "text",
+        },
+    }
+
+    def get_base_queryset(self):
+        """Get base queryset before any filtering"""
+        klasse_ids = Institution.objects.filter(typ="Klasse").values_list(
+            "id", flat=True
+        )
+
+        klasse_relation = (
+            InstitutionHierarchie.objects.filter(
+                Q(subj_object_id__in=klasse_ids, obj_object_id=OuterRef("pk"))
+                | Q(obj_object_id__in=klasse_ids, subj_object_id=OuterRef("pk"))
+            )
+            .annotate(
+                klasse_id=Case(
+                    When(subj_object_id__in=klasse_ids, then=F("subj_object_id")),
+                    default=F("obj_object_id"),
+                )
+            )
+            .values("klasse_id")[:1]
+        )
+
+        return Institution.objects.filter(akademie_institution=True).annotate(
+            klasse_id=Subquery(klasse_relation),
+            klasse_label=Subquery(
+                Institution.objects.filter(pk=OuterRef("klasse_id")).values("label")[:1]
+            ),
+        )
+
+    def get_queryset(self):
+        """Get the final filtered queryset for the table"""
+        qs = self.get_base_queryset()
+
+        qs = self.apply_non_facet_filters(qs)
+
+        qs = self.apply_facet_filters_except(qs)
 
         return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["css_postfix"] = "-institutions"
+        return context

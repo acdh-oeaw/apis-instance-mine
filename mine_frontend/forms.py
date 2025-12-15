@@ -225,3 +225,82 @@ class MineMainform(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = MineMainFormHelper()
+
+
+class MineInstitutionFormHelper(FormHelper):
+    form_class = "genericFilterForm"
+    form_method = "GET"
+    form_tag = False
+    # self.template = "forms/template_person_form.html"
+    layout = Layout(
+        Fieldset("", "q", css_class="bg-mine", css_id="basic_search_fields"),
+        Div(
+            Div(
+                Accordion(
+                    Div(
+                        Fieldset(
+                            "",
+                            "typ",
+                            "klasse",
+                            css_id="mitgliedschaft",
+                            css_class="show card-body card filter-wrapper pb-1",
+                        ),
+                        css_class="bg-white",
+                    ),
+                ),
+                css_class="col-md-6 pt-30 pr-0 pr-md-custom pl-0 align-items-md-stretch d-flex",
+            ),
+            Div(
+                # Accordion(),
+                css_class="col-md-6 pt-30 pr-0 pl-0 pl-md-custom",
+            ),
+            css_class="row ml-0 mr-0 mt-4",
+        ),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.add_input(
+            Submit(
+                "",
+                "Kombinierte Auswertung starten",
+                css_class="rounded-0 mt-3 text-uppercase w-100 text-left",
+            )
+        )
+
+
+class InstitutionMainForm(forms.Form):
+    CHOICES_INST_TYPE = __import__("apis_ontology").models.Institution.TYP_CHOICES[:-8]
+    q = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Institutionensuche",
+                "class": "border-0 rounded-0 d-block mx-auto w-75",
+            }
+        ),
+        required=False,
+        label="",
+    )
+    klasse = forms.MultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        required=False,
+        label="Klasse",
+        choices=[
+            (
+                "Mathematisch-Naturwissenschaftliche Klasse",
+                "Mathematisch-Naturwissenschaftliche Klasse",
+            ),
+            ("Philosophisch-Historische Klasse", "Philosophisch-Historische Klasse"),
+            ("Gesamtakademie", "Gesamtakademie"),
+        ],
+    )
+    typ = forms.MultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        required=False,
+        label="Art",
+        choices=CHOICES_INST_TYPE,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = MineInstitutionFormHelper()

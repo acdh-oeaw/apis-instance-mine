@@ -4,7 +4,7 @@ from django.db.models.query_utils import Q
 
 
 class FacetedSearchMixin:
-    facet_fields = {}  # Define this in your view
+    facet_fields = {}
 
     def get_facet_fields(self):
         """
