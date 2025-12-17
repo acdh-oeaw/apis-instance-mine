@@ -7,9 +7,9 @@
                 {{ ent.subj.id }}">{{ ent.subj }}
             {% endif %}
         </a>
-        {% if ent.beginn or ent.ende %}
-            {{ ent.beginn|date:"Y" }}
-            {% if ent.ende %}- {{ ent.ende|date:"Y" }}{% endif %}
+        {% if ent.beginn_date_sort or ent.ende_date_sort %}
+            {{ ent.beginn_date_sort|date:"Y" }}
+            {% if ent.ende_date_sort %}- {{ ent.ende_date_sort|date:"Y" }}{% endif %}
         {% endif %}
     </li>
 {% endfor %}
