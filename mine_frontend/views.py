@@ -295,59 +295,34 @@ class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):
             ],
             key=lambda x: x["beginn"],
         )
-        context["predecessors"] = sorted(
-            [
-                {
-                    "obj": r.obj,
-                    "relation": r.relation,
-                    "beginn": r.beginn_date_sort,
-                    "ende": r.ende_date_sort,
-                }
-                for r in InstitutionHierarchie.objects.filter(
-                    subj_object_id=self.object.id,
-                    relation__in=["umbenannt von"],
-                ).exclude(obj_object_id__in=ids_akad)
-            ]
-            + [
-                {
-                    "obj": r.subj,
-                    "relation": r.relation_reverse,
-                    "beginn": r.beginn_date_sort,
-                    "ende": r.ende_date_sort,
-                }
-                for r in InstitutionHierarchie.objects.filter(
-                    obj_object_id=self.object.id,
-                    relation__in=["umbenannt von"],
-                ).exclude(subj_object_id__in=ids_akad)
-            ],
-            key=lambda x: x["beginn"],
+        suc_pre_lst = [
+            "umbenannt von",
+            "zusammengelegt mit",
+            "ist Vorgänger von",
+        ]
+        suc_pre_qs = (
+            InstitutionHierarchie.objects.filter(
+                Q(subj_object_id=self.object.id) | Q(obj_object_id=self.object.id),
+                relation__in=suc_pre_lst,
+            )
+            .annotate(
+                rel=Case(
+                    When(subj_object_id=self.object.id, then=F("relation")),
+                    default=F("relation_reverse"),
+                ),
+                rel_kind=Case(
+                    When(subj_object_id=self.object.id, then=Value("predecessor")),
+                    default=Value("successor"),
+                ),
+            )
+            .exclude(obj_object_id__in=ids_akad)
         )
-        context["successors"] = sorted(
-            [
-                {
-                    "obj": r.obj,
-                    "relation": r.relation,
-                    "beginn": r.beginn_date_sort,
-                    "ende": r.ende_date_sort,
-                }
-                for r in InstitutionHierarchie.objects.filter(
-                    subj_object_id=self.object.id,
-                    relation__in=["umbenannt in"],
-                ).exclude(obj_object_id__in=ids_akad)
-            ]
-            + [
-                {
-                    "obj": r.subj,
-                    "relation": r.relation_reverse,
-                    "beginn": r.beginn_date_sort,
-                    "ende": r.ende_date_sort,
-                }
-                for r in InstitutionHierarchie.objects.filter(
-                    obj_object_id=self.object.id,
-                    relation__in=["umbenannt in"],
-                ).exclude(subj_object_id__in=ids_akad)
-            ],
-            key=lambda x: x["beginn"],
+
+        context["predecessors"] = suc_pre_qs.filter(rel_kind="predecessor").order_by(
+            "beginn_date_sort"
+        )
+        context["successors"] = suc_pre_qs.filter(rel_kind="successor").order_by(
+            "beginn_date_sort"
         )
         context["presidents"] = PositionAn.objects.filter(
             obj_object_id=self.object.id, position="Obmann/Obfrau (Kommission)"

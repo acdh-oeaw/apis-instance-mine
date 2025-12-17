@@ -12,7 +12,7 @@
 {% block right_tab %}
     <div class="accordion" id="institutionAccordion">
         {% if predecessors %}
-            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Institutionelle Vorläufer' content_partial='mine_frontend/partials/inst_predecessors.html' accordion_id='institutionAccordion' %}
+            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Institutionelle Vorläufer' content_partial='mine_frontend/partials/inst_history.html' institutions=predecessors accordion_id='institutionAccordion' %}
         {% endif %}
         {% if presidents %}
             {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Obfrauen / Obmänner' content_partial='mine_frontend/partials/inst_presidents.html' accordion_id='institutionAccordion' %}
@@ -21,7 +21,7 @@
             {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitglieder' content_partial='mine_frontend/partials/inst_members.html' accordion_id='institutionAccordion' %}
         {% endif %}
         {% if successors %}
-            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Institutionelle Nachfolger' content_partial='mine_frontend/partials/inst_successors.html' accordion_id='institutionAccordion' %}
+            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Institutionelle Nachfolger' content_partial='mine_frontend/partials/inst_history.html' institutions=successors accordion_id='institutionAccordion' %}
         {% endif %}
     </div>
 {% endblock %}
