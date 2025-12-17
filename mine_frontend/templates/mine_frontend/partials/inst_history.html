@@ -1,0 +1,17 @@
+<div class="card-body p-2 ps-3 pe-3 show-limited-number text-09">
+    <ul class="ps-0 mb-0 list-unstyled">
+        {% for ent in institutions %}
+            <li class="fw-normal pb-1">
+                {{ ent.rel }} <a href="/institution/{% if rel_kind == 'predecessor' %}{{ ent.obj.id }}">{{ ent.obj }}
+            {% else %}
+                {{ ent.subj.id }}">{{ ent.subj }}
+            {% endif %}
+        </a>
+        {% if ent.beginn or ent.ende %}
+            {{ ent.beginn|date:"Y" }}
+            {% if ent.ende %}- {{ ent.ende|date:"Y" }}{% endif %}
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>
+</div>
