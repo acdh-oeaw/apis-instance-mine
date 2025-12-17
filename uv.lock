@@ -29,7 +29,7 @@ wheels = [
 
 [[package]]
 name = "apis-acdhch-default-settings"
-version = "2.15.0"
+version = "2.16.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "apis-acdhch-django-auditlog" },
@@ -51,22 +51,22 @@ dependencies = [
     { name = "requests" },
     { name = "whitenoise" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ad/14/1c4eb1f8a88211f10a9a3fbdffd1274aeceaab4ac95485bc7cc77cbfe826/apis_acdhch_default_settings-2.15.0.tar.gz", hash = "sha256:e218cc296078288eeeedf704b332a4142f2ecba2a28134404b4ead66a0958105", size = 15394, upload-time = "2025-10-10T08:45:33.582Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/86/70/e4f0e2d6889829d4b31b21138276fa93ac507004d121c18c6e944d383c4c/apis_acdhch_default_settings-2.16.0.tar.gz", hash = "sha256:f67a8fd5d755a74e42432973530bab40c2c2daa9f0af68d493194e9861a05a1d", size = 15571, upload-time = "2025-12-05T06:26:04.257Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/eb/b7/4a0eae4b00aa8f25e90b8875a39ba5d0976e5593839a64bb6143108a5132/apis_acdhch_default_settings-2.15.0-py3-none-any.whl", hash = "sha256:0673d35e997f4d5c691e1555effa6654e404e58b433a18b1214e7dc2ef372e35", size = 11593, upload-time = "2025-10-10T08:45:32.235Z" },
+    { url = "https://files.pythonhosted.org/packages/08/6e/9920f75104a27aa48650fdd4cdc9133b0b8caf5aee383b4c3699eb5626cc/apis_acdhch_default_settings-2.16.0-py3-none-any.whl", hash = "sha256:80ab579c32f966b0d669fc82fc7df6e4415058525e92cee1a2f50ae38d1bae0b", size = 11640, upload-time = "2025-12-05T06:26:02.926Z" },
 ]
 
 [[package]]
 name = "apis-acdhch-django-auditlog"
-version = "0.2.1"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
     { name = "django-auditlog" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1a/9f/5457b3f8617aff15796037b569f3078bd84d581ca40984facbce41fa95cb/apis_acdhch_django_auditlog-0.2.1.tar.gz", hash = "sha256:513f2a54dee0fbd8bf09ae0a66652a6e2749dfced9c32a109946325a96f4f21a", size = 20415, upload-time = "2025-05-14T10:53:43.085Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/47/4b/a68ae24583aad89d687acae1f67571a45debec4c1b74099a53b51f790a97/apis_acdhch_django_auditlog-0.3.0.tar.gz", hash = "sha256:563b81bac6567f3ad060dba219f63397625784da43cb8a511753205c8a0e5bbb", size = 21213, upload-time = "2025-08-14T06:34:18.794Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/bb/47/737764829ff45a04e319095d9987d6825cc4f0fe1b28435a476bd04e7ede/apis_acdhch_django_auditlog-0.2.1-py3-none-any.whl", hash = "sha256:73b09c53c61474285182de62667b6d28f6f4ea6356d36e8782c4af0a65fa8552", size = 4585, upload-time = "2025-05-14T10:53:41.702Z" },
+    { url = "https://files.pythonhosted.org/packages/1b/47/6c7e054e3667757c935919023f1398c1107f3414abfb20a9a7913bf3178b/apis_acdhch_django_auditlog-0.3.0-py3-none-any.whl", hash = "sha256:1d97090aad19c6266e4450c7b07cf59f253f5f80bb4ba263e0fbdb83159891ac", size = 5728, upload-time = "2025-08-14T06:34:17.535Z" },
 ]
 
 [[package]]
@@ -83,7 +83,7 @@ wheels = [
 
 [[package]]
 name = "apis-core-rdf"
-version = "0.55.1"
+version = "0.58.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "acdh-arche-assets" },
@@ -103,9 +103,9 @@ dependencies = [
     { name = "rdflib" },
     { name = "tablib" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c6/f0/dd5d029b32b01a849ee6b1cca7d8e1c7c318eaf3f21f501ad36ee1bfa60a/apis_core_rdf-0.55.1.tar.gz", hash = "sha256:4305d4a0d69a86b5fdc6f5b73e7abc4f953121efdca76df10e9f96bc4ffd03f0", size = 271153, upload-time = "2025-09-30T13:05:24.883Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/2b/cc/2454d2f3b43c591616e6828c9c386bf5568bdd7a067368635c17a4ff1080/apis_core_rdf-0.58.2.tar.gz", hash = "sha256:673c0e3b29e87e8184b07556d1c7f70a46bd08fca0f05adc94499b9cd4fc6e8a", size = 304000, upload-time = "2025-12-04T11:33:39.868Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8b/8e/ba84d7a20e8586592b01155f7546cc43043a23d7b48addd1ab57840c09cf/apis_core_rdf-0.55.1-py3-none-any.whl", hash = "sha256:bfd1b274a97e21574fb500976aad865580d4acbe7282aca0708bdb5390fb4261", size = 241299, upload-time = "2025-09-30T13:05:23.169Z" },
+    { url = "https://files.pythonhosted.org/packages/c2/c8/978dbcf226915f3c5cdd70b1a8b96d9d7390ee3a9ef27f115ecc06baefa9/apis_core_rdf-0.58.2-py3-none-any.whl", hash = "sha256:6873d1bb4276b735400ba6aa008b805326e86b58bad09685af6f43f08e7c87e2", size = 292390, upload-time = "2025-12-04T11:33:38.702Z" },
 ]
 
 [[package]]
@@ -752,10 +752,10 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "apis-acdhch-default-settings", specifier = ">=2.15.0" },
-    { name = "apis-acdhch-django-auditlog", specifier = ">=0.2.1" },
+    { name = "apis-acdhch-default-settings", specifier = ">=2.16.0" },
+    { name = "apis-acdhch-django-auditlog", specifier = ">=0.3.0" },
     { name = "apis-acdhch-django-invite", specifier = ">=0.2.0" },
-    { name = "apis-core-rdf", specifier = "==0.55.1" },
+    { name = "apis-core-rdf", specifier = "==0.58.2" },
     { name = "crispy-bootstrap5", specifier = ">=2024.10" },
     { name = "django-auditlog", specifier = "==3.3.0" },
     { name = "django-compressor", specifier = ">=4.5.1" },
