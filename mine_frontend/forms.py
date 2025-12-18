@@ -3,6 +3,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Div, Fieldset, Hidden, Layout, Submit
 from django import forms
 
+from mine_frontend.settings import POSITIONEN_PRES
+
 
 class MineMainFormHelper(FormHelper):
     form_class = "genericFilterForm"
@@ -52,7 +54,7 @@ class MineMainFormHelper(FormHelper):
                 Accordion(
                     AccordionGroup(
                         "Funktionen im Präsidium",
-                        "pres_funktionen",
+                        "acad_func",
                         css_id="praesidium",
                     ),
                     AccordionGroup(
@@ -173,18 +175,11 @@ class MineMainform(forms.Form):
             ),
         ],
     )
-    pres_funktionen = forms.MultipleChoiceField(
+    acad_func = forms.MultipleChoiceField(
         required=False,
         label="",
         widget=forms.CheckboxSelectMultiple(),
-        choices=[
-            ("funk_praesidentin", "Präsident/in"),
-            ("funk_vizepraesidentin", "Vizepräsident/in"),
-            ("funk_generalsekretaerin", "Generalsekretär/in"),
-            ("funk_sekretaerin", "Sekretär/in"),
-            ("funk_klassenpres_math_nat", "Klassenpräsident/in math.-nat. Klasse"),
-            ("funk_klassenpres_phil_hist", "Klassenpräsident/in phil.-hist. Klasse"),
-        ],
+        choices=[(x, x) for x in POSITIONEN_PRES],
     )
     gender = forms.ChoiceField(
         # widget=forms.Select(attrs={"class": "select2-main no-search rounded-0"}),

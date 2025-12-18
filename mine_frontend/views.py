@@ -33,6 +33,7 @@ from apis_ontology.models import (
 )
 from mine_frontend.forms import InstitutionMainForm, MineMainform
 from mine_frontend.mixins import FacetedSearchMixin
+from mine_frontend.settings import POSITIONEN_PRES
 from mine_frontend.tables import SearchResultInstitutionTable, SearchResultTable
 
 
@@ -391,6 +392,12 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             "lookup": "exact",
             "type": "array",
         },
+        "acad_func": {
+            "label": "Funktionen im Präsidium",
+            "field": "acad_func",
+            "lookup": "exact",
+            "type": "array",
+        },
         "gender": {
             "label": "Geschlecht",
             "field": "gender",
@@ -422,9 +429,22 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             .values_list("mitgliedschaft")
             .distinct()
         )
+        klasse_ids = Institution.objects.filter(typ="Klasse").values_list(
+            "id", flat=True
+        )
+        func = (
+            PositionAn.objects.filter(
+                subj_object_id=OuterRef("id"),
+                obj_object_id__in=klasse_ids,
+                position__in=POSITIONEN_PRES,
+            )
+            .values_list("position")
+            .distinct()
+        )
 
         return Person.objects.filter(mitglied=True).annotate(
             memberships=ArraySubquery(memb),
+            acad_func=ArraySubquery(func),
             search_labels=Concat("forename", Value(" "), "surname"),
         )
 
