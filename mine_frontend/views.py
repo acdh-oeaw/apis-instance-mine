@@ -269,18 +269,24 @@ class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):
             relation="hat Untereinheit",
             subj_object_id__in=ids_akad,
         )
+        list_struc = [
+            "hat Untereinheit",
+            "eingegliedert in",
+            "ist Teil von",
+            "gliedert ein",
+        ]
         context["structure"] = (
             InstitutionHierarchie.objects.filter(
                 Q(
                     subj_object_id=self.object.id,
-                    relation__in=["hat Untereinheit", "eingegliedert in"],
                 )
-                | Q(obj_object_id=self.object.id, relation__in=["eingegliedert in"])
+                | Q(obj_object_id=self.object.id),
+                relation__in=list_struc,
             )
             .annotate(
                 rel=Case(
-                    When(subj_object_id=self.object.id, then=F("relation_reverse")),
-                    default=F("relation"),
+                    When(subj_object_id=self.object.id, then=F("relation")),
+                    default=F("relation_reverse"),
                 ),
                 obj_id=Case(
                     When(subj_object_id=self.object.id, then=F("obj_object_id")),

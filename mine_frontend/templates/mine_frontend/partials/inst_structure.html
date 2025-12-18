@@ -3,7 +3,7 @@
     <ul class="relentities list-unstyled">
         {% for x in structure %}
             <li class="ps-0 fw-normal pb-2">
-                {{ x.relation }} <a href="/institution/{{ x.obj_id }}"
+                {{ x.rel }} <a href="/institution/{{ x.obj_id }}"
     target="_blank"
     rel="noopener noreferrer">{{ x.obj_label }}</a> {{ x.beginn_date_sort|date:"Y" }}
                 {% if x.ende_date_sort %}- {{ x.ende_date_sort|date:"Y" }}{% endif %}
