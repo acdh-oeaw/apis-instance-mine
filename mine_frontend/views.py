@@ -331,6 +331,25 @@ class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):
                     When(subj_object_id=self.object.id, then=Value("predecessor")),
                     default=Value("successor"),
                 ),
+                obj_id=Case(
+                    When(subj_object_id=self.object.id, then=F("obj_object_id")),
+                    default=F("subj_object_id"),
+                ),
+                obj_label=Case(
+                    When(
+                        subj_object_id=self.object.id,
+                        then=Subquery(
+                            Institution.objects.filter(
+                                pk=OuterRef("obj_object_id")
+                            ).values("label")[:1]
+                        ),
+                    ),
+                    default=Subquery(
+                        Institution.objects.filter(
+                            pk=OuterRef("subj_object_id")
+                        ).values("label")[:1]
+                    ),
+                ),
             )
             .exclude(obj_object_id__in=ids_akad)
         )

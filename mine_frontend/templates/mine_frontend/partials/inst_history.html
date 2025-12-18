@@ -2,16 +2,12 @@
     <ul class="ps-0 mb-0 list-unstyled">
         {% for ent in institutions %}
             <li class="fw-normal pb-1">
-                {{ ent.rel }} <a href="/institution/{% if rel_kind == 'predecessor' %}{{ ent.obj.id }}">{{ ent.obj }}
-            {% else %}
-                {{ ent.subj.id }}">{{ ent.subj }}
+                {{ ent.rel }} <a href="/institution/{{ ent.obj_id }}">{{ ent.obj_label }}</a>
+            {% if ent.beginn_date_sort or ent.ende_date_sort %}
+                {{ ent.beginn_date_sort|date:"Y" }}
+                {% if ent.ende_date_sort %}- {{ ent.ende_date_sort|date:"Y" }}{% endif %}
             {% endif %}
-        </a>
-        {% if ent.beginn_date_sort or ent.ende_date_sort %}
-            {{ ent.beginn_date_sort|date:"Y" }}
-            {% if ent.ende_date_sort %}- {{ ent.ende_date_sort|date:"Y" }}{% endif %}
-        {% endif %}
-    </li>
-{% endfor %}
+        </li>
+    {% endfor %}
 </ul>
 </div>
