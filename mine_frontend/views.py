@@ -344,6 +344,10 @@ class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):
         context["presidents"] = PositionAn.objects.filter(
             obj_object_id=self.object.id, position="Obmann/Obfrau (Kommission)"
         ).order_by("beginn_date_sort")
+        context["directors"] = PositionAn.objects.filter(
+            obj_object_id=self.object.id,
+            position="Direktor(in) (Institut/Forschungstelle)",
+        ).order_by("beginn_date_sort")
         context["members"] = PositionAn.objects.filter(
             obj_object_id=self.object.id,
             position__in=["Kommissionsmitglied", "Delegierte(r)"],
