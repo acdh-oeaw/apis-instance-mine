@@ -17,6 +17,9 @@
         {% if presidents %}
             {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Obfrauen / Obmänner' content_partial='mine_frontend/partials/inst_presidents.html' accordion_id='institutionAccordion' %}
         {% endif %}
+        {% if directors %}
+            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Direktorinnen / Direktoren' content_partial='mine_frontend/partials/inst_presidents.html' presidents=directors accordion_id='institutionAccordion' %}
+        {% endif %}
         {% if members %}
             {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitglieder' content_partial='mine_frontend/partials/inst_members.html' accordion_id='institutionAccordion' %}
         {% endif %}
