@@ -3,7 +3,7 @@ import logging
 import django
 
 django.setup()
-from apis_ontology.models import Institution, PositionAn
+from apis_ontology.models import Institution, PositionAn  # noqa: E402
 
 # Create new positions "Präsident(in) Klasse" and "Vizepräsident(in) Klasse"
 

@@ -269,32 +269,42 @@ class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):
             relation="hat Untereinheit",
             subj_object_id__in=ids_akad,
         )
-        context["structure"] = sorted(
-            [
-                {
-                    "obj": r.obj,
-                    "relation": r.relation,
-                    "beginn": r.beginn_date_sort,
-                    "ende": r.ende_date_sort,
-                }
-                for r in InstitutionHierarchie.objects.filter(
+        context["structure"] = (
+            InstitutionHierarchie.objects.filter(
+                Q(
                     subj_object_id=self.object.id,
                     relation__in=["hat Untereinheit", "eingegliedert in"],
-                ).exclude(obj_object_id__in=ids_akad)
-            ]
-            + [
-                {
-                    "obj": r.subj,
-                    "relation": r.relation_reverse,
-                    "beginn": r.beginn_date_sort,
-                    "ende": r.ende_date_sort,
-                }
-                for r in InstitutionHierarchie.objects.filter(
-                    obj_object_id=self.object.id,
-                    relation__in=["eingegliedert in"],
-                ).exclude(subj_object_id__in=ids_akad)
-            ],
-            key=lambda x: x["beginn"],
+                )
+                | Q(obj_object_id=self.object.id, relation__in=["eingegliedert in"])
+            )
+            .annotate(
+                rel=Case(
+                    When(subj_object_id=self.object.id, then=F("relation_reverse")),
+                    default=F("relation"),
+                ),
+                obj_id=Case(
+                    When(subj_object_id=self.object.id, then=F("obj_object_id")),
+                    default=F("subj_object_id"),
+                ),
+                obj_label=Case(
+                    When(
+                        subj_object_id=self.object.id,
+                        then=Subquery(
+                            Institution.objects.filter(
+                                pk=OuterRef("obj_object_id")
+                            ).values("label")[:1]
+                        ),
+                    ),
+                    default=Subquery(
+                        Institution.objects.filter(
+                            pk=OuterRef("subj_object_id")
+                        ).values("label")[:1]
+                    ),
+                ),
+            )
+            .exclude(subj_object_id__in=ids_akad)
+            .exclude(obj_object_id__in=ids_akad)
+            .order_by("beginn_date_sort")
         )
         suc_pre_lst = [
             "umbenannt von",
