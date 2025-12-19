@@ -59,7 +59,7 @@ class MineMainFormHelper(FormHelper):
                     ),
                     AccordionGroup(
                         "Geschlecht",
-                        # "gender",
+                        "gender",
                         css_id="geschlecht",
                     ),
                     AccordionGroup(
@@ -188,7 +188,6 @@ class MineMainform(forms.Form):
             ("", "-"),
             ("männlich", "Männlich"),
             ("weiblich", "Weiblich"),
-            ("unbekannt", "Unbekannt"),
         ),
         label="",
     )
