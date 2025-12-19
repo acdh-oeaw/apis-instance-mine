@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import TemplateView
 
 from mine_frontend.views import (
     IndexView,
@@ -13,6 +14,11 @@ from mine_frontend.views import (
 urlpatterns = [
     path("mine/", IndexView.as_view(), name="index"),
     path("mine-institution/", InstitutionIndexView.as_view(), name="institution-index"),
+    path(
+        "about/",
+        TemplateView.as_view(template_name="mine_frontend/about.html"),
+        name="about",
+    ),
     path("person/<int:pk>/", OEAWMemberDetailView.as_view(), name="person-detail"),
     path(
         "institution/<int:pk>/",
