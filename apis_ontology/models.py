@@ -17,6 +17,8 @@ from django.utils.translation import gettext_lazy as _
 from django_interval.fields import FuzzyDateParserField
 from django_json_editor_field.fields import JSONEditorField
 
+from mine_frontend.settings import POSITIONEN
+
 
 class NameMixin(models.Model):
     name = models.CharField(max_length=255)
@@ -626,7 +628,7 @@ class PositionAn(Relation, VersionMixin, LegacyFieldsMixin):
 
     subj_model = Person
     obj_model = Institution
-    position = models.CharField(blank=True, choices=get_position_choices)
+    position = models.CharField(blank=True, choices=[(x, x) for x in POSITIONEN])
     fach = models.ForeignKey(Fach, on_delete=models.CASCADE, blank=True, null=True)
     beginn = FuzzyDateParserField(blank=True)
     ende = FuzzyDateParserField(blank=True)
