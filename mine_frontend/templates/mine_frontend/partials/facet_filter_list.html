@@ -19,11 +19,13 @@
                 <div class="active-filter-group">
                     <strong>{{ facet_data.label }}:</strong>
                     {% for selected_value in facet_data.selected %}
-                        <span class="badge badge-primary me-1 text-dark">
-                            {{ selected_value }}
-                            <a href="{% facet_url request facet_key selected_value 'remove' %}"
-                               class="ms-1">×</a>
-                        </span>
+                        {% if selected_value %}
+                            <span class="badge badge-primary me-1 text-dark">
+                                {{ selected_value }}
+                                <a href="{% facet_url request facet_key selected_value 'remove' %}"
+                                   class="ms-1">×</a>
+                            </span>
+                        {% endif %}
                     {% endfor %}
                 </div>
             {% endif %}
