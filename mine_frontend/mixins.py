@@ -156,7 +156,9 @@ class FacetedSearchMixin:
             if facet_key == exclude_facet:
                 continue
 
-            selected_values = self.request.GET.getlist(facet_key)
+            selected_values = [
+                value for value in self.request.GET.getlist(facet_key) if value
+            ]
             if selected_values:
                 field_name = config["field"]
                 field_type = config.get("type", "choice")
@@ -200,7 +202,8 @@ class FacetedSearchMixin:
         # Calculate facets
         context["facets"] = self.get_facet_counts(base_qs)
         context["has_active_filters"] = any(
-            self.request.GET.getlist(facet) for facet in self.get_facet_fields().keys()
+            [f for f in self.request.GET.getlist(facet) if f]
+            for facet in self.get_facet_fields().keys()
         ) or bool(context["filters"])
 
         return context
