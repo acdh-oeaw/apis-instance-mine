@@ -1,7 +1,7 @@
 from django.urls import path
 from django.views.generic import TemplateView
 
-from mine_frontend.autocompletes import VorschlagendeDal
+from mine_frontend.autocompletes import OEAWInstitutionsDal, VorschlagendeDal
 from mine_frontend.views import (
     IndexView,
     InstitutionIndexView,
@@ -38,4 +38,5 @@ urlpatterns = [
         name="institution-search",
     ),
     path("ac/vorgeschlagende", VorschlagendeDal.as_view(), name="dal-vorschlagende"),
+    path("ac/institute", OEAWInstitutionsDal.as_view(), name="dal-institute"),
 ]
