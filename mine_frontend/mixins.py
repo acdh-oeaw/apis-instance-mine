@@ -48,6 +48,7 @@ class FacetedSearchMixin:
         filtered_queryset = self.apply_non_facet_filters(base_queryset)
 
         for facet_key, config in facet_config.items():
+            selected_values = list(filter(None, self.request.GET.getlist(facet_key)))
             if config.get("type") == "choice":
                 field_name = config["field"]
 
@@ -65,7 +66,7 @@ class FacetedSearchMixin:
                     "label": config["label"],
                     "field_name": field_name,
                     "values": value_counts,
-                    "selected": self.request.GET.getlist(facet_key),
+                    "selected": selected_values,
                 }
             elif config.get("type") == "array":
                 # For ArraySubquery annotated fields, unnest the annotation and count unique values
@@ -87,7 +88,7 @@ class FacetedSearchMixin:
                     "label": config["label"],
                     "field_name": field_name,
                     "values": value_counts,
-                    "selected": self.request.GET.getlist(facet_key),
+                    "selected": selected_values,
                 }
 
         return facets
