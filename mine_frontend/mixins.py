@@ -105,6 +105,8 @@ class FacetedSearchMixin:
             selected_values = [
                 value for value in self.request.GET.getlist(get_param) if value
             ]
+            if "model_resolve" in config:
+                filter["model_resolve"] = config["model_resolve"]
             if selected_values:
                 filter["label"] = label
                 filter["field_name"] = field_name

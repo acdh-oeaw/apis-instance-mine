@@ -1,4 +1,5 @@
 from django import template
+from django.contrib.contenttypes.models import ContentType
 
 register = template.Library()
 
@@ -21,6 +22,15 @@ def facet_url(request, facet_key, value, action="add"):
         params.setlist(facet_key, values)
 
     return f"?{params.urlencode()}"
+
+
+@register.simple_tag
+def get_facet_label(filter, value):
+    if "model_resolve" in filter:
+        cls = ContentType.objects.get(model=filter["model_resolve"]).model_class()
+        return str(cls.objects.get(pk=value))
+    else:
+        return value
 
 
 @register.filter

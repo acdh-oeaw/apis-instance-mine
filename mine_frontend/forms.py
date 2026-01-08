@@ -1,8 +1,10 @@
 from crispy_forms.bootstrap import Accordion, AccordionGroup
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Div, Fieldset, Hidden, Layout, Submit
+from dal import autocomplete
 from django import forms
 
+from apis_ontology.models import Person
 from mine_frontend.settings import POSITIONEN_PRES
 
 
@@ -96,7 +98,7 @@ class MineMainFormHelper(FormHelper):
                     ),
                     AccordionGroup(
                         "zur Wahl vorgeschlagen von",
-                        # "wahl_person",
+                        "wahl_person",
                         # "wahl_vorschlag_erfolgreich",
                         # "wahl_person",
                         # "wahl_beruf",
@@ -214,6 +216,12 @@ class MineMainform(forms.Form):
             ),
             ("Philosophisch-Historische Klasse", "Philosophisch-Historische Klasse"),
         ],
+    )
+    wahl_person = forms.ModelMultipleChoiceField(
+        queryset=Person.objects.all(),
+        widget=autocomplete.ModelSelect2Multiple(url="dal-vorschlagende"),
+        required=False,
+        label="Vorschlagendes Mitglied",
     )
 
     def __init__(self, *args, **kwargs):
