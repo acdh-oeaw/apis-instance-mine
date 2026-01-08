@@ -459,6 +459,14 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             "lookup": "unaccent__icontains",
             "type": "text",
         },
+        "vorschlagende": {
+            "label": "Vorschlagende",
+            "field": "vorschlagende",
+            "param": "wahl_person",
+            "lookup": "exact",
+            "type": "array",
+            "model_resolve": "person",
+        },
     }
 
     def get_base_queryset(self):
@@ -466,6 +474,11 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
         memb = (
             OeawMitgliedschaft.objects.filter(subj_object_id=OuterRef("id"))
             .values_list("mitgliedschaft")
+            .distinct()
+        )
+        vorschlagende = (
+            Person.objects.filter(vorgeschlagen_von_set__subj_object_id=OuterRef("id"))
+            .values_list("id", flat=True)
             .distinct()
         )
         klasse_ids = Institution.objects.filter(typ="Klasse").values_list(
@@ -481,11 +494,13 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             .distinct()
         )
 
-        return Person.objects.filter(mitglied=True).annotate(
+        p = Person.objects.filter(mitglied=True).annotate(
             memberships=ArraySubquery(memb),
             acad_func=ArraySubquery(func),
+            vorschlagende=ArraySubquery(vorschlagende),
             search_labels=Concat("forename", Value(" "), "surname"),
         )
+        return p
 
     def get_queryset(self):
         """Get the final filtered queryset for the table"""
