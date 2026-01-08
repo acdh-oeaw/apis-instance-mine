@@ -467,6 +467,14 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             "type": "array",
             "model_resolve": "person",
         },
+        "institute": {
+            "label": "ÖAW Institute",
+            "field": "institute",
+            "param": "akademiefunktionen",
+            "lookup": "exact",
+            "type": "array",
+            "model_resolve": "institution",
+        },
     }
 
     def get_base_queryset(self):
@@ -493,12 +501,20 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             .values_list("position")
             .distinct()
         )
+        insts = (
+            PositionAn.objects.filter(
+                subj_object_id=OuterRef("id"),
+            )
+            .values_list("obj_object_id", flat=True)
+            .distinct()
+        )
 
         p = Person.objects.filter(mitglied=True).annotate(
             memberships=ArraySubquery(memb),
             acad_func=ArraySubquery(func),
             vorschlagende=ArraySubquery(vorschlagende),
             search_labels=Concat("forename", Value(" "), "surname"),
+            institute=ArraySubquery(insts),
         )
         return p
 

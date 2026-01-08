@@ -4,7 +4,7 @@ from crispy_forms.layout import HTML, Div, Fieldset, Hidden, Layout, Submit
 from dal import autocomplete
 from django import forms
 
-from apis_ontology.models import Person
+from apis_ontology.models import Institution, Person
 from mine_frontend.settings import POSITIONEN_PRES
 
 
@@ -93,7 +93,7 @@ class MineMainFormHelper(FormHelper):
                     ),
                     AccordionGroup(
                         "Funktionen in Akademieinstitutionen",
-                        # "akademiefunktionen",
+                        "akademiefunktionen",
                         css_id="in_der_akademie",
                     ),
                     AccordionGroup(
@@ -222,6 +222,12 @@ class MineMainform(forms.Form):
         widget=autocomplete.ModelSelect2Multiple(url="dal-vorschlagende"),
         required=False,
         label="Vorschlagendes Mitglied",
+    )
+    akademiefunktionen = forms.ModelMultipleChoiceField(
+        queryset=Institution.objects.all(),
+        widget=autocomplete.ModelSelect2Multiple(url="dal-institute"),
+        required=False,
+        label="Funktion in einer der folgendenen Akademieinstitutionen",
     )
 
     def __init__(self, *args, **kwargs):

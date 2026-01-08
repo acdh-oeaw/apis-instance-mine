@@ -1,7 +1,7 @@
 from dal import autocomplete
 from django.db.models import Q
 
-from apis_ontology.models import Person
+from apis_ontology.models import Institution, Person
 
 
 class VorschlagendeDal(autocomplete.Select2QuerySetView):
@@ -13,3 +13,11 @@ class VorschlagendeDal(autocomplete.Select2QuerySetView):
             ).distinct()
         else:
             return Person.objects.filter(vorgeschlagen_von_set__isnull=False).distinct()
+
+
+class OEAWInstitutionsDal(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        inst = Institution.objects.filter(akademie_institution=True)
+        if self.q:
+            inst = inst.filter(label__icontains=self.q)
+        return inst
