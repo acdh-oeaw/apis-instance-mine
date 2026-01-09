@@ -10064,7 +10064,7 @@ div.dataTables_filter {
   text-decoration: none; }
 
 .noUi-pips-horizontal {
-  top: -58px; }
+  /*top: -58px;*/ }
 
 .noUi-target {
   font-size: 0.7em;
@@ -10102,6 +10102,9 @@ div.dataTables_filter {
   border: none;
   bottom: 140%; }
 
+.noUi-horizontal .noUi-tooltip.exclusive {
+  background: #c80000; }
+
 .noUi-horizontal .noUi-tooltip:after {
   content: "";
   position: absolute;
@@ -10114,11 +10117,14 @@ div.dataTables_filter {
   border-top: 5px solid #0047bb;
   clear: both; }
 
+.noUi-horizontal .noUi-tooltip.exclusive:after {
+  border-top: 5px solid #c80000; }
+
 .noUi-touch-area {
   display: none; }
 
 .noUi-marker {
-  display: none; }
+  /*display: none;*/ }
 
 .noUi-value {
   background: white;
@@ -10136,6 +10142,15 @@ div.dataTables_filter {
   border-right: 5px solid transparent;
   border-top: 5px solid white;
   clear: both; }
+
+legend.legend-date-slider {
+  font-size: 0.7rem;
+  padding-top: 3rem; }
+
+div.date-slider-wrapper {
+  margin-top: 3rem;
+  padding-right: 1rem;
+  padding-left: 1rem; }
 
 .badge {
   text-align: left;

@@ -1,5 +1,5 @@
 .noUi-pips-horizontal {
-    top: -58px;
+    /*top: -58px;*/
 }
 
 .noUi-target {
@@ -41,6 +41,9 @@
         border: none;
         bottom: 140%;
     }
+  .noUi-tooltip.exclusive {
+    background: $mine-red;
+  }
     .noUi-tooltip:after {
         content: "";
         position: absolute;
@@ -53,6 +56,9 @@
         border-top: 5px solid $oeaw-blue;
         clear: both;
     }
+    .noUi-tooltip.exclusive:after {
+        border-top: 5px solid $mine-red;
+    }
 }
 
 .noUi-touch-area {
@@ -60,7 +66,7 @@
 }
 
 .noUi-marker {
-    display: none;
+    /*display: none;*/
 }
 
 .noUi-value {
@@ -80,4 +86,13 @@
     border-right: 5px solid transparent;
     border-top: 5px solid white;
     clear: both;
+}
+legend.legend-date-slider {
+  font-size: 0.7rem;
+  padding-top: 3rem;
+}
+div.date-slider-wrapper {
+  margin-top: 3rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
 }

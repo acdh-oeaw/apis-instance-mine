@@ -6,6 +6,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"></script>
     <script src="{% static 'js/apis_select2.js' %}"></script>
     <script src="{% static 'autocomplete_light/autocomplete_light.js' %}"></script>
+    <script src="{% static 'nouislider/nouislider.min.js' %}"></script>
+    <script src="{% static 'wnumb/wNumb.min.js' %}"></script>
+    <script src="{% static 'mine_frontend/js/date_slider.js' %}"></script>
 {% endblock scriptHeader %}
 {% block content %}
     <div class="wrapper" id="wrapper-hero">
@@ -38,3 +41,7 @@
         </div>
     </div>
 {% endblock %}
+{% block scripts %}
+    {{ block.super }}
+    <script>document.addEventListener('DOMContentLoaded', startDateSliders)</script>
+{% endblock scripts %}

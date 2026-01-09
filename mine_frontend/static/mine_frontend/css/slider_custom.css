@@ -1,11 +1,12 @@
 .noUi-connect {
-    background:#CD2324;
-  }
+  background: #cd2324;
+}
 
 .sliderlegend {
-  font-size:0.8rem;
-}  
+  font-size: 0.8rem;
+}
 
 .sliderlegendstart:after {
-  content:" - "
+  content: " - ";
 }
+

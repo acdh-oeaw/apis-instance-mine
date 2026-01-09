@@ -1,0 +1,26 @@
+{% load static %}
+<div class="date-slider-wrapper">
+    <div id="slider-{{ slider_name }}"
+         class="mine-date-slider"
+         data-min="1847"
+         data-max="2025"></div>
+    <legend id="slider-mitgld-description" class="legend-date-slider">
+        Alle Mitgliedschaften die während der ausgewählten Periode aufrecht waren werden angezeigt.
+        <br />
+        <span id="lower-bound">Mitgliedschaften <b>können vor</b> <span id="lower-year">1847</span>  beginnen.</span>&nbsp;<span id="upper-bound">Mitgliedschaften <b>können nach</b> <span id="upper-year">2025</span> enden.</span>
+        <br />
+        Mit einem <b>Doppelclick</b> auf die eingestellten Zeitrahmen Mitgliedschaften die über den Zeitrahmen hinausgehen ausschliessen.
+    </legend>
+    <template id="slider-lower-selected">
+        Mitgliedschaften <b>müssen</b><span id="lower-year"></span> oder danach beginnen.
+    </template>
+    <template id="slider-lower-not-selected">
+        Mitgliedschaften <b>können vor</b> <span id="lower-year"></span> beginnen.
+    </template>
+    <template id="slider-upper-selected">
+        Mitgliedschaften <b>müssen</b> <span id="upper-year"></span>oder davor enden.
+    </template>
+    <template id="slider-upper-not-selected">
+        Mitgliedschaften <b>können nach</b> <span id="upper-year"></span> enden.
+    </template>
+</div>
