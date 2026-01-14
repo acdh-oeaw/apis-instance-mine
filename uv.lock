@@ -628,6 +628,15 @@ wheels = [
 ]
 
 [[package]]
+name = "imgproxy"
+version = "1.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/cd/5b/1a12a2c5af1f1c42133b126811cf2f382ac21ed46cd86ca9c5fca338840e/imgproxy-1.0.0.tar.gz", hash = "sha256:f2e34b0da688284ad3a1e7ccd907b1038285001832362fb64cd2bd39c6c952e3", size = 4593, upload-time = "2021-11-08T12:59:45.372Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e3/17/7188d1a8030966ab01c817e7dffe8dd745098e9ce2998cc966616479179b/imgproxy-1.0.0-py3-none-any.whl", hash = "sha256:18d3686c1b8f976906192e7bbdcd44dca305600e3e338fab68c30ee9a4102ded", size = 4465, upload-time = "2021-11-08T12:59:44.041Z" },
+]
+
+[[package]]
 name = "importlib-metadata"
 version = "8.5.0"
 source = { registry = "https://pypi.org/simple" }
@@ -735,6 +744,7 @@ dependencies = [
     { name = "django-json-editor-field" },
     { name = "django-sass-processor" },
     { name = "httpx" },
+    { name = "imgproxy" },
     { name = "psycopg2-binary" },
 ]
 
@@ -763,6 +773,7 @@ requires-dist = [
     { name = "django-json-editor-field", specifier = ">=0.4.2" },
     { name = "django-sass-processor", specifier = ">=1.4.2" },
     { name = "httpx", specifier = ">=0.28.1" },
+    { name = "imgproxy", specifier = ">=1.0.0" },
     { name = "psycopg2-binary", specifier = ">=2.9,<3.0" },
 ]
 

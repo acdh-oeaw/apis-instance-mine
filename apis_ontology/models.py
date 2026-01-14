@@ -18,6 +18,7 @@ from django_interval.fields import FuzzyDateParserField
 from django_json_editor_field.fields import JSONEditorField
 
 from mine_frontend.settings import POSITIONEN
+from mine_frontend.utils import MyImgProxy
 
 
 class NameMixin(models.Model):
@@ -174,6 +175,16 @@ class Bild(GenericModel, models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveBigIntegerField()
     content_object = GenericForeignKey("content_type", "object_id")
+
+    @property
+    def thumb_img(self):
+        myimgproxy = MyImgProxy()
+        return myimgproxy.resize(f"26962/portraits/{self.pfad}")
+
+    @property
+    def img_url(self):
+        myimgproxy = MyImgProxy()
+        return myimgproxy.img_url(f"26962/portraits/{self.pfad}")
 
     def __str__(self):
         return str(self.art) + ": " + str(self.pfad)

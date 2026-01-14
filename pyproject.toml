@@ -17,6 +17,7 @@ dependencies = [
     "httpx>=0.28.1",
     "psycopg2-binary>=2.9,<3.0",
     "django-auditlog==3.3.0",
+    "imgproxy>=1.0.0",
 ]
 
 [dependency-groups]
