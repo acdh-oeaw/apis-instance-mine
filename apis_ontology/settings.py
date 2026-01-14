@@ -42,7 +42,7 @@ CSP_DEFAULT_SRC = CSP_DEFAULT_SRC + (  # noqa: F405
 
 CSP_IMG_SRC += [  # noqa: F405
     "*.wikimedia.org",
-    "imgproxy.acdh.oeaw.ac.at",
+    "*.acdh.oeaw.ac.at",
 ]
 
 STATICFILES_DIRS = [
