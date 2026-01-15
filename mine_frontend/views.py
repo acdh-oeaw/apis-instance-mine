@@ -31,6 +31,7 @@ from apis_ontology.models import (
     Werk,
     WirdVergebenVon,
 )
+from mine_edit.utils import user_edit_permissions
 from mine_frontend.forms import InstitutionMainForm, MineMainform
 from mine_frontend.mixins import FacetedSearchMixin
 from mine_frontend.settings import POSITIONEN_PRES
@@ -63,6 +64,9 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["has_edit_permissions"] = user_edit_permissions(
+            self.request.user, self.object
+        )
         membership_list = list(
             OeawMitgliedschaft.objects.filter(subj_object_id=self.object.id)
         ) + list(NichtGewaehlt.objects.filter(subj_object_id=self.object.id))
@@ -244,6 +248,11 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         context["entity_type"] = "person"
 
         return context
+
+    def get(self, *args, **kwargs):
+        resp = super().get(*args, **kwargs)
+        resp["HX-Trigger"] = "dismissModal"
+        return resp
 
 
 class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):
