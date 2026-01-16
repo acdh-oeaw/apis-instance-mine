@@ -12,6 +12,8 @@ from mine_frontend.views import (
     PersonResultsView,
 )
 
+app_name = "mine_frontend"
+
 urlpatterns = [
     path("mine/", IndexView.as_view(), name="index"),
     path("mine-institution/", InstitutionIndexView.as_view(), name="institution-index"),

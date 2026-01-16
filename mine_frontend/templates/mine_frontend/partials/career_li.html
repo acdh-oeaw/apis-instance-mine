@@ -1,0 +1,13 @@
+{% load mine_extras %}
+<li class="fw-normal pb-1" id="relation-li-{{ position.id }}">
+    <!-- djlint:off -->{% if position.position %}{{ position.position }}{% else %}hat Position inne{% endif %}{% if position.fach %} für {{ position.fach }}{% endif %}:<!-- djlint:on -->
+    {{ position.obj|mine_link }}
+    {{ position|mine_date:"()" }}
+    {% if position.references %}
+        {% include 'mine_frontend/partials/tooltip_info.html' with text=position.references %}
+    {% endif %}
+    {% if has_edit_permissions %}
+        {% include 'mine_frontend/partials/edit_button.html' with url_name='mine_edit:career_edit' id=position.id ct='PositionAn' text='Edit' fa_icon='edit' delete_button=True %}
+    {% endif %}
+</li>
+<script>feather.replace();</script>

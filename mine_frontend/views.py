@@ -4,7 +4,7 @@ import re
 from apis_core.uris.models import Uri
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.expressions import ArraySubquery
-from django.db.models import Case, F, OuterRef, Q, Subquery, Value, When
+from django.db.models import Case, F, IntegerField, OuterRef, Q, Subquery, Value, When
 from django.db.models.functions import Concat, Lower
 from django.views import generic
 from django.views.generic.base import TemplateView
@@ -31,6 +31,7 @@ from apis_ontology.models import (
     Werk,
     WirdVergebenVon,
 )
+from mine_edit.utils import user_edit_permissions
 from mine_frontend.forms import InstitutionMainForm, MineMainform
 from mine_frontend.mixins import FacetedSearchMixin
 from mine_frontend.settings import POSITIONEN_PRES
@@ -63,6 +64,9 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["has_edit_permissions"] = user_edit_permissions(
+            self.request.user, self.object
+        )
         membership_list = list(
             OeawMitgliedschaft.objects.filter(subj_object_id=self.object.id)
         ) + list(NichtGewaehlt.objects.filter(subj_object_id=self.object.id))
@@ -202,8 +206,17 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
             }
         else:
             context["career_akad"] = False
+        IMG_ORDER = ["User", "OEAW Archiv", "Wikimedia"]
+        img_order = Case(
+            *[When(art=value, then=Value(pos)) for pos, value in enumerate(IMG_ORDER)],
+            default=Value(len(IMG_ORDER)),
+            output_field=IntegerField(),
+        )
         context["image"] = (
-            Bild.objects.filter(object_id=self.object.id).order_by("art").first()
+            Bild.objects.filter(object_id=self.object.id)
+            .annotate(order=img_order)
+            .order_by("order")
+            .first()
         )
         context["reference_resources"] = [
             get_web_object_uri(x) for x in Uri.objects.filter(object_id=self.object.id)
@@ -244,6 +257,11 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         context["entity_type"] = "person"
 
         return context
+
+    def get(self, *args, **kwargs):
+        resp = super().get(*args, **kwargs)
+        resp["HX-Trigger"] = "dismissModal"
+        return resp
 
 
 class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):

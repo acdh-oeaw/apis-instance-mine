@@ -1,13 +1,9 @@
 {% load mine_extras %}
-<ul class="ps-0 mb-0 list-unstyled">
+<ul class="ps-0 mb-0 list-unstyled" id="career-list">
     {% for position in career %}
-        <li class="fw-normal pb-1">
-            <!-- djlint:off -->{{ position.position }}{% if position.fach %} für {{ position.fach }}{% endif %}:<!-- djlint:on -->
-            {{ position.obj|mine_link }}
-            {{ position|mine_date:"()" }}
-            {% if position.references %}
-                {% include 'mine_frontend/partials/tooltip_info.html' with text=position.references %}
-            {% endif %}
-        </li>
+        {% include 'mine_frontend/partials/career_li.html' with position=position %}
     {% endfor %}
+    {% if has_edit_permissions %}
+        {% include 'mine_frontend/partials/edit_button.html' with url_name='mine_edit:career_create' ct='PositionAn' id_subj=object.id text='Add' add=True id_button='add_career_button' fa_icon='plus' %}
+    {% endif %}
 </ul>

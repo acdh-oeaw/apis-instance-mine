@@ -24,3 +24,6 @@ urlpatterns += [path("", include("django_interval.urls"))]
 urlpatterns += [
     path("", include("apis_acdhch_django_auditlog.urls")),
 ]
+urlpatterns += [
+    path("", include("mine_edit.urls")),
+]
