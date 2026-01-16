@@ -10141,6 +10141,9 @@ div.dataTables_filter {
   text-align: left;
   white-space: normal; }
 
+span.selection span.select2-selection button.select2-selection__clear {
+  position: absolute; }
+
 .form-check-input:checked {
   background-color: var(--bs-primary);
   border-color: var(--bs-primary); }

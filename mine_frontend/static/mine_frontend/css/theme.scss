@@ -119,6 +119,9 @@
 
 // Bootstrap 5 compatibility fixes for legacy components
 // Update custom form controls for Bootstrap 5
+span.selection span.select2-selection button.select2-selection__clear {
+  position: absolute;
+}
 .form-check-input:checked {
     background-color: var(--bs-primary);
     border-color: var(--bs-primary);
