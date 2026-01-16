@@ -2,10 +2,13 @@ from apis_core.generic.forms.fields import ModelImportChoiceField
 from apis_core.relations.forms import RelationForm
 from django import forms
 from django.contrib.contenttypes.models import ContentType
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 from django.db.models import QuerySet
 
 from apis_ontology.models import (
     AusbildungAn,
+    Bild,
     GeborenIn,
     GestorbenIn,
     Ort,
@@ -164,6 +167,28 @@ class PersonEditForm(BaseEditForm):
                 )
             else:
                 GestorbenIn.objects.get(subj_object_id=instance.id).delete()
+        if "image" in self.changed_data:
+            file_obj = self.files["image"]
+            path = f"26962/uploaded_photos/{instance.id}/{file_obj.name}"
+            default_storage.save(
+                path,
+                ContentFile(file_obj.read()),
+            )
+            bild = Bild.objects.filter(object_id=instance.id, art="User")
+            data = {
+                "pfad": path,
+                "art": "User",
+                "credit": f"@{str(instance)}",
+            }
+            if bild.count() == 1:
+                bild = bild.first()
+                default_storage.delete(bild.pfad)
+                for key, value in data.items():
+                    setattr(bild, key, value)
+                bild.save()
+            else:
+                data["content_object"] = instance
+                Bild.objects.create(**data)
         return instance
 
     def __init__(self, *args, **kwargs):
