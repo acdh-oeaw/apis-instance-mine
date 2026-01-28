@@ -14,9 +14,9 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-from django_interval.fields import FuzzyDateParserField
 from django_json_editor_field.fields import JSONEditorField
 
+from django_interval.fields import FuzzyDateParserField
 from mine_frontend.settings import POSITIONEN
 from mine_frontend.utils import MyImgProxy
 
@@ -639,7 +639,9 @@ class PositionAn(Relation, VersionMixin, LegacyFieldsMixin):
 
     subj_model = Person
     obj_model = Institution
-    position = models.CharField(blank=True, choices=[(x, x) for x in POSITIONEN])
+    position = models.CharField(
+        blank=True, choices=[(x, x) for x in sorted(POSITIONEN)]
+    )
     fach = models.ForeignKey(Fach, on_delete=models.CASCADE, blank=True, null=True)
     beginn = FuzzyDateParserField(blank=True)
     ende = FuzzyDateParserField(blank=True)
