@@ -141,4 +141,7 @@ POSITIONEN = [
     "Präsident(in)",
     "Sammlungsleiter(in)",
     "apl. Univ.-Prof.",
+    "Vorsitzende(r)",
+    "1. Stellvertreter(in)",
+    "2. Stellvertreter(in)",
 ]
