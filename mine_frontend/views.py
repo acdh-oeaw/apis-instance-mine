@@ -316,6 +316,7 @@ class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):
             "umbenannt von",
             "zusammengelegt mit",
             "ist Vorgänger von",
+            "umgewandelt von",
         ]
         suc_pre_qs = (
             InstitutionHierarchie.objects.filter(

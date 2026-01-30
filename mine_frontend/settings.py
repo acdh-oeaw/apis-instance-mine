@@ -144,4 +144,5 @@ POSITIONEN = [
     "Vorsitzende(r)",
     "1. Stellvertreter(in)",
     "2. Stellvertreter(in)",
+    "Mitglied",
 ]
