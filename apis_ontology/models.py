@@ -464,7 +464,7 @@ class Institution(
         ("Forschungsstelle", "Forschungsstelle"),
         ("Klasse", "Klasse"),
         ("Verwaltung", "Verwaltung"),
-        ("Forschungsorientierte Einheit", "Forschungsorientierte Einheit"),
+        ("Wissenschaftsorientierte Einheit", "Wissenschaftsorientierte Einheit"),
         ("Einrichtung", "Einrichtung"),
         ("Komitee", "Komitee"),
         ("Kuratorium", "Kuratorium"),
