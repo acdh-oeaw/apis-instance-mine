@@ -365,11 +365,16 @@ class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):
         ).order_by("beginn_date_sort")
         context["directors"] = PositionAn.objects.filter(
             obj_object_id=self.object.id,
-            position="Direktor(in) (Institut/Forschungstelle)",
+            position__in=[
+                "Direktor(in) (Institut/Forschungstelle)",
+                "Vorsitzende(r)",
+                "1. Stellvertreter(in)",
+                "2. Stellvertreter(in)",
+            ],
         ).order_by("beginn_date_sort")
         context["members"] = PositionAn.objects.filter(
             obj_object_id=self.object.id,
-            position__in=["Kommissionsmitglied", "Delegierte(r)"],
+            position__in=["Kommissionsmitglied", "Delegierte(r)", "Mitglied"],
         ).order_by("beginn_date_sort")
         return context
 
