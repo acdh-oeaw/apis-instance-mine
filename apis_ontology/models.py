@@ -463,7 +463,7 @@ class Institution(
         ("Institut", "Institut"),
         ("Forschungsstelle", "Forschungsstelle"),
         ("Klasse", "Klasse"),
-        ("Institution der Gesamtakademie", "Institution der Gesamtakademie"),
+        ("Verwaltung", "Verwaltung"),
         ("Forschungsorientierte Einheit", "Forschungsorientierte Einheit"),
         ("Einrichtung", "Einrichtung"),
         ("Komitee", "Komitee"),
