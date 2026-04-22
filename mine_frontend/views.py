@@ -361,16 +361,26 @@ class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):
         context["successors"] = suc_pre_qs.filter(rel_kind="successor").order_by(
             "beginn_date_sort"
         )
-        context["presidents"] = PositionAn.objects.filter(
-            obj_object_id=self.object.id, position="Obmann/Obfrau (Kommission)"
-        ).order_by("beginn_date_sort")
-        context["directors"] = PositionAn.objects.filter(
+        context["leaders"] = PositionAn.objects.filter(
             obj_object_id=self.object.id,
             position__in=[
+                "Obmann/Obfrau (Kommission)",
+                "Direktor(in)",
                 "Direktor(in) (Institut/Forschungstelle)",
                 "Vorsitzende(r)",
+                "Institutsdirektor(in)",
+                "interimistischer Leiter",
+                "kommissarische(r) Leiter(in)",
+            ],
+        ).order_by("beginn_date_sort")
+        context["deputies"] = PositionAn.objects.filter(
+            obj_object_id=self.object.id,
+            position__in=[
                 "1. Stellvertreter(in)",
                 "2. Stellvertreter(in)",
+                "Obmann/Obfrau-Stellvertreter(in)",
+                "stv. Leiter(in)",
+                "stv. Direktor(in)",
             ],
         ).order_by("beginn_date_sort")
         context["members"] = PositionAn.objects.filter(

@@ -42,6 +42,15 @@ def class_name(instance):
 
 
 @register.filter
+def funktion(value, brackets=False):
+    if " (" in value:
+        value = value.split(" (")[0].strip()
+    if brackets:
+        value = brackets[0] + value + brackets[1]
+    return value
+
+
+@register.filter
 def mine_date(value, brackets=False):
     res = ""
     if hasattr(value, "datum"):
