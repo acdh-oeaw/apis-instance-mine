@@ -23,6 +23,14 @@ def mine_link(value):
     return value
 
 
+@register.filter()
+def mine_branch(value):
+    if str(value) == "GEMEINSAME KOMMISSIONEN":
+        value = "Gesamtakademie"
+    value = str(value).title().replace("e K", "en K")
+    return value
+
+
 @register.filter
 def zumals(value):
     match value:
