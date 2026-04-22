@@ -20,7 +20,9 @@
         {% if directors %}
             {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Direktorinnen / Direktoren' content_partial='mine_frontend/partials/inst_presidents.html' presidents=directors accordion_id='institutionAccordion' %}
         {% endif %}
-        {% if members %}
+        {% if members and oeaw_institution.typ == "Delegation" %}
+            {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Delegierte' content_partial='mine_frontend/partials/inst_members.html' accordion_id='institutionAccordion' %}
+        {% elif members %}
             {% include 'mine_frontend/partials/bio_panel_layout.html' with title='Mitglieder' content_partial='mine_frontend/partials/inst_members.html' accordion_id='institutionAccordion' %}
         {% endif %}
         {% if successors %}
