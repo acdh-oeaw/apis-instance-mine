@@ -1,8 +1,7 @@
 {% load mine_extras %}
 <p>
     {% for branch in branches %}
-        {% mine_branch branch oeaw_institution.typ %} {{ branch.beginn_date_sort|date:"Y" }}
-        {% if branch.ende_date_sort %}bis {{ branch.ende_date_sort|date:"Y" }}{% endif %}
+        {% mine_branch branch oeaw_institution.typ %} {{ branch | mine_date }}
         <br>
     {% endfor %}
 </p>
