@@ -33,7 +33,7 @@ from apis_ontology.models import (
 )
 from mine_frontend.forms import InstitutionMainForm, MineMainform
 from mine_frontend.mixins import FacetedSearchMixin
-from mine_frontend.settings import POSITIONEN_PRES
+from mine_frontend.settings import AKADEMIE_INST_ROOT, POSITIONEN_PRES
 from mine_frontend.tables import SearchResultInstitutionTable, SearchResultTable
 
 
@@ -256,19 +256,27 @@ class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):
         context = super().get_context_data(**kwargs)
         ids_akad = Institution.objects.filter(
             akademie_institution=True,
-            label__in=[
-                "GESAMTAKADEMIE",
-                "GEMEINSAME KOMMISSIONEN",
-                "MATHEMATISCH-NATURWISSENSCHAFTLICHE KLASSE",
-                "PHILOSOPHISCH-HISTORISCHE KLASSE",
-            ],
+            label__in=AKADEMIE_INST_ROOT,
         ).values_list("id", flat=True)
         context["entity_type"] = "institution"
         context["branches"] = InstitutionHierarchie.objects.filter(
-            obj_object_id=self.object.id,
-            relation="hat Untereinheit",
-            subj_object_id__in=ids_akad,
+            Q(
+                obj_object_id=self.object.id,
+                relation="hat Untereinheit",
+                subj_object_id__in=list(ids_akad),
+            )
+            | Q(
+                subj_object_id=self.object.id,
+                relation="ist Teil von",
+                obj_object_id__in=list(ids_akad),
+            )
+        ).annotate(
+            rel=Case(
+                When(subj_object_id=self.object.id, then=Value("forward")),
+                default=Value("reverse"),
+            )
         )
+
         list_struc = [
             "hat Untereinheit",
             "eingegliedert in",
