@@ -23,12 +23,18 @@ def mine_link(value):
     return value
 
 
-@register.filter()
-def mine_branch(value):
-    if str(value) == "GEMEINSAME KOMMISSIONEN":
-        value = "Gesamtakademie"
-    value = str(value).title().replace("e K", "en K")
-    return value
+@register.simple_tag
+def mine_branch(branch, inst_typ):
+    res = inst_typ + " der "
+    if branch.rel == "forward":
+        subj = branch.obj
+    else:
+        subj = branch.subj
+    if subj.id == 8968:  # GEMEINSAME KOMMISSIONEN
+        res += "Gesamtakademie"
+    else:
+        res += str(subj).title().replace("e K", "en K")
+    return res
 
 
 @register.filter
