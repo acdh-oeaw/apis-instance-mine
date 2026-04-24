@@ -1,3 +1,5 @@
+import os
+
 from apis_acdhch_default_settings.settings import *  # noqa: F403
 
 INSTALLED_APPS += ["apis_core.documentation"]  # noqa: F405
@@ -7,6 +9,8 @@ INSTALLED_APPS += ["django_interval"]
 INSTALLED_APPS += ["simple_history"]
 INSTALLED_APPS += ["sass_processor"]
 INSTALLED_APPS += ["mine_frontend"]
+INSTALLED_APPS += ["mine_edit"]
+
 INSTALLED_APPS += ["django.contrib.postgres"]
 
 ROOT_URLCONF = "apis_ontology.urls"
@@ -48,3 +52,17 @@ CSP_IMG_SRC += [  # noqa: F405
 STATICFILES_DIRS = [
     "/data/static_files/",
 ]
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "bucket_name": "for-imgproxy",  # Required; use env var
+            "access_key": os.environ.get("AWS_S3_ACCESS_KEY_ID"),
+            "secret_key": os.environ.get("AWS_S3_SECRET_ACCESS_KEY"),
+            "endpoint_url": os.environ.get("AWS_S3_ENDPOINT_URL"),
+            # Optional: "region_name": "eu-central-1",
+        },
+    },
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+}

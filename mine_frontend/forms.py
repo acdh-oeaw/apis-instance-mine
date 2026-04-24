@@ -219,13 +219,13 @@ class MineMainform(forms.Form):
     )
     wahl_person = forms.ModelMultipleChoiceField(
         queryset=Person.objects.all(),
-        widget=autocomplete.ModelSelect2Multiple(url="dal-vorschlagende"),
+        widget=autocomplete.ModelSelect2Multiple(url="mine_frontend:dal-vorschlagende"),
         required=False,
         label="Vorschlagendes Mitglied",
     )
     akademiefunktionen = forms.ModelMultipleChoiceField(
         queryset=Institution.objects.all(),
-        widget=autocomplete.ModelSelect2Multiple(url="dal-institute"),
+        widget=autocomplete.ModelSelect2Multiple(url="mine_frontend:dal-institute"),
         required=False,
         label="Funktion in einer der folgendenen Akademieinstitutionen",
     )

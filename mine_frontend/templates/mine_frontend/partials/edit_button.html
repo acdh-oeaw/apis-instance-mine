@@ -1,0 +1,28 @@
+<button type="button"
+        id="{{ id_button }}"
+        hx-get="{% if id %}{% url url_name id %}{% else %}{% url url_name id_subj %}{% endif %}{% if add %}?subj_object_id={{ object.id }}&subj_content_type={{ object.content_type }}{% endif %}"
+        hx-target="#relation-dialog-content"
+        style="border: none;
+               background: none;
+               scale: 0.8"
+        alt="{{ text }}"
+        onclick="relationdialog.showModal();">
+    <i data-feather="{{ fa_icon }}"></i>
+</button>
+{% if delete_button %}
+    <button type="button"
+            id="{{ id_button }}_delete"
+            hx-delete="{% if id %}{% url url_name id %}{% else %}{% url url_name id_subj %}{% endif %}"
+            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+            hx-confirm="Are you sure you want to delete this item?"
+            hx-target="closest li"
+            hx-swap="outerHTML"
+            style="border: none;
+                   background: none;
+                   scale: 0.8;
+                   color: #dc3545"
+            alt="Delete {{ text }}"
+            title="Delete">
+        <i data-feather="trash-2"></i>
+    </button>
+{% endif %}

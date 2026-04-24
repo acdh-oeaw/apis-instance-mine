@@ -168,7 +168,11 @@ class Beruf(GenericModel, models.Model):
 
 
 class Bild(GenericModel, models.Model):
-    BILD_KIND_CHOICES = (("OEAW Archiv", "OEAW Archiv"), ("Wikimedia", "Wikimedia"))
+    BILD_KIND_CHOICES = (
+        ("OEAW Archiv", "OEAW Archiv"),
+        ("Wikimedia", "Wikimedia"),
+        ("User", "User"),
+    )
     art = models.CharField(max_length=100, choices=BILD_KIND_CHOICES)
     pfad = models.CharField(max_length=1024)
     credit = models.TextField(max_length=1024, blank=True)
@@ -177,14 +181,20 @@ class Bild(GenericModel, models.Model):
     content_object = GenericForeignKey("content_type", "object_id")
 
     @property
+    def img_path(self):
+        if not self.pfad.startswith("26962"):
+            return f"26962/portraits/{self.pfad}"
+        return self.pfad
+
+    @property
     def thumb_img(self):
         myimgproxy = MyImgProxy()
-        return myimgproxy.resize(f"26962/portraits/{self.pfad}")
+        return myimgproxy.resize(self.img_path)
 
     @property
     def img_url(self):
         myimgproxy = MyImgProxy()
-        return myimgproxy.img_url(f"26962/portraits/{self.pfad}")
+        return myimgproxy.img_url(self.img_path)
 
     def __str__(self):
         return str(self.art) + ": " + str(self.pfad)
