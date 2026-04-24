@@ -1,6 +1,6 @@
 from crispy_forms.bootstrap import Accordion, AccordionGroup
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Div, Fieldset, Hidden, Layout, Submit
+from crispy_forms.layout import HTML, Div, Fieldset, Layout, Submit
 from dal import autocomplete
 from django import forms
 
@@ -18,12 +18,6 @@ class MineMainFormHelper(FormHelper):
         Div(
             Div(
                 Accordion(
-                    Hidden("start_date_form", ""),
-                    Hidden("end_date_form", ""),
-                    Hidden("start_date_form_exclusive", ""),
-                    Hidden("end_date_form_exclusive", ""),
-                    Hidden("start_date_life_form", ""),
-                    Hidden("end_date_life_form", ""),
                     Div(
                         Fieldset(
                             "",
@@ -32,20 +26,30 @@ class MineMainFormHelper(FormHelper):
                             css_id="mitgliedschaft",
                             css_class="show card-body card filter-wrapper pb-1",
                         ),
-                        HTML(  # Mitgliedschaft slider
-                            """ <div class="px-3 pb-3 pt-1">
-                                    <label id="mitgleidschaft-slider-label" class="font-weight-bold pb-5">Mitgliedschaft im Zeitraum</label>
+                        HTML("<br/>"),
+                        Fieldset(
+                            "",
+                            "start_date_form",
+                            "end_date_form",
+                            "start_date_form_exclusive",
+                            "end_date_form_exclusive",
+                            HTML(  # Mitgliedschaft slider
+                                """
+                                <div class="px-3 pb-3 pt-1">
+                                    <label id="mitgliedschaft-slider-label" class="font-weight-bold pb-5">Wer war in diesem Zeitraum Mitglied?</label>
+                                    <p><span id="mitgliedschaft-slider-help" class="pb-5">Doppelclick auf die Grenzen um Personen anzuzeigen deren Mitgliedschaft ausschließlich innerhalb der Zeitspanne aufrecht war.</span></p>
                                         <div class="slider-container pt-3">
-                                            <div data-start-form="start_date_form" data-end-form="end_date_form" class="range-slider" data-range-start="{{form_membership_start_date}}" data-range-end="{{form_membership_end_date}}">
+                                            <div data-start-form="start_date_membership" data-end-form="end_date_membership" class="range-slider" data-range-start="{{form_membership_start_date}}" data-range-end="{{form_membership_end_date}}" data-start-exclusive="start_data_membership_exclusive" data-end-exclusive="end_data_membership_exclusive">
                                         </div>
                                         <div class="mt-3 d-flex align-items-center">
-                                    <input class="form-control form-control-sm w-25 mr-2" type="text" id="start_date_input" value="{{form_membership_start_date}}"/><input type="checkbox" class="mt-1 ml-1" id="start_date_exclusive_checkbox"/><span class="ml-1">⟼</span>
+                                    
 
-                                    <div class="w-50"></div><span class="mr-1">⟻</span><input type="checkbox" class="mt-1 mr-2"  id="end_date_exclusive_checkbox" class="mr-2"/>
-                                    <input class="form-control form-control-sm w-25" type="text" id="end_date_input" value="{{form_membership_end_date}}"/>
+                                    <div class="w-50"></div>
                 </div>
                                     </div>
                                 </div>"""
+                            ),
+                            css_class="show card-body card filter-wrapper pb-1",
                         ),
                         css_class="bg-white",
                     ),
@@ -142,12 +146,21 @@ class MineMainform(forms.Form):
         required=False,
         label="",
     )
-    start_date_form = forms.CharField(required=False)
-    end_date_form = forms.CharField(required=False)
-    start_date_form_exclusive = forms.BooleanField(
-        required=False, label="Membership start not before"
+    start_date_form = forms.CharField(
+        required=False, widget=forms.HiddenInput(attrs={"id": "start_date_membership"})
     )
-    end_date_form_exclusive = forms.BooleanField(required=False)
+    end_date_form = forms.CharField(
+        required=False, widget=forms.HiddenInput(attrs={"id": "end_date_membership"})
+    )
+    start_date_form_exclusive = forms.BooleanField(
+        required=False,
+        widget=forms.HiddenInput(attrs={"id": "start_data_membership_exclusive"}),
+    )
+    end_date_form_exclusive = forms.BooleanField(
+        required=False,
+        widget=forms.HiddenInput(attrs={"id": "end_data_membership_exclusive"}),
+    )
+    # end_date_form_exclusive = forms.BooleanField(required=False)
     start_date_life_form = forms.CharField(required=False)
     end_date_life_form = forms.CharField(required=False)
     start_date_life_form_exclusive = forms.CharField(required=False)

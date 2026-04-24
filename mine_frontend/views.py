@@ -31,6 +31,7 @@ from apis_ontology.models import (
     Werk,
     WirdVergebenVon,
 )
+from mine_frontend.filters import memb_ending, memb_starting
 from mine_frontend.forms import InstitutionMainForm, MineMainform
 from mine_frontend.mixins import FacetedSearchMixin
 from mine_frontend.settings import AKADEMIE_INST_ROOT, POSITIONEN_PRES
@@ -424,7 +425,7 @@ class IndexView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context["search_form"] = MineMainform()
         context["form_membership_end_date"] = datetime.date.today().year
-        context["form_membership_start_date"] = datetime.date.today().year - 10
+        context["form_membership_start_date"] = 1848
         return context
 
 
@@ -447,6 +448,7 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             "label": "Klasse",
             "field": "klasse",
             "lookup": "exact",
+            "lookups": [("exact", "klasse")],
             "type": "choice",
         },
         "membership": {
@@ -478,26 +480,51 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
     filter_fields = {
         "suche": {
             "label": "Suche",
-            "field": "search_labels",
             "param": "q",
-            "lookup": "unaccent__icontains",
+            "lookups": [
+                ("unaccent__icontains", "search_labels"),
+            ],
             "type": "text",
         },
         "vorschlagende": {
             "label": "Vorschlagende",
-            "field": "vorschlagende",
             "param": "wahl_person",
-            "lookup": "exact",
+            "lookups": [
+                ("vorschlagende", "exact"),
+            ],
             "type": "array",
             "model_resolve": "person",
         },
         "institute": {
             "label": "ÖAW Institute",
-            "field": "institute",
             "param": "akademiefunktionen",
-            "lookup": "exact",
+            "lookups": [
+                ("institute", "exact"),
+            ],
             "type": "array",
             "model_resolve": "institution",
+        },
+        "memb_min": {
+            "label": "Mitgliedschaft ab",
+            "param": "start_date_form",
+            "filter_func": memb_starting,
+            "type": "text",
+        },
+        "memb_min_excl": {
+            "label": "Mitgliedschaft ab ausschließend",
+            "param": "start_date_form_exclusive",
+            "type": "text",
+        },
+        "memb_max": {
+            "label": "Mitgliedschaft bis",
+            "param": "end_date_form",
+            "filter_func": memb_ending,
+            "type": "text",
+        },
+        "memb_max_excl": {
+            "label": "Mitgliedschaft bis ausschließend",
+            "param": "end_date_form_exclusive",
+            "type": "text",
         },
     }
 
@@ -505,9 +532,10 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
         """Get base queryset before any filtering"""
         memb = (
             OeawMitgliedschaft.objects.filter(subj_object_id=OuterRef("id"))
-            .values_list("mitgliedschaft")
+            .values("mitgliedschaft")
             .distinct()
         )
+        memb_dates = OeawMitgliedschaft.objects.filter(subj_object_id=OuterRef("id"))
         vorschlagende = (
             Person.objects.filter(vorgeschlagen_von_set__subj_object_id=OuterRef("id"))
             .values_list("id", flat=True)
@@ -539,6 +567,12 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             vorschlagende=ArraySubquery(vorschlagende),
             search_labels=Concat("forename", Value(" "), "surname"),
             institute=ArraySubquery(insts),
+            min_date_memb=Subquery(
+                memb_dates.order_by("beginn_date_from").values("beginn_date_from")[:1]
+            ),
+            max_date_memb=Subquery(
+                memb_dates.order_by("-ende_date_to").values("ende_date_to")[:1]
+            ),
         )
         return p
 
