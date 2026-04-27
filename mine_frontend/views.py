@@ -31,7 +31,7 @@ from apis_ontology.models import (
     Werk,
     WirdVergebenVon,
 )
-from mine_frontend.filters import memb_ending, memb_starting
+from mine_frontend.filters import life_ending, life_starting, memb_ending, memb_starting
 from mine_frontend.forms import InstitutionMainForm, MineMainform
 from mine_frontend.mixins import FacetedSearchMixin
 from mine_frontend.settings import AKADEMIE_INST_ROOT, POSITIONEN_PRES
@@ -426,6 +426,14 @@ class IndexView(LoginRequiredMixin, TemplateView):
         context["search_form"] = MineMainform()
         context["form_membership_end_date"] = datetime.date.today().year
         context["form_membership_start_date"] = 1848
+        context["form_life_end_date"] = datetime.date.today().year
+        context["form_life_start_date"] = getattr(
+            Person.objects.filter(mitglied=True)
+            .order_by("date_of_birth_date_from")
+            .first(),
+            "date_of_birth_date_from",
+            "1700",
+        ).strftime("%Y")
         return context
 
 
@@ -490,7 +498,7 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             "label": "Vorschlagende",
             "param": "wahl_person",
             "lookups": [
-                ("vorschlagende", "exact"),
+                ("exact", "vorschlagende"),
             ],
             "type": "array",
             "model_resolve": "person",
@@ -499,7 +507,10 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             "label": "ÖAW Institute",
             "param": "akademiefunktionen",
             "lookups": [
-                ("institute", "exact"),
+                (
+                    "exact",
+                    "institute",
+                ),
             ],
             "type": "array",
             "model_resolve": "institution",
@@ -524,6 +535,28 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
         "memb_max_excl": {
             "label": "Mitgliedschaft bis ausschließend",
             "param": "end_date_form_exclusive",
+            "type": "text",
+        },
+        "life_min": {
+            "label": "Leben ab",
+            "param": "start_date_life_form",
+            "filter_func": life_starting,
+            "type": "text",
+        },
+        "life_min_excl": {
+            "label": "Leben ab ausschließend",
+            "param": "start_date_life_form_exclusive",
+            "type": "text",
+        },
+        "life_max": {
+            "label": "Leben bis",
+            "param": "end_date_life_form",
+            "filter_func": life_ending,
+            "type": "text",
+        },
+        "life_max_excl": {
+            "label": "Leben bis ausschließend",
+            "param": "end_date_life_form_exclusive",
             "type": "text",
         },
     }
