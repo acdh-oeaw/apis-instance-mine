@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var startExclusiveId = sliderContainer.dataset.startExclusive || null;
     var endExclusiveId = sliderContainer.dataset.endExclusive || null;
+    var subjectLabel = sliderContainer.dataset.subjectLabel || "Eintrag";
 
     if (!startFormId || !endFormId) return;
 
@@ -74,6 +75,53 @@ document.addEventListener("DOMContentLoaded", function () {
     sliderContainer.appendChild(tooltipLower);
     sliderContainer.appendChild(tooltipUpper);
 
+    // Timeframe description beneath the slider (hidden until interaction)
+    var timeframeDesc = document.createElement("div");
+    timeframeDesc.className = "range-slider__timeframe";
+    sliderContainer.appendChild(timeframeDesc);
+
+    var tfPrefix = document.createTextNode("Ausgew\u00e4hlter Zeitraum: ");
+    timeframeDesc.appendChild(tfPrefix);
+
+    var startYearInput = document.createElement("input");
+    startYearInput.type = "text";
+    startYearInput.className = "range-slider__year-input";
+    startYearInput.value = MIN_YEAR;
+    timeframeDesc.appendChild(startYearInput);
+
+    var tfMid = document.createTextNode(" \u2013 ");
+    timeframeDesc.appendChild(tfMid);
+
+    var endYearInput = document.createElement("input");
+    endYearInput.type = "text";
+    endYearInput.className = "range-slider__year-input";
+    endYearInput.value = MAX_YEAR;
+    timeframeDesc.appendChild(endYearInput);
+
+    // Exclusive boundary info line (beneath the timeframe description)
+    var exclusiveInfo = document.createElement("div");
+    exclusiveInfo.className = "range-slider__exclusive-info";
+    sliderContainer.appendChild(exclusiveInfo);
+
+    function updateExclusiveInfo() {
+      var parts = [];
+      var lowVal = parseInt(lower.value);
+      var upVal = parseInt(upper.value);
+      if (lowerExclusive) {
+        parts.push(subjectLabel + " muss nach " + (lowVal - 1) + " starten");
+      }
+      if (upperExclusive) {
+        parts.push(subjectLabel + " muss vor " + (upVal + 1) + " enden");
+      }
+      if (parts.length > 0) {
+        exclusiveInfo.textContent = parts.join(" / ");
+        exclusiveInfo.classList.add("range-slider__exclusive-info--visible");
+      } else {
+        exclusiveInfo.textContent = "";
+        exclusiveInfo.classList.remove("range-slider__exclusive-info--visible");
+      }
+    }
+
     function showTooltip(tt) {
       tt.classList.add("range-slider__tooltip--visible");
     }
@@ -112,6 +160,8 @@ document.addEventListener("DOMContentLoaded", function () {
         lowerExclusive,
       );
       syncExclusiveField(startExclusiveId, lowerExclusive);
+      sliderTouched = true;
+      updateExclusiveInfo();
     });
 
     thumbUpper.addEventListener("dblclick", function () {
@@ -122,6 +172,8 @@ document.addEventListener("DOMContentLoaded", function () {
         upperExclusive,
       );
       syncExclusiveField(endExclusiveId, upperExclusive);
+      sliderTouched = true;
+      updateExclusiveInfo();
     });
 
     // Update UI + hidden form fields
@@ -156,13 +208,42 @@ document.addEventListener("DOMContentLoaded", function () {
         percUp +
         "%)";
 
+      // Update year inputs to reflect current slider values
+      startYearInput.value = lowVal;
+      endYearInput.value = upVal;
+
+      // Show the timeframe description once the slider has been touched
       if (sliderTouched) {
+        timeframeDesc.classList.add("range-slider__timeframe--visible");
+
         var startField = document.getElementById(startFormId);
         var endField = document.getElementById(endFormId);
         if (startField) startField.value = lowVal + "-01-01";
         if (endField) endField.value = upVal + "-12-31";
       }
+
+      // Keep exclusive info in sync with current year values
+      updateExclusiveInfo();
     }
+
+    // Handle manual year input: parse, clamp, sync slider and form
+    function onYearInput(inputEl, rangeInput) {
+      var raw = inputEl.value.replace(/[^0-9]/g, "");
+      if (raw.length === 0) return;
+      var year = parseInt(raw, 10);
+      if (isNaN(year)) return;
+      year = Math.max(MIN_YEAR, Math.min(MAX_YEAR, year));
+      rangeInput.value = year;
+      sliderTouched = true;
+      update();
+    }
+
+    startYearInput.addEventListener("change", function () {
+      onYearInput(startYearInput, lower);
+    });
+    endYearInput.addEventListener("change", function () {
+      onYearInput(endYearInput, upper);
+    });
 
     // Drag handling on the custom thumb divs
     function clientXToValue(clientX) {

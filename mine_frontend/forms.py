@@ -39,7 +39,7 @@ class MineMainFormHelper(FormHelper):
                                     <label id="mitgliedschaft-slider-label" class="font-weight-bold pb-5">Wer war in diesem Zeitraum Mitglied?</label>
                                     <p><span id="mitgliedschaft-slider-help" class="pb-5">Doppelclick auf die Grenzen um Personen anzuzeigen deren Mitgliedschaft ausschließlich innerhalb der Zeitspanne aufrecht war.</span></p>
                                         <div class="slider-container pt-3">
-                                            <div data-start-form="start_date_membership" data-end-form="end_date_membership" class="range-slider" data-range-start="{{form_membership_start_date}}" data-range-end="{{form_membership_end_date}}" data-start-exclusive="start_data_membership_exclusive" data-end-exclusive="end_data_membership_exclusive">
+                                            <div data-start-form="start_date_membership" data-end-form="end_date_membership" class="range-slider" data-range-start="{{form_membership_start_date}}" data-range-end="{{form_membership_end_date}}" data-start-exclusive="start_data_membership_exclusive" data-end-exclusive="end_data_membership_exclusive" data-subject-label="Mitgliedschaft">
                                         </div>
                                         <div class="mt-3 d-flex align-items-center">
                                     
