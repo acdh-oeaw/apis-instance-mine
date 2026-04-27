@@ -72,13 +72,17 @@ class MineMainFormHelper(FormHelper):
                         "Lebenslauf",
                         HTML(  # DEBUG: TURNED OFF RANGE SLIDER
                             """<div class="pb-3 pt-1">
-                                    <label class="pb-5">Leben im Zeitraum</label>
-                                    <div class="slider-container pt-3">
-                                        <div data-start-form="start_date_life_form" data-end-form="end_date_life_form" class="range-sliderOFF">
+                                    <label class="pb-5">Wer lebte in diesem Zeitraum?</label>
+                                    <p><span id="life-slider-help" class="pb-5">Doppelclick auf die Grenzen um Personen anzuzeigen die nur innerhalb der Grenzen lebten.</span></p>
+                                        <div class="slider-container pt-3">
+                                            <div data-start-form="start_date_life_form" data-end-form="end_date_life_form" class="range-slider" data-range-start="{{form_life_start_date}}" data-range-end="{{form_life_end_date}}" data-start-exclusive="start_date_life_form_exclusive" data-end-exclusive="end_date_life_form_exclusive" data-subject-label="Leben">
                                         </div>
-                                    </div>
                                 </div>"""
                         ),
+                        "start_date_life_form",
+                        "end_date_life_form",
+                        "start_date_life_form_exclusive",
+                        "end_date_life_form_exclusive",
                         # "place_of_birth",
                         # "place_of_death",
                         # "schule",
@@ -160,11 +164,20 @@ class MineMainform(forms.Form):
         required=False,
         widget=forms.HiddenInput(attrs={"id": "end_data_membership_exclusive"}),
     )
-    # end_date_form_exclusive = forms.BooleanField(required=False)
-    start_date_life_form = forms.CharField(required=False)
-    end_date_life_form = forms.CharField(required=False)
-    start_date_life_form_exclusive = forms.CharField(required=False)
-    end_date_life_form_exclusive = forms.CharField(required=False)
+    start_date_life_form = forms.CharField(
+        required=False, widget=forms.HiddenInput(attrs={"id": "start_date_life_form"})
+    )
+    end_date_life_form = forms.CharField(
+        required=False, widget=forms.HiddenInput(attrs={"id": "end_date_life_form"})
+    )
+    start_date_life_form_exclusive = forms.BooleanField(
+        required=False,
+        widget=forms.HiddenInput(attrs={"id": "start_date_life_form_exclusive"}),
+    )
+    end_date_life_form_exclusive = forms.BooleanField(
+        required=False,
+        widget=forms.HiddenInput(attrs={"id": "end_date_life_form_exclusive"}),
+    )
     death_date = forms.DateField(required=False)
     birth_date = forms.DateField(required=False)
     name = forms.CharField(required=False)
