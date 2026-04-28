@@ -71,6 +71,11 @@ class FacetedSearchMixin:
             return q
         if lookup == "in":
             return Q(**{f"{field}__in": values})
+        if lookup == "bool":
+            q = Q()
+            for v in values:
+                q |= Q(**{field: True if v == "on" else False})
+            return q
         q = Q()
         for v in values:
             q |= Q(**{f"{field}__{lookup}": v})
