@@ -96,7 +96,7 @@ class MineMainFormHelper(FormHelper):
                             # "beruf_institution",
                             css_id="beruf_subform",
                         ),
-                        # "mgld_nsdap",
+                        "memb_nsdap",
                         css_id="akademischer_CV",
                     ),
                     AccordionGroup(
@@ -255,6 +255,7 @@ class MineMainform(forms.Form):
         required=False,
         label="Funktion in einer der folgendenen Akademieinstitutionen",
     )
+    memb_nsdap = forms.BooleanField(label="Mitglied in der NSDAP", required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

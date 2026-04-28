@@ -4,7 +4,7 @@ import re
 from apis_core.uris.models import Uri
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.expressions import ArraySubquery
-from django.db.models import Case, F, OuterRef, Q, Subquery, Value, When
+from django.db.models import Case, Exists, F, OuterRef, Q, Subquery, Value, When
 from django.db.models.functions import Concat, Lower
 from django.views import generic
 from django.views.generic.base import TemplateView
@@ -559,6 +559,12 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             "param": "end_date_life_form_exclusive",
             "type": "text",
         },
+        "memb_nsdap": {
+            "label": "Mitglied der NSDAP",
+            "param": "memb_nsdap",
+            "lookups": [("bool", "nsdap")],
+            "type": "bool",
+        },
     }
 
     def get_base_queryset(self):
@@ -574,29 +580,41 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             .values_list("id", flat=True)
             .distinct()
         )
-        klasse_ids = Institution.objects.filter(typ="Klasse").values_list(
-            "id", flat=True
-        )
-        func = (
+        klasse_ids = Institution.objects.filter(
+            id=OuterRef("obj_object_id"), typ="Klasse"
+        ).values_list("id", flat=True)
+        insts_academy = Institution.objects.filter(
+            id=OuterRef("obj_object_id"), akademie_institution=True
+        ).values_list("id", flat=True)
+        func_presidium = (
             PositionAn.objects.filter(
                 subj_object_id=OuterRef("id"),
-                obj_object_id__in=klasse_ids,
                 position__in=POSITIONEN_PRES,
+            )
+            .annotate(academy_inst=Subquery(klasse_ids))
+            .filter(
+                academy_inst__isnull=False,
             )
             .values_list("position")
             .distinct()
         )
         insts = (
-            PositionAn.objects.filter(
-                subj_object_id=OuterRef("id"),
-            )
+            PositionAn.objects.filter(subj_object_id=OuterRef("id"))
+            .annotate(academy_inst=Subquery(insts_academy))
+            .filter(academy_inst__isnull=False)
             .values_list("obj_object_id", flat=True)
             .distinct()
+        )
+        nsdap_id = Institution.objects.filter(
+            label="Nationalsozialistische Deutsche Arbeiterpartei"
+        ).values_list("id", flat=True)
+        memb_nsdap = Mitglied.objects.filter(
+            subj_object_id=OuterRef("id"), obj_object_id=Subquery(nsdap_id)
         )
 
         p = Person.objects.filter(mitglied=True).annotate(
             memberships=ArraySubquery(memb),
-            acad_func=ArraySubquery(func),
+            acad_func=ArraySubquery(func_presidium),
             vorschlagende=ArraySubquery(vorschlagende),
             search_labels=Concat("forename", Value(" "), "surname"),
             institute=ArraySubquery(insts),
@@ -605,6 +623,9 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             ),
             max_date_memb=Subquery(
                 memb_dates.order_by("-ende_date_to").values("ende_date_to")[:1]
+            ),
+            nsdap=Case(
+                When(Exists(memb_nsdap), then=Value(True)), default=Value(False)
             ),
         )
         return p
