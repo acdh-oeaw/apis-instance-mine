@@ -9631,7 +9631,7 @@ svg.remove-badge {
 /*
   ** 06. Widgets
   */
-#beruf_subform > div {
+.inline_subform > div {
   display: inline-block;
   margin-right: 10px;
   /* Optional: adds some space between the fields */
@@ -9642,7 +9642,7 @@ svg.remove-badge {
   box-sizing: border-box;
   /* Include padding and border in the element's total width and height */ }
 
-#beruf_subform > div:last-child {
+.inline_subform > div:last-child {
   margin-right: 0; }
 
 /*

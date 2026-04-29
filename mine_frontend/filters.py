@@ -1,6 +1,6 @@
 from django.db.models import Case, Exists, OuterRef, Q, Value, When
 
-from apis_ontology.models import PositionAn
+from apis_ontology.models import NichtGewaehlt, OeawMitgliedschaft, PositionAn
 
 
 def memb_starting(queryset, config_dict, selected_values, request):
@@ -64,3 +64,35 @@ def beruf_institution(queryset, config_dict, selected_values, request):
     return queryset.annotate(
         position_an=Case(When(Exists(rel), then=Value(True)), default=Value(None))
     ).filter(position_an__isnull=False)
+
+
+def wahlvorschlag(queryset, config_dict, selected_values, request):
+    """takes the selection of the suggestion was sucessful or not into consideration"""
+    success = request.GET.get("wahl_erfolg", False)
+    wahl_success = OeawMitgliedschaft.objects.filter(
+        subj_object_id=OuterRef("pk"), vorgeschlagen_von__in=selected_values
+    )
+    wahl_no_success = NichtGewaehlt.objects.filter(
+        subj_object_id=OuterRef("pk"), vorgeschlagen_von__in=selected_values
+    )
+    if success == "erfolgreich":
+        queryset = queryset.annotate(
+            wahl_filter=Case(
+                When(Exists(wahl_success), then=Value(True)), default=Value(None)
+            )
+        )
+    elif success == "nicht erfolgreich":
+        queryset = queryset.annotate(
+            wahl_filter=Case(
+                When(Exists(wahl_no_success), then=Value(True)), default=Value(None)
+            )
+        )
+    else:
+        queryset = queryset.annotate(
+            wahl_filter=Case(
+                When(Exists(wahl_no_success), then=Value(True)),
+                When(Exists(wahl_success), then=Value(True)),
+                default=Value(None),
+            ),
+        )
+    return queryset.filter(wahl_filter__isnull=False)

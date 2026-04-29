@@ -101,7 +101,7 @@
   */
 // Add custom widget styles here if needed
 
-#beruf_subform > div {
+.inline_subform > div {
     display: inline-block;
     margin-right: 10px; /* Optional: adds some space between the fields */
     vertical-align: top; /* Optional: aligns fields if they have different heights */
@@ -109,7 +109,7 @@
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
-#beruf_subform > div:last-child {
+.inline_subform > div:last-child {
     margin-right: 0;
 }
 
