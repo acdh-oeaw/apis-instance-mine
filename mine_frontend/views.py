@@ -671,7 +671,7 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             label="Nationalsozialistische Deutsche Arbeiterpartei"
         ).values_list("id", flat=True)
         memb_nsdap = Mitglied.objects.filter(
-            subj_object_id=OuterRef("id"), obj_object_id=Subquery(nsdap_id)
+            subj_object_id=OuterRef("id"), obj_object_id=Subquery(nsdap_id[:1])
         )
 
         p = Person.objects.filter(mitglied=True).annotate(
