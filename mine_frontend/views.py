@@ -37,6 +37,7 @@ from mine_frontend.filters import (
     life_starting,
     memb_ending,
     memb_starting,
+    wahlvorschlag,
 )
 from mine_frontend.forms import InstitutionMainForm, MineMainform
 from mine_frontend.mixins import FacetedSearchMixin
@@ -503,11 +504,14 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
         "vorschlagende": {
             "label": "Vorschlagende",
             "param": "wahl_person",
-            "lookups": [
-                ("exact", "vorschlagende"),
-            ],
+            "filter_func": wahlvorschlag,
             "type": "array",
             "model_resolve": "person",
+        },
+        "erfolgreich": {
+            "label": "Wahlerfolg",
+            "param": "wahl_erfolg",
+            "type": "text",
         },
         "institute": {
             "label": "ÖAW Institute",
@@ -628,11 +632,6 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             .distinct()
         )
         memb_dates = OeawMitgliedschaft.objects.filter(subj_object_id=OuterRef("id"))
-        vorschlagende = (
-            Person.objects.filter(vorgeschlagen_von_set__subj_object_id=OuterRef("id"))
-            .values_list("id", flat=True)
-            .distinct()
-        )
         klasse_ids = Institution.objects.filter(
             id=OuterRef("obj_object_id"), typ="Klasse"
         ).values_list("id", flat=True)
@@ -678,7 +677,6 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
         p = Person.objects.filter(mitglied=True).annotate(
             memberships=ArraySubquery(memb),
             acad_func=ArraySubquery(func_presidium),
-            vorschlagende=ArraySubquery(vorschlagende),
             search_labels=Concat("forename", Value(" "), "surname"),
             institute=ArraySubquery(insts),
             geburtsorte=ArraySubquery(geburts_orte),

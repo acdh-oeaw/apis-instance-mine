@@ -64,12 +64,26 @@ class MineMainFormHelper(FormHelper):
                         css_id="praesidium",
                     ),
                     AccordionGroup(
-                        "Geschlecht",
-                        "gender",
-                        css_id="geschlecht",
+                        "Funktionen in Akademieinstitutionen",
+                        "akademiefunktionen",
+                        css_id="in_der_akademie",
                     ),
                     AccordionGroup(
-                        "Lebenslauf",
+                        "zur Wahl vorgeschlagen von",
+                        Fieldset(
+                            None,
+                            "wahl_erfolg",
+                            "wahl_person",
+                            css_class="inline_subform",
+                        ),
+                        # "wahl_vorschlag_erfolgreich",
+                        # "wahl_person",
+                        # "wahl_beruf",
+                        # "wahl_gender",
+                        css_id="wahlvorschlag",
+                    ),
+                    AccordionGroup(
+                        "Person und Lebenslauf",
                         HTML(  # DEBUG: TURNED OFF RANGE SLIDER
                             """<div class="pb-3 pt-1">
                                     <label class="pb-5">Wer lebte in diesem Zeitraum?</label>
@@ -83,6 +97,7 @@ class MineMainFormHelper(FormHelper):
                         "end_date_life_form",
                         "start_date_life_form_exclusive",
                         "end_date_life_form_exclusive",
+                        "gender",
                         "geburtsort",
                         "sterbeort",
                         "ausbildunginst",
@@ -97,24 +112,10 @@ class MineMainFormHelper(FormHelper):
                             "Berufliche Werdegang",
                             Field("beruf_position", css_class="mine-select2-simple"),
                             "beruf_institution",
-                            css_id="beruf_subform",
+                            css_class="inline_subform",
                         ),
                         "memb_nsdap",
                         css_id="akademischer_CV",
-                    ),
-                    AccordionGroup(
-                        "Funktionen in Akademieinstitutionen",
-                        "akademiefunktionen",
-                        css_id="in_der_akademie",
-                    ),
-                    AccordionGroup(
-                        "zur Wahl vorgeschlagen von",
-                        "wahl_person",
-                        # "wahl_vorschlag_erfolgreich",
-                        # "wahl_person",
-                        # "wahl_beruf",
-                        # "wahl_gender",
-                        css_id="wahlvorschlag",
                     ),
                     AccordionGroup(
                         "Wissenschaftler/innen/austausch",
@@ -220,7 +221,7 @@ class MineMainform(forms.Form):
             ("männlich", "Männlich"),
             ("weiblich", "Weiblich"),
         ),
-        label="",
+        label="Geschlecht",
     )
     membership = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
@@ -245,6 +246,16 @@ class MineMainform(forms.Form):
             ),
             ("Philosophisch-Historische Klasse", "Philosophisch-Historische Klasse"),
         ],
+    )
+    wahl_erfolg = forms.ChoiceField(
+        label="Erfogreich?",
+        choices=[
+            ("", ""),
+            ("erfolgreich", "erfolgreich"),
+            ("nicht erfolgreich", "nicht erfolgreich"),
+        ],
+        required=False,
+        help_text="Ob der Vorschlag zur Wahl erfolgreich war oder nicht",
     )
     wahl_person = forms.ModelMultipleChoiceField(
         queryset=Person.objects.all(),
