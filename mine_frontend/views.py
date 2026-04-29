@@ -515,6 +515,30 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             "type": "array",
             "model_resolve": "institution",
         },
+        "geburtsort": {
+            "label": "Geburtsort",
+            "param": "geburtsort",
+            "lookups": [
+                (
+                    "exact",
+                    "geburtsorte",
+                ),
+            ],
+            "type": "array",
+            "model_resolve": "ort",
+        },
+        "sterbeort": {
+            "label": "Sterbesort",
+            "param": "sterbeort",
+            "lookups": [
+                (
+                    "exact",
+                    "sterbeorte",
+                ),
+            ],
+            "type": "array",
+            "model_resolve": "ort",
+        },
         "memb_min": {
             "label": "Mitgliedschaft ab",
             "param": "start_date_form",
@@ -605,6 +629,12 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             .values_list("obj_object_id", flat=True)
             .distinct()
         )
+        geburts_orte = GeborenIn.objects.filter(
+            subj_object_id=OuterRef("id")
+        ).values_list("obj_object_id", flat=True)
+        sterbe_orte = GestorbenIn.objects.filter(
+            subj_object_id=OuterRef("id")
+        ).values_list("obj_object_id", flat=True)
         nsdap_id = Institution.objects.filter(
             label="Nationalsozialistische Deutsche Arbeiterpartei"
         ).values_list("id", flat=True)
@@ -618,6 +648,8 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             vorschlagende=ArraySubquery(vorschlagende),
             search_labels=Concat("forename", Value(" "), "surname"),
             institute=ArraySubquery(insts),
+            geburtsorte=ArraySubquery(geburts_orte),
+            sterbeorte=ArraySubquery(sterbe_orte),
             min_date_memb=Subquery(
                 memb_dates.order_by("beginn_date_from").values("beginn_date_from")[:1]
             ),

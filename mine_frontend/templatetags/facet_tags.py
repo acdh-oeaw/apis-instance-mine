@@ -29,7 +29,7 @@ def get_facet_label(filter, value):
     if "model_resolve" in filter:
         cls = ContentType.objects.get(model=filter["model_resolve"]).model_class()
         return str(cls.objects.get(pk=value))
-    elif value == "true":
+    elif value == "true" or value == "on":
         return "ausgewählt"
     else:
         return value
