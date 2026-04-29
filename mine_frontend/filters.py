@@ -1,4 +1,6 @@
-from django.db.models import Q
+from django.db.models import Case, Exists, OuterRef, Q, Value, When
+
+from apis_ontology.models import PositionAn
 
 
 def memb_starting(queryset, config_dict, selected_values, request):
@@ -39,3 +41,26 @@ def life_ending(queryset, config_dict, selected_values, request):
     if excl:
         q &= Q(date_of_death_date_to__lte=val)
     return queryset.filter(q)
+
+
+def beruf_institution(queryset, config_dict, selected_values, request):
+    """filter that combines position and institution"""
+    position = request.GET.getlist("beruf_position", False)
+    institution = request.GET.getlist("beruf_institution", False)
+    q = Q(subj_object_id=OuterRef("id"))
+    if position:
+        qp = Q()
+        for v in position:
+            qp_1 = Q(position=v)
+            qp |= qp_1
+        q &= qp
+    if institution:
+        qp = Q()
+        for v in institution:
+            qp_1 = Q(obj_object_id=v)
+            qp |= qp_1
+        q &= qp
+    rel = PositionAn.objects.filter(q).values_list("id", flat=True)
+    return queryset.annotate(
+        position_an=Case(When(Exists(rel), then=Value(True)), default=Value(None))
+    ).filter(position_an__isnull=False)

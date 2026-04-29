@@ -1,11 +1,11 @@
 from crispy_forms.bootstrap import Accordion, AccordionGroup
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Div, Fieldset, Layout, Submit
+from crispy_forms.layout import HTML, Div, Field, Fieldset, Layout, Submit
 from dal import autocomplete
 from django import forms
 
 from apis_ontology.models import Institution, Ort, Person
-from mine_frontend.settings import POSITIONEN_PRES
+from mine_frontend.settings import POSITIONEN, POSITIONEN_PRES
 
 
 class MineMainFormHelper(FormHelper):
@@ -85,6 +85,7 @@ class MineMainFormHelper(FormHelper):
                         "end_date_life_form_exclusive",
                         "geburtsort",
                         "sterbeort",
+                        "ausbildunginst",
                         # "place_of_birth",
                         # "place_of_death",
                         # "schule",
@@ -93,9 +94,9 @@ class MineMainFormHelper(FormHelper):
                         # "fach_habilitation",
                         # "profession",
                         Fieldset(
-                            "Berufliche Positionen",
-                            # "beruf_position",
-                            # "beruf_institution",
+                            "Berufliche Werdegang",
+                            Field("beruf_position", css_class="mine-select2-simple"),
+                            "beruf_institution",
                             css_id="beruf_subform",
                         ),
                         "memb_nsdap",
@@ -269,6 +270,27 @@ class MineMainform(forms.Form):
         widget=autocomplete.ModelSelect2Multiple(url="dal-sterbeort"),
         required=False,
         label="Sterbeort",
+    )
+    ausbildunginst = forms.ModelMultipleChoiceField(
+        queryset=Institution.objects.all(),
+        widget=autocomplete.ModelSelect2Multiple(url="dal-ausbildung"),
+        help_text="inkludiert Studium, Dissertation und Habilitation",
+        required=False,
+        label="Ausbildung an",
+    )
+    beruf_position = forms.MultipleChoiceField(
+        widget=forms.SelectMultiple(),
+        required=False,
+        label="Position",
+        choices=[(x, x) for x in POSITIONEN],
+        help_text="Position die ausgeübt wurde",
+    )
+    beruf_institution = forms.ModelMultipleChoiceField(
+        queryset=Institution.objects.all(),
+        widget=autocomplete.ModelSelect2Multiple(url="dal-beruf-institution"),
+        help_text="Institution an der die Tätigkeit ausgeübt wurde",
+        required=False,
+        label="Institution",
     )
     memb_nsdap = forms.BooleanField(label="Mitglied in der NSDAP", required=False)
 
