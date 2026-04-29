@@ -150,6 +150,11 @@
 
             </script>
             {% block scripts %}
+                <script>
+			$(document).ready(function(){
+				$('.mine-select2-simple').select2();
+			})
+                </script>
             {% endblock %}
             {% block scripts2 %}
             {% endblock scripts2 %}

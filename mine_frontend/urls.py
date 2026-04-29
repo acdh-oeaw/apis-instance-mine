@@ -2,7 +2,9 @@ from django.urls import path
 from django.views.generic import TemplateView
 
 from mine_frontend.autocompletes import (
+    AusbildungUniDal,
     GeburtsorteDal,
+    InstitutionBerufDal,
     OEAWInstitutionsDal,
     SterbeorteDal,
     VorschlagendeDal,
@@ -46,4 +48,10 @@ urlpatterns = [
     path("ac/institute", OEAWInstitutionsDal.as_view(), name="dal-institute"),
     path("ac/geburtsort", GeburtsorteDal.as_view(), name="dal-geburtsort"),
     path("ac/sterbesort", SterbeorteDal.as_view(), name="dal-sterbeort"),
+    path("ac/ausbildung", AusbildungUniDal.as_view(), name="dal-ausbildung"),
+    path(
+        "ac/beruf-institution",
+        InstitutionBerufDal.as_view(),
+        name="dal-beruf-institution",
+    ),
 ]

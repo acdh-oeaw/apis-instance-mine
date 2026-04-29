@@ -31,7 +31,13 @@ from apis_ontology.models import (
     Werk,
     WirdVergebenVon,
 )
-from mine_frontend.filters import life_ending, life_starting, memb_ending, memb_starting
+from mine_frontend.filters import (
+    beruf_institution,
+    life_ending,
+    life_starting,
+    memb_ending,
+    memb_starting,
+)
 from mine_frontend.forms import InstitutionMainForm, MineMainform
 from mine_frontend.mixins import FacetedSearchMixin
 from mine_frontend.settings import AKADEMIE_INST_ROOT, POSITIONEN_PRES
@@ -539,6 +545,29 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             "type": "array",
             "model_resolve": "ort",
         },
+        "ausbildunginst": {
+            "label": "Ausbildung an (Universitäten)",
+            "param": "ausbildunginst",
+            "lookups": [
+                (
+                    "exact",
+                    "ausbildunginst",
+                ),
+            ],
+            "type": "array",
+            "model_resolve": "institution",
+        },
+        "berufinst": {
+            "label": "Position an",
+            "param": "beruf_institution",
+            "filter_func": beruf_institution,
+            "model_resolve": "institution",
+        },
+        "berufpos": {
+            "label": "Beruf Position",
+            "param": "beruf_position",
+            "filter_func": beruf_institution,
+        },
         "memb_min": {
             "label": "Mitgliedschaft ab",
             "param": "start_date_form",
@@ -635,6 +664,10 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
         sterbe_orte = GestorbenIn.objects.filter(
             subj_object_id=OuterRef("id")
         ).values_list("obj_object_id", flat=True)
+        ausbildung_inst = AusbildungAn.objects.filter(
+            subj_object_id=OuterRef("id"),
+            typ__in=["Studium", "Promotion", "Habilitation"],
+        ).values_list("obj_object_id", flat=True)
         nsdap_id = Institution.objects.filter(
             label="Nationalsozialistische Deutsche Arbeiterpartei"
         ).values_list("id", flat=True)
@@ -650,6 +683,7 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             institute=ArraySubquery(insts),
             geburtsorte=ArraySubquery(geburts_orte),
             sterbeorte=ArraySubquery(sterbe_orte),
+            ausbildunginst=ArraySubquery(ausbildung_inst),
             min_date_memb=Subquery(
                 memb_dates.order_by("beginn_date_from").values("beginn_date_from")[:1]
             ),
