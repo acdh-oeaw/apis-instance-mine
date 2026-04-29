@@ -4,7 +4,7 @@ from crispy_forms.layout import HTML, Div, Fieldset, Layout, Submit
 from dal import autocomplete
 from django import forms
 
-from apis_ontology.models import Institution, Person
+from apis_ontology.models import Institution, Ort, Person
 from mine_frontend.settings import POSITIONEN_PRES
 
 
@@ -83,6 +83,8 @@ class MineMainFormHelper(FormHelper):
                         "end_date_life_form",
                         "start_date_life_form_exclusive",
                         "end_date_life_form_exclusive",
+                        "geburtsort",
+                        "sterbeort",
                         # "place_of_birth",
                         # "place_of_death",
                         # "schule",
@@ -254,6 +256,19 @@ class MineMainform(forms.Form):
         widget=autocomplete.ModelSelect2Multiple(url="dal-institute"),
         required=False,
         label="Funktion in einer der folgendenen Akademieinstitutionen",
+    )
+
+    geburtsort = forms.ModelMultipleChoiceField(
+        queryset=Ort.objects.all(),
+        widget=autocomplete.ModelSelect2Multiple(url="dal-geburtsort"),
+        required=False,
+        label="Geburtsort",
+    )
+    sterbeort = forms.ModelMultipleChoiceField(
+        queryset=Ort.objects.all(),
+        widget=autocomplete.ModelSelect2Multiple(url="dal-sterbeort"),
+        required=False,
+        label="Sterbeort",
     )
     memb_nsdap = forms.BooleanField(label="Mitglied in der NSDAP", required=False)
 
