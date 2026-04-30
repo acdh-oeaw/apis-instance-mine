@@ -10,6 +10,7 @@ from apis_ontology.models import (
     Person,
     PositionAn,
     Preis,
+    WissenschaftsaustauschIn,
 )
 
 
@@ -95,3 +96,8 @@ class AusbildungUniDal(RelDalBase):
 class InstitutionBerufDal(RelDalBase):
     class_for_relation = PositionAn
     class_fin = Institution
+
+
+class WissenschaftsaustauschDal(RelDalBase):
+    class_for_relation = WissenschaftsaustauschIn
+    class_fin = Ort

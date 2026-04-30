@@ -126,7 +126,7 @@ class MineMainFormHelper(FormHelper):
                     ),
                     AccordionGroupTooltip(
                         "Wissenschaftler:innenaustausch",
-                        # "wiss_austausch"
+                        "wiss_austausch",
                         tooltip="international, ab 1965",
                     ),
                     AccordionGroupTooltip(
@@ -312,6 +312,12 @@ class MineMainform(forms.Form):
         help_text="Institution an der die Tätigkeit ausgeübt wurde",
         required=False,
         label="Institution",
+    )
+    wiss_austausch = forms.ModelMultipleChoiceField(
+        queryset=Ort.objects.all(),
+        widget=autocomplete.ModelSelect2Multiple(url="dal-wissenschaftsaustausch"),
+        required=False,
+        label="Ort in dem Austausch stattfand",
     )
     memb_nsdap = forms.BooleanField(label="Mitglied in der NSDAP", required=False)
     nobelpreis = forms.BooleanField(label="Nobelpreis erhalten?", required=False)
