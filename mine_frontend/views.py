@@ -622,6 +622,12 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             "lookups": [("bool", "nsdap")],
             "type": "bool",
         },
+        "nobelpreis": {
+            "label": "Nobelpreis erhalten",
+            "param": "nobelpreis",
+            "lookups": [("bool", "nobelpreis")],
+            "type": "bool",
+        },
     }
 
     def get_base_queryset(self):
@@ -673,6 +679,19 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
         memb_nsdap = Mitglied.objects.filter(
             subj_object_id=OuterRef("id"), obj_object_id=Subquery(nsdap_id[:1])
         )
+        nobel_p = Preis.objects.filter(
+            name__in=[
+                "Nobelpreis für Chemie",
+                "Nobelpreis für Physik",
+                "Nobelpreis für Physiologie oder Medizin",
+                "Alfred-Nobel-Gedächtnispreis für Wirtschaftswissenschaften",
+                "Nobelpreis für Literatur",
+                "Friedensnobelpreis",
+            ]
+        ).values_list("id", flat=True)
+        nobelpreis = Gewinnt.objects.filter(
+            subj_object_id=OuterRef("pk"), obj_object_id__in=nobel_p
+        )
 
         p = Person.objects.filter(mitglied=True).annotate(
             memberships=ArraySubquery(memb),
@@ -690,6 +709,9 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             ),
             nsdap=Case(
                 When(Exists(memb_nsdap), then=Value(True)), default=Value(False)
+            ),
+            nobelpreis=Case(
+                When(Exists(nobelpreis), then=Value(True)), default=Value(False)
             ),
         )
         return p

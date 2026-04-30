@@ -131,7 +131,8 @@ class MineMainFormHelper(FormHelper):
                     ),
                     AccordionGroupTooltip(
                         "Auszeichnungen",
-                        # "preise"
+                        "nobelpreis",
+                        # "preise",
                         tooltip="Akademiepreise & Nobelpreise",
                     ),
                 ),
@@ -313,6 +314,7 @@ class MineMainform(forms.Form):
         label="Institution",
     )
     memb_nsdap = forms.BooleanField(label="Mitglied in der NSDAP", required=False)
+    nobelpreis = forms.BooleanField(label="Nobelpreis erhalten?", required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
