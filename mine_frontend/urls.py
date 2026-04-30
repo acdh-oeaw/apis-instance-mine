@@ -6,6 +6,7 @@ from mine_frontend.autocompletes import (
     GeburtsorteDal,
     InstitutionBerufDal,
     OEAWInstitutionsDal,
+    OEAWPrizesDal,
     SterbeorteDal,
     VorschlagendeDal,
 )
@@ -53,5 +54,10 @@ urlpatterns = [
         "ac/beruf-institution",
         InstitutionBerufDal.as_view(),
         name="dal-beruf-institution",
+    ),
+    path(
+        "ac/oeaw-preise",
+        OEAWPrizesDal.as_view(),
+        name="dal-oeaw-preise",
     ),
 ]

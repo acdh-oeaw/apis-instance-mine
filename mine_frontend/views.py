@@ -628,6 +628,18 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             "lookups": [("bool", "nobelpreis")],
             "type": "bool",
         },
+        "akademiepreise": {
+            "label": "Akademiepreise erhalten",
+            "param": "akademiepreise",
+            "lookups": [
+                (
+                    "exact",
+                    "akademiepreise",
+                ),
+            ],
+            "type": "array",
+            "model_resolve": "preis",
+        },
     }
 
     def get_base_queryset(self):
@@ -692,6 +704,12 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
         nobelpreis = Gewinnt.objects.filter(
             subj_object_id=OuterRef("pk"), obj_object_id__in=nobel_p
         )
+        akademiepreise = Preis.objects.filter(academy_prize=True).values_list(
+            "id", flat=True
+        )
+        akadp_won = Gewinnt.objects.filter(
+            subj_object_id=OuterRef("pk"), obj_object_id__in=akademiepreise
+        ).values_list("obj_object_id", flat=True)
 
         p = Person.objects.filter(mitglied=True).annotate(
             memberships=ArraySubquery(memb),
@@ -713,6 +731,7 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             nobelpreis=Case(
                 When(Exists(nobelpreis), then=Value(True)), default=Value(False)
             ),
+            akademiepreise=ArraySubquery(akadp_won),
         )
         return p
 
