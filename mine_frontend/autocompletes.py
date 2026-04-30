@@ -9,6 +9,7 @@ from apis_ontology.models import (
     Ort,
     Person,
     PositionAn,
+    Preis,
 )
 
 
@@ -29,6 +30,14 @@ class OEAWInstitutionsDal(autocomplete.Select2QuerySetView):
         if self.q:
             inst = inst.filter(label__icontains=self.q)
         return inst
+
+
+class OEAWPrizesDal(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        preis = Preis.objects.filter(academy_prize=True)
+        if self.q:
+            preis = preis.filter(name__icontains=self.q)
+        return preis
 
 
 class RelDalBase(autocomplete.Select2QuerySetView):

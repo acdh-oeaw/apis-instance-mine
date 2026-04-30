@@ -4,7 +4,7 @@ from crispy_forms.layout import HTML, Div, Field, Fieldset, Layout, Submit
 from dal import autocomplete
 from django import forms
 
-from apis_ontology.models import Institution, Ort, Person
+from apis_ontology.models import Institution, Ort, Person, Preis
 from mine_frontend.crispy_overrides import (
     AccordionGroupTooltip,
 )
@@ -132,7 +132,7 @@ class MineMainFormHelper(FormHelper):
                     AccordionGroupTooltip(
                         "Auszeichnungen",
                         "nobelpreis",
-                        # "preise",
+                        "akademiepreise",
                         tooltip="Akademiepreise & Nobelpreise",
                     ),
                 ),
@@ -315,6 +315,13 @@ class MineMainform(forms.Form):
     )
     memb_nsdap = forms.BooleanField(label="Mitglied in der NSDAP", required=False)
     nobelpreis = forms.BooleanField(label="Nobelpreis erhalten?", required=False)
+    akademiepreise = forms.ModelMultipleChoiceField(
+        queryset=Preis.objects.all(),
+        widget=autocomplete.ModelSelect2Multiple(url="dal-oeaw-preise"),
+        help_text="Preise die von der Akademie ausgeschrieben wurden",
+        required=False,
+        label="Akademiepreise",
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
