@@ -9645,6 +9645,24 @@ svg.remove-badge {
 .inline_subform > div:last-child {
   margin-right: 0; }
 
+.expandable-text-content {
+  transition: max-height 0.3s ease-out;
+  /* Smooth transition */ }
+
+.expandable-text-toggle {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 0.7em;
+  cursor: pointer;
+  padding: 0.5em 0;
+  text-decoration: underline;
+  font-weight: bold; }
+
+.expandable-text-toggle:hover {
+  color: #0056b3;
+  /* Darker shade on hover */ }
+
 /*
   ** 07. Footer
   */
