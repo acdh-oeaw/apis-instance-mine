@@ -5,6 +5,10 @@ from dal import autocomplete
 from django import forms
 
 from apis_ontology.models import Institution, Ort, Person
+from mine_frontend.crispy_overrides import (
+    AccordionGroupTooltip,
+)
+from mine_frontend.helpers import create_choices_with_tooltip
 from mine_frontend.settings import POSITIONEN, POSITIONEN_PRES
 
 
@@ -58,17 +62,18 @@ class MineMainFormHelper(FormHelper):
             ),
             Div(
                 Accordion(
-                    AccordionGroup(
+                    AccordionGroupTooltip(
                         "Funktionen im Präsidium",
                         "acad_func",
                         css_id="praesidium",
+                        tooltip="kollegiales Leitungsorgan, auf 5 Jahre gewählt",
                     ),
                     AccordionGroup(
                         "Funktionen in Akademieinstitutionen",
                         "akademiefunktionen",
                         css_id="in_der_akademie",
                     ),
-                    AccordionGroup(
+                    AccordionGroupTooltip(
                         "zur Wahl vorgeschlagen von",
                         Fieldset(
                             None,
@@ -81,10 +86,11 @@ class MineMainFormHelper(FormHelper):
                         # "wahl_beruf",
                         # "wahl_gender",
                         css_id="wahlvorschlag",
+                        tooltip="Vorschlagende sind wirkliche Mitglieder (ausgenommen für die Wahl zum MJA)",
                     ),
-                    AccordionGroup(
+                    AccordionGroupTooltip(
                         "Person und Lebenslauf",
-                        HTML(  # DEBUG: TURNED OFF RANGE SLIDER
+                        HTML(
                             """<div class="pb-3 pt-1">
                                     <label class="pb-5">Wer lebte in diesem Zeitraum?</label>
                                     <p><span id="life-slider-help" class="pb-5">Doppelclick auf die Grenzen um Personen anzuzeigen die nur innerhalb der Grenzen lebten.</span></p>
@@ -116,14 +122,17 @@ class MineMainFormHelper(FormHelper):
                         ),
                         "memb_nsdap",
                         css_id="akademischer_CV",
+                        tooltip="laut eigenhändigen Angaben der Mitglieder",
                     ),
-                    AccordionGroup(
-                        "Wissenschaftler/innen/austausch",
+                    AccordionGroupTooltip(
+                        "Wissenschaftler:innenaustausch",
                         # "wiss_austausch"
+                        tooltip="international, ab 1965",
                     ),
-                    AccordionGroup(
+                    AccordionGroupTooltip(
                         "Auszeichnungen",
                         # "preise"
+                        tooltip="Akademiepreise & Nobelpreise",
                     ),
                 ),
                 css_class="col-md-6 pt-30 pr-0 pl-0 pl-md-custom",
@@ -353,7 +362,6 @@ class MineInstitutionFormHelper(FormHelper):
 
 
 class InstitutionMainForm(forms.Form):
-    CHOICES_INST_TYPE = __import__("apis_ontology").models.Institution.TYP_CHOICES[:-8]
     q = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -364,24 +372,85 @@ class InstitutionMainForm(forms.Form):
         required=False,
         label="",
     )
-    klasse = forms.MultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple(),
-        required=False,
-        label="Klasse",
-        choices=[
-            (
-                "Mathematisch-Naturwissenschaftliche Klasse",
-                "Mathematisch-Naturwissenschaftliche Klasse",
-            ),
-            ("Philosophisch-Historische Klasse", "Philosophisch-Historische Klasse"),
-            ("Gesamtakademie", "Gesamtakademie"),
-        ],
+    klasse = (
+        forms.MultipleChoiceField(
+            widget=forms.CheckboxSelectMultiple(),
+            required=False,
+            label="Klasse",
+            choices=[
+                (
+                    "Mathematisch-Naturwissenschaftliche Klasse",
+                    "Mathematisch-Naturwissenschaftliche Klasse",
+                ),
+                (
+                    "Philosophisch-Historische Klasse",
+                    "Philosophisch-Historische Klasse",
+                ),
+                ("Gesamtakademie", "Gesamtakademie"),
+            ],
+        ),
     )
     typ = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
         required=False,
         label="Art",
-        choices=CHOICES_INST_TYPE,
+        choices=create_choices_with_tooltip(
+            [
+                (
+                    "Kommission",
+                    "Kommission",
+                    "besteht mehrheitlich aus Akademiemitgliedern, bearbeitet einen definierten wissenschaftlichen Themenbereich, ist den Klassen oder der Gesamtakademie zugeordnet ",
+                ),
+                (
+                    "Institut",
+                    "Institut",
+                    "betreibt Grundlagenforschung, ist Mitarbeiter:innen führend, wird von Direktor:innen geleitet und auf bestimmte oder unbestimmte Zeit errichtet",
+                ),
+                (
+                    "Forschungsstelle",
+                    "Forschungsstelle",
+                    "betreibt Grundlagenforschung, ist Mitarbeiter:innen führend und zeitlich befristet",
+                ),
+                ("Klasse", "Klasse"),
+                (
+                    "Verwaltung",
+                    "Verwaltung",
+                    "abgebildet sind Akademierat, Senat, Forschungskuratorium, Finanzkuratorium und Reformkommission der ÖAW",
+                ),
+                (
+                    "Wissenschaftsorientierte Einheit",
+                    "Wissenschaftsorientierte Einheit",
+                    "verrichtet Serviceleistungen für die ÖAW und betreibt eigene Forschung",
+                ),
+                ("Einrichtung", "Einrichtung"),
+                (
+                    "Komitee",
+                    "Komitee",
+                    "besteht aus Akademiemitgliedern und fasst Beschlüsse wissenschaftlicher Art",
+                ),
+                (
+                    "Kuratorium",
+                    "Kuratorium",
+                    "besteht aus Akademiemitgliedern, bestimmt und beaufsichtigt die Forschungstätigkeit eines Instituts",
+                ),
+                (
+                    "Beirat",
+                    "Beirat (SAB)",
+                    "ist ein der Information und Entscheidungsfindung des Präsidiums und der Institutsdirektion zur Seite stehendes wissenschaftliches Beratungsorgan",
+                ),
+                (
+                    "Delegation",
+                    "Delegation",
+                    "umfasst Akademiemitglieder, die von der ÖAW in andere Organisationen entsendet werden",
+                ),
+                (
+                    "Internationales Forschungsprogramm",
+                    "Internationales Forschungsprogramm",
+                    "ist ein Forschungsprogramm internationaler Organisationen, an dem die ÖAW beteiligt ist und Österreich vertritt",
+                ),
+                ("Preis", "Preis", "umfasst die ÖAW-Preise und den Nobelpreis"),
+            ]
+        ),
     )
 
     def __init__(self, *args, **kwargs):
