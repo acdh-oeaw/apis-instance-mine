@@ -9,6 +9,7 @@ from mine_frontend.autocompletes import (
     OEAWPrizesDal,
     SterbeorteDal,
     VorschlagendeDal,
+    WissenschaftsaustauschDal,
 )
 from mine_frontend.views import (
     IndexView,
@@ -59,5 +60,10 @@ urlpatterns = [
         "ac/oeaw-preise",
         OEAWPrizesDal.as_view(),
         name="dal-oeaw-preise",
+    ),
+    path(
+        "ac/wissesnchaftsaustausch",
+        WissenschaftsaustauschDal.as_view(),
+        name="dal-wissenschaftsaustausch",
     ),
 ]

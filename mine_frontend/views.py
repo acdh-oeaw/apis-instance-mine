@@ -30,6 +30,7 @@ from apis_ontology.models import (
     Preis,
     Werk,
     WirdVergebenVon,
+    WissenschaftsaustauschIn,
 )
 from mine_frontend.filters import (
     beruf_institution,
@@ -640,6 +641,18 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             "type": "array",
             "model_resolve": "preis",
         },
+        "wiss_austausch": {
+            "label": "Wissenschaftsaustausch in",
+            "param": "wiss_austausch",
+            "lookups": [
+                (
+                    "exact",
+                    "wiss_austausch",
+                ),
+            ],
+            "type": "array",
+            "model_resolve": "ort",
+        },
     }
 
     def get_base_queryset(self):
@@ -710,6 +723,9 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
         akadp_won = Gewinnt.objects.filter(
             subj_object_id=OuterRef("pk"), obj_object_id__in=akademiepreise
         ).values_list("obj_object_id", flat=True)
+        wiss_austausch = WissenschaftsaustauschIn.objects.filter(
+            subj_object_id=OuterRef("pk")
+        ).values_list("obj_object_id", flat=True)
 
         p = Person.objects.filter(mitglied=True).annotate(
             memberships=ArraySubquery(memb),
@@ -732,6 +748,7 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
                 When(Exists(nobelpreis), then=Value(True)), default=Value(False)
             ),
             akademiepreise=ArraySubquery(akadp_won),
+            wiss_austausch=ArraySubquery(wiss_austausch),
         )
         return p
 
