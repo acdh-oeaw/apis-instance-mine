@@ -1,12 +1,16 @@
 from apis_core.uris.models import Uri
 from django import template
+from django.contrib.contenttypes.models import ContentType
 from django.utils.html import mark_safe
 
 register = template.Library()
 
 
 @register.filter()
-def mine_link(value):
+def mine_link(value, entity_type: str = "person"):
+    if isinstance(value, int):
+        cls = ContentType.objects.get(model=entity_type).model_class()
+        value = cls.objects.get(pk=value)
     if hasattr(value, "mitglied"):
         if value.mitglied:
             return mark_safe(f'<a href="/person/{value.pk}">{value}</a>')
