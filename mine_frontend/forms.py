@@ -41,7 +41,8 @@ class MineMainFormHelper(FormHelper):
                                 """
                                 <div class="px-3 pb-3 pt-1">
                                     <label id="mitgliedschaft-slider-label" class="font-weight-bold pb-5">Wer war in diesem Zeitraum Mitglied?</label>
-                                    <p><span id="mitgliedschaft-slider-help" class="pb-5">Doppelclick auf die Grenzen um Personen anzuzeigen deren Mitgliedschaft ausschließlich innerhalb der Zeitspanne aufrecht war.</span></p>
+                                    <p><span id="mitgliedschaft-slider-help" class="pb-5">
+Doppelklick auf die Grenzen, um Personen anzuzeigen, deren Mitgliedschaft ausschließlich innerhalb der Zeitspanne aufrecht war.</p></span>
                                         <div class="slider-container pt-3">
                                             <div data-start-form="start_date_membership" data-end-form="end_date_membership" class="range-slider" data-range-start="{{form_membership_start_date}}" data-range-end="{{form_membership_end_date}}" data-start-exclusive="start_data_membership_exclusive" data-end-exclusive="end_data_membership_exclusive" data-subject-label="Mitgliedschaft">
                                         </div>
@@ -201,10 +202,10 @@ class MineMainform(forms.Form):
         label="",
         required=False,
         choices=[
-            ("funk_praesidentin", "Präsident/in"),
-            ("funk_vizepraesidentin", "Vizepräsident/in"),
-            ("funk_generalsekretaerin", "Generalsekretär"),
-            ("funk_sekretaerin", "Sekretär "),
+            ("funk_praesidentin", "Präsident:in"),
+            ("funk_vizepraesidentin", "Vizepräsident:in"),
+            ("funk_generalsekretaerin", "Generalsekretär:in"),
+            ("funk_sekretaerin", "Sekretär:in"),
             ("funk_obfrau", "Obmann/Obfrau einer Kommission"),
             ("funk_mitgl_kommission", "Mitglied einer Kommission"),
             (
@@ -304,12 +305,12 @@ class MineMainform(forms.Form):
         required=False,
         label="Position",
         choices=[(x, x) for x in POSITIONEN],
-        help_text="Position die ausgeübt wurde",
+        help_text="Position, die ausgeübt wurde",
     )
     beruf_institution = forms.ModelMultipleChoiceField(
         queryset=Institution.objects.all(),
         widget=autocomplete.ModelSelect2Multiple(url="dal-beruf-institution"),
-        help_text="Institution an der die Tätigkeit ausgeübt wurde",
+        help_text="Institution, an der die Tätigkeit ausgeübt wurde",
         required=False,
         label="Institution",
     )
@@ -320,11 +321,11 @@ class MineMainform(forms.Form):
         label="Ort in dem Austausch stattfand",
     )
     memb_nsdap = forms.BooleanField(label="Mitglied in der NSDAP", required=False)
-    nobelpreis = forms.BooleanField(label="Nobelpreis erhalten?", required=False)
+    nobelpreis = forms.BooleanField(label="Nobelpreis erhalten", required=False)
     akademiepreise = forms.ModelMultipleChoiceField(
         queryset=Preis.objects.all(),
         widget=autocomplete.ModelSelect2Multiple(url="dal-oeaw-preise"),
-        help_text="Preise die von der Akademie ausgeschrieben wurden",
+        help_text="Preise, die von der Akademie ausgeschrieben wurden",
         required=False,
         label="Akademiepreise",
     )
