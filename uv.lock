@@ -759,6 +759,7 @@ dependencies = [
     { name = "httpx" },
     { name = "imgproxy" },
     { name = "psycopg2-binary" },
+    { name = "tzdata" },
 ]
 
 [package.dev-dependencies]
@@ -789,6 +790,7 @@ requires-dist = [
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "imgproxy", specifier = ">=1.0.0" },
     { name = "psycopg2-binary", specifier = ">=2.9,<3.0" },
+    { name = "tzdata", specifier = ">=2025.1" },
 ]
 
 [package.metadata.requires-dev]
