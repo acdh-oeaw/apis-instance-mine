@@ -19,6 +19,7 @@ dependencies = [
     "django-auditlog==3.3.0",
     "imgproxy>=1.0.0",
     "gunicorn>=26.0.0",
+    "tzdata>=2025.1",
 ]
 
 [dependency-groups]
