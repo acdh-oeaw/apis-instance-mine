@@ -1,7 +1,8 @@
-from apis_core.uris.models import Uri
 from django import template
 from django.contrib.contenttypes.models import ContentType
 from django.utils.html import mark_safe
+
+from apis_core.uris.models import Uri
 
 register = template.Library()
 
@@ -71,6 +72,7 @@ def funktion(value, brackets=False):
 @register.filter
 def mine_date(value, brackets=False):
     res = ""
+    beginn_raw = False
     if hasattr(value, "datum"):
         if value.datum_date_sort:
             res = value.datum_date_sort.strftime("%Y")
@@ -97,6 +99,13 @@ def mine_date(value, brackets=False):
             res = f"{value.beginn_date_sort.strftime('%Y')}"
         else:
             res = f"{value.beginn_date_sort.strftime('%Y')} - {value.ende_date_sort.strftime('%Y')}"
+    if hasattr(value, "beginn") and res == "" and value.beginn != "":
+        res += value.beginn
+        beginn_raw = True
+    if hasattr(value, "ende") and (beginn_raw or not res):
+        if res:
+            res += " "
+        res += "- " + value.ende
     if brackets and res:
         res = f"{brackets[0]}{res}{brackets[1]}"
     return res
