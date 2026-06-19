@@ -2,11 +2,6 @@ import csv
 import os
 from functools import cache
 
-from apis_core.apis_entities.abc import E21_Person, E53_Place, E74_Group
-from apis_core.apis_entities.models import AbstractEntity
-from apis_core.generic.abc import GenericModel
-from apis_core.history.models import VersionMixin
-from apis_core.relations.models import Relation
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields import ArrayField
@@ -16,6 +11,11 @@ from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from django_json_editor_field.fields import JSONEditorField
 
+from apis_core.apis_entities.abc import E21_Person, E53_Place, E74_Group
+from apis_core.apis_entities.models import AbstractEntity
+from apis_core.generic.abc import GenericModel
+from apis_core.history.models import VersionMixin
+from apis_core.relations.models import Relation
 from django_interval.fields import FuzzyDateParserField
 from mine_frontend.settings import POSITIONEN
 from mine_frontend.utils import MyImgProxy
@@ -132,8 +132,10 @@ def add_to_dict(path, data, row):
     raise ValidationError("Parsing of the OESTAT data for generating choices failed.")
 
 
-def get_oestat_choices():
-    res = dict()
+@cache
+def get_oestat_choices() -> list[tuple[str, str]]:
+    choices = []
+
     with open(
         f"{os.path.dirname(__file__)}/../resources/OEFOS2012_DE_CTI.txt",
         newline="",
@@ -141,18 +143,17 @@ def get_oestat_choices():
     ) as inp:
         oestat = csv.reader(inp, delimiter=";", quotechar='"')
         next(oestat)
-        current_path = []
-        old_level = 0
+
         for row in oestat:
             level = int(row[0])
-            text = row[3]
-            if level > old_level:
-                current_path.append(text)
-            elif level < old_level:
-                rm_levels = level - old_level
-                current_path = current_path[:rm_levels]
-            res = add_to_dict(current_path, res, row)
-    return res
+            number = row[2].strip()
+            label = row[3].strip()
+            value = f"{label} ({number})"
+            display = f"{'— ' * max(level - 1, 0)}{value}"
+
+            choices.append((value, display))
+
+    return choices
 
 
 class Beruf(GenericModel, models.Model):
