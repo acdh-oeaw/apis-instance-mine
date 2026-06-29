@@ -1,30 +1,32 @@
-from apis_core.uris.models import Uri
 from django import template
 from django.contrib.contenttypes.models import ContentType
 from django.utils.html import mark_safe
+
+from apis_core.uris.models import Uri
 
 register = template.Library()
 
 
 @register.filter()
-def mine_link(value, entity_type: str = "person"):
+def mine_link(value, entity_type: str | None = None):
     if isinstance(value, int):
         cls = ContentType.objects.get(model=entity_type).model_class()
         value = cls.objects.get(pk=value)
-    if hasattr(value, "mitglied"):
-        if value.mitglied:
-            return mark_safe(f'<a href="/person/{value.pk}">{value}</a>')
-    if hasattr(value, "akademie_institution"):
-        if value.akademie_institution:
-            return mark_safe(f'<a href="/institution/{value.pk}">{value}</a>')
-    if hasattr(value, "academy_prize") and value.academy_prize:
-        return mark_safe(f'<a href="/preis/{value.pk}">{value}</a>')
+    if entity_type is None:
+        entity_type = ContentType.objects.get_for_model(value)
+    if value.is_allowed():
+        check = any(
+            getattr(value, attr, False)
+            for attr in ["mitglied", "akademie_institution", "academy_prize"]
+        )
+        if check:
+            return mark_safe(f'<a href="/{entity_type}/{value.pk}">{value}</a>')
     gnd = Uri.objects.filter(uri__contains="d-nb.info", object_id=value.pk)
     if gnd.exists():
         return mark_safe(
             f'<a href="{gnd.first().uri}">{value}</a><i data-feather="external-link" style="width: 1.1em; height: 1.1em; padding-left: 0.2em; vertical-align: middle;"></i>'
         )
-    return value
+    return mark_safe(f"<i>{value}</i>")
 
 
 @register.simple_tag

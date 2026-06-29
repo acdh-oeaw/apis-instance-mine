@@ -1,7 +1,6 @@
 import datetime
 import re
 
-from apis_core.uris.models import Uri
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.expressions import ArraySubquery
 from django.db.models import Case, Exists, F, OuterRef, Q, Subquery, Value, When
@@ -10,6 +9,7 @@ from django.views import generic
 from django.views.generic.base import TemplateView
 from django_tables2.views import SingleTableView
 
+from apis_core.uris.models import Uri
 from apis_ontology.models import (
     AusbildungAn,
     AutorVon,
@@ -65,10 +65,12 @@ def get_web_object_uri(uri_obj):
 
 
 class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Person
-    queryset = Person.objects.filter(mitglied=True)
+    # model = Person
     context_object_name = "oeaw_member"
     template_name = "mine_frontend/oeaw_member_detail.html"
+
+    def get_queryset(self):
+        return Person.objects_mine.filter(mitglied=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -256,10 +258,11 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
 
 
 class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Institution
-    queryset = Institution.objects.filter(akademie_institution=True)
     context_object_name = "oeaw_institution"
     template_name = "mine_frontend/oeaw_institution_detail.html"
+
+    def get_queryset(self):
+        return Institution.objects_mine.filter(akademie_institution=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -408,10 +411,11 @@ class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):
 
 
 class OEAWPrizeDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Preis
-    queryset = Preis.objects.filter(academy_prize=True)
     context_object_name = "oeaw_prize"
     template_name = "mine_frontend/oeaw_prize_detail.html"
+
+    def get_queryset(self):
+        return Preis.objects.filter(academy_prize=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -436,7 +440,7 @@ class IndexView(LoginRequiredMixin, TemplateView):
         context["form_membership_start_date"] = 1848
         context["form_life_end_date"] = datetime.date.today().year
         context["form_life_start_date"] = getattr(
-            Person.objects.filter(mitglied=True)
+            Person.objects_mine.filter(mitglied=True)
             .order_by("date_of_birth_date_from")
             .first(),
             "date_of_birth_date_from",
@@ -727,7 +731,9 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             subj_object_id=OuterRef("pk")
         ).values_list("obj_object_id", flat=True)
 
-        p = Person.objects.filter(mitglied=True).annotate(
+        p = Person.objects_mine.filter(
+            mitglied=True,
+        ).annotate(
             memberships=ArraySubquery(memb),
             acad_func=ArraySubquery(func_presidium),
             search_labels=Concat("forename", Value(" "), "surname"),
@@ -811,7 +817,7 @@ class InstitutionResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTable
             .values("klasse_id")[:1]
         )
 
-        return Institution.objects.filter(akademie_institution=True).annotate(
+        return Institution.objects_mine.filter(akademie_institution=True).annotate(
             klasse_id=Subquery(klasse_relation),
             klasse_label=Subquery(
                 Institution.objects.filter(pk=OuterRef("klasse_id")).values("label")[:1]
