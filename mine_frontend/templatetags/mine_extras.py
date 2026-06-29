@@ -26,7 +26,7 @@ def mine_link(value, entity_type: str | None = None):
         return mark_safe(
             f'<a href="{gnd.first().uri}">{value}</a><i data-feather="external-link" style="width: 1.1em; height: 1.1em; padding-left: 0.2em; vertical-align: middle;"></i>'
         )
-    return mark_safe(f"<i>{value}</i>")
+    return mark_safe(f"<u>{value}</u>")
 
 
 @register.simple_tag
