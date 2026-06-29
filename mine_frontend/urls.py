@@ -22,7 +22,7 @@ from mine_frontend.views import (
 )
 
 urlpatterns = [
-    path("mine/", IndexView.as_view(), name="index"),
+    path("", IndexView.as_view(), name="index"),
     path("mine-institution/", InstitutionIndexView.as_view(), name="institution-index"),
     path(
         "about/",

@@ -48,3 +48,5 @@ CSP_IMG_SRC += [  # noqa: F405
 STATICFILES_DIRS = [
     "/data/static_files/",
 ]
+
+DATABASES["default"]["DISABLE_SERVER_SIDE_CURSORS"] = True  # noqa: F405
