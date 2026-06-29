@@ -13,7 +13,7 @@
                     Wahl zum {{ memb.mitgliedschaft }} der {{ memb.obj|title|caseklasse }}
                     vorgeschlagen von:
                     {% for sug in memb.vorgeschlagen_von.all %}
-                        <a href="/person/{{ sug.id }}">{{ sug }}</a>
+                        {{ sug | mine_link }}
                         {% if not forloop.last %},{% endif %}
                     {% endfor %}
                 {% else %}

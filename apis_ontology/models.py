@@ -2,23 +2,59 @@ import csv
 import os
 from functools import cache
 
+from crum import get_current_user
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.postgres.expressions import ArraySubquery
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import OuterRef
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from django_json_editor_field.fields import JSONEditorField
 
 from apis_core.apis_entities.abc import E21_Person, E53_Place, E74_Group
 from apis_core.apis_entities.models import AbstractEntity
+from apis_core.collections.models import SkosCollection, SkosCollectionContentObject
 from apis_core.generic.abc import GenericModel
 from apis_core.history.models import VersionMixin
 from apis_core.relations.models import Relation
 from django_interval.fields import FuzzyDateParserField
 from mine_frontend.settings import POSITIONEN
 from mine_frontend.utils import MyImgProxy
+
+
+class MineFrontendManager(models.Manager):
+    def get_queryset(self):
+        user = get_current_user()
+        qs = super().get_queryset().all()
+        if user is None or user.is_staff:
+            q_params = {}
+        else:
+            q_params = {"_coll_labels": ["published"]}
+        col = SkosCollectionContentObject.objects.filter(
+            content_type=ContentType.objects.get_for_model(qs.model),
+            object_id=OuterRef("pk"),
+        ).values("collection__name")
+        return qs.annotate(_coll_labels=ArraySubquery(col)).filter(**q_params)
+
+
+class MineFrontendAllowedObjectsMixin(models.Model):
+    def is_allowed(self):
+        user = get_current_user()
+        if user is None or user.is_staff:
+            return True
+        else:
+            if "published" in [
+                x.name for x in SkosCollection.objects.by_instance(self)
+            ]:
+                return True
+            else:
+                return False
+
+    class Meta:
+        abstract = True
 
 
 class NameMixin(models.Model):
@@ -216,6 +252,7 @@ class Ereignis(
     NameMixin,
     LegacyFieldsMixin,
     AlternativeNameMixin,
+    MineFrontendAllowedObjectsMixin,
 ):
     """haupsächlich Sitzungen und Wahlen"""
 
@@ -232,6 +269,8 @@ class Ereignis(
         help_text="Art des Events",
     )
     datum = FuzzyDateParserField(blank=True)
+    objects = models.Manager()
+    objects_mine = MineFrontendManager()
 
     def __str__(self):
         return f"{self.name}"
@@ -267,6 +306,7 @@ class Preis(
     NameMixin,
     LegacyFieldsMixin,
     AlternativeNameMixin,
+    MineFrontendAllowedObjectsMixin,
 ):
     """Auschreibung eines Preises oder Preisaufgabe"""
 
@@ -309,6 +349,7 @@ class Werk(
     AbstractEntity,
     LegacyFieldsMixin,
     AlternativeNameMixin,
+    MineFrontendAllowedObjectsMixin,
 ):
     TYP_CHOICES = [
         ("Buch", "Buch"),
@@ -332,6 +373,8 @@ class Werk(
         blank=True,
         help_text="Art des Werks",
     )
+    objects = models.Manager()
+    objects_mine = MineFrontendManager()
 
     class Meta(VersionMixin.Meta, AbstractEntity.Meta):
         verbose_name = _("Werk")
@@ -347,6 +390,7 @@ class Person(
     AbstractEntity,
     LegacyFieldsMixin,
     AlternativeNameMixin,
+    MineFrontendAllowedObjectsMixin,
 ):
     KLASSE_CHOICES = [
         (
@@ -435,6 +479,9 @@ class Person(
 
     titel = JSONEditorField(schema=schema, options=options, null=True)
 
+    objects = models.Manager()
+    objects_mine = MineFrontendManager()
+
     class Meta(AbstractEntity.Meta, E21_Person.Meta, VersionMixin.Meta):
         verbose_name = "Person"
         verbose_name_plural = "Personen"
@@ -446,7 +493,11 @@ class Ort(
     AbstractEntity,
     LegacyFieldsMixin,
     AlternativeNameMixin,
+    MineFrontendAllowedObjectsMixin,
 ):
+    objects = models.Manager()
+    objects_mine = MineFrontendManager()
+
     class Meta(AbstractEntity.Meta, E53_Place.Meta, VersionMixin.Meta):
         verbose_name = "Ort"
         verbose_name_plural = "Orte"
@@ -458,6 +509,7 @@ class Institution(
     AbstractEntity,
     LegacyFieldsMixin,
     AlternativeNameMixin,
+    MineFrontendAllowedObjectsMixin,
 ):
     TYP_CHOICES = [
         ("Kommission", "Kommission"),
@@ -492,6 +544,8 @@ class Institution(
     akademie_institution = models.BooleanField(default=False, blank=False, null=False)  # pyright: ignore [reportArgumentType]
     beginn = FuzzyDateParserField(blank=True)
     ende = FuzzyDateParserField(blank=True)
+    objects = models.Manager()
+    objects_mine = MineFrontendManager()
 
     def abbrv(self):
         match self.label.lower():
