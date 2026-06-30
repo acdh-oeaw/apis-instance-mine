@@ -3,7 +3,7 @@
     <ul class="ps-0 mb-0 list-unstyled">
         {% for ent in institutions %}
             <li class="fw-normal pb-1">
-            {{ ent.rel }} {{ ent.obj|mine_link:"institution" }}</a>
+            {{ ent.rel }} {{ ent.obj_id|mine_link:"institution" }}</a>
             {% if ent.beginn_date_sort or ent.ende_date_sort %}
                 {{ ent.beginn_date_sort|date:"Y" }}
                 {% if ent.ende_date_sort %}- {{ ent.ende_date_sort|date:"Y" }}{% endif %}

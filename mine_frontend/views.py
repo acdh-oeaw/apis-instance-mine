@@ -338,18 +338,37 @@ class OEAWInstitutionDetailView(LoginRequiredMixin, generic.DetailView):
             "ist Vorgänger von",
             "umgewandelt von",
         ]
+        suc_pre_lst_rev = ["umbenannt in", "ist Nachfolger von", "umgewandelt in"]
         suc_pre_qs = (
             InstitutionHierarchie.objects.filter(
                 Q(subj_object_id=self.object.id) | Q(obj_object_id=self.object.id),
-                relation__in=suc_pre_lst,
+                relation__in=suc_pre_lst + suc_pre_lst_rev,
             )
             .annotate(
                 rel=Case(
-                    When(subj_object_id=self.object.id, then=F("relation")),
+                    When(
+                        subj_object_id=self.object.id,
+                        relation__in=suc_pre_lst,
+                        then=F("relation"),
+                    ),
+                    When(
+                        obj_object_id=self.object.id,
+                        relation__in=suc_pre_lst_rev,
+                        then=F("relation"),
+                    ),
                     default=F("relation_reverse"),
                 ),
                 rel_kind=Case(
-                    When(subj_object_id=self.object.id, then=Value("predecessor")),
+                    When(
+                        subj_object_id=self.object.id,
+                        relation__in=suc_pre_lst,
+                        then=Value("predecessor"),
+                    ),
+                    When(
+                        obj_object_id=self.object.id,
+                        relation__in=suc_pre_lst_rev,
+                        then=Value("predecessor"),
+                    ),
                     default=Value("successor"),
                 ),
                 obj_id=Case(
