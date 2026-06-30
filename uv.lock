@@ -29,7 +29,7 @@ wheels = [
 
 [[package]]
 name = "apis-acdhch-default-settings"
-version = "2.16.0"
+version = "2.20.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "apis-acdhch-django-auditlog" },
@@ -40,20 +40,23 @@ dependencies = [
     { name = "django-auditlog" },
     { name = "django-auth-ldap" },
     { name = "django-csp" },
+    { name = "django-debug-toolbar" },
     { name = "django-removals" },
+    { name = "gunicorn" },
     { name = "opentelemetry-distro" },
     { name = "opentelemetry-exporter-otlp" },
     { name = "opentelemetry-instrumentation-asgi" },
     { name = "opentelemetry-instrumentation-django" },
     { name = "opentelemetry-instrumentation-logging" },
+    { name = "opentelemetry-instrumentation-psycopg" },
     { name = "opentelemetry-instrumentation-psycopg2" },
     { name = "opentelemetry-instrumentation-wsgi" },
     { name = "requests" },
     { name = "whitenoise" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/86/70/e4f0e2d6889829d4b31b21138276fa93ac507004d121c18c6e944d383c4c/apis_acdhch_default_settings-2.16.0.tar.gz", hash = "sha256:f67a8fd5d755a74e42432973530bab40c2c2daa9f0af68d493194e9861a05a1d", size = 15571, upload-time = "2025-12-05T06:26:04.257Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/76/eb/8a8083931da3ef5f1642e1d1e16d407092fef9048e4d556a19c05e01439b/apis_acdhch_default_settings-2.20.0.tar.gz", hash = "sha256:799b60391b79a1ac0a0145b33d20a5fdbbbec01c9be7d9392d46554348900bf4", size = 16416, upload-time = "2026-05-21T11:28:02.469Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/08/6e/9920f75104a27aa48650fdd4cdc9133b0b8caf5aee383b4c3699eb5626cc/apis_acdhch_default_settings-2.16.0-py3-none-any.whl", hash = "sha256:80ab579c32f966b0d669fc82fc7df6e4415058525e92cee1a2f50ae38d1bae0b", size = 11640, upload-time = "2025-12-05T06:26:02.926Z" },
+    { url = "https://files.pythonhosted.org/packages/9c/e4/68af7549cfc0a1611aea13ea68920cfa5fff9695e81e77e7d09a45c191ae/apis_acdhch_default_settings-2.20.0-py3-none-any.whl", hash = "sha256:d550b774888f4255aff57b28a26d690fe0211cdcdd3981d8abdff9886716d34c", size = 12168, upload-time = "2026-05-21T11:28:01.41Z" },
 ]
 
 [[package]]
@@ -83,7 +86,7 @@ wheels = [
 
 [[package]]
 name = "apis-core-rdf"
-version = "0.58.2"
+version = "0.65.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "acdh-arche-assets" },
@@ -103,9 +106,9 @@ dependencies = [
     { name = "rdflib" },
     { name = "tablib" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2b/cc/2454d2f3b43c591616e6828c9c386bf5568bdd7a067368635c17a4ff1080/apis_core_rdf-0.58.2.tar.gz", hash = "sha256:673c0e3b29e87e8184b07556d1c7f70a46bd08fca0f05adc94499b9cd4fc6e8a", size = 304000, upload-time = "2025-12-04T11:33:39.868Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/49/3b/d87f8f93249c6baf076019b1d7c534a67abf3fa6ec02c5d36cdb14e56f8f/apis_core_rdf-0.65.1.tar.gz", hash = "sha256:d8d783b5981b8ab8821c1e49bcc7fc536a7ff65b8bc14fce1cae47b8d2ef1851", size = 325693, upload-time = "2026-06-23T12:57:04.485Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c2/c8/978dbcf226915f3c5cdd70b1a8b96d9d7390ee3a9ef27f115ecc06baefa9/apis_core_rdf-0.58.2-py3-none-any.whl", hash = "sha256:6873d1bb4276b735400ba6aa008b805326e86b58bad09685af6f43f08e7c87e2", size = 292390, upload-time = "2025-12-04T11:33:38.702Z" },
+    { url = "https://files.pythonhosted.org/packages/ff/43/634b34c33786b68ededa3ffdbca76c1f5ee2f3892e1b2d74d6ac26c6327f/apis_core_rdf-0.65.1-py3-none-any.whl", hash = "sha256:aedbab608c8cef80f1f2ecc291a747d9835e3903f5b048657b816b1c1e5932e0", size = 297352, upload-time = "2026-06-23T12:57:02.897Z" },
 ]
 
 [[package]]
@@ -369,6 +372,19 @@ wheels = [
 ]
 
 [[package]]
+name = "django-debug-toolbar"
+version = "7.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "sqlparse" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/1e/ac/3ac674f99c64bfbcd9ae3d7f5f3577f23ea52884e5ac36842e1f024dce03/django_debug_toolbar-7.0.0.tar.gz", hash = "sha256:ef7494c5b459c149e87cc2da88d86e944064945e86bd7b2d879093586b5fefbf", size = 359560, upload-time = "2026-06-19T00:21:23.346Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/4b/ab/684a56624f9ed35127e203e52d2c241f3b7b70d37cfa8cb2ba4fc8e1e8d7/django_debug_toolbar-7.0.0-py3-none-any.whl", hash = "sha256:656161388ce48384276342eeb16d532113ec670816fa1546cc3753730aa51b3d", size = 302038, upload-time = "2026-06-19T00:21:21.531Z" },
+]
+
+[[package]]
 name = "django-extensions"
 version = "4.1"
 source = { registry = "https://pypi.org/simple" }
@@ -583,14 +599,14 @@ wheels = [
 
 [[package]]
 name = "gunicorn"
-version = "26.0.0"
+version = "24.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "packaging" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6d/b7/a4a3f632f823e432ce6bc65f62961b7980c898c77f075a2f7118cb3846fe/gunicorn-26.0.0.tar.gz", hash = "sha256:ca9346f85e3a4aeeb64d491045c16b9a35647abd37ea15efe53080eb8b090baf", size = 727286, upload-time = "2026-05-05T06:38:25.529Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/78/0a/10739c03537ec5b131a867bf94df2e412b437696c7e5d26970e2198a80d2/gunicorn-24.1.1.tar.gz", hash = "sha256:f006d110e5cb3102859b4f5cd48335dbd9cc28d0d27cd24ddbdafa6c60929408", size = 287567, upload-time = "2026-01-24T01:15:31.359Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e6/40/9c2384fc2be4ad25dd4a49decd5ad9ea5a3639814c11bd40ab77cb9f0a14/gunicorn-26.0.0-py3-none-any.whl", hash = "sha256:40233d26a5f0d1872916188c276e21641155111c2853f0c2cd55260aec0d24fc", size = 212009, upload-time = "2026-05-05T06:38:23.007Z" },
+    { url = "https://files.pythonhosted.org/packages/96/90/cfe637677916fc6f53cd2b05d5746e249f683e1fa14c9e745a88c66f7290/gunicorn-24.1.1-py3-none-any.whl", hash = "sha256:757f6b621fc4f7581a90600b2cd9df593461f06a41d7259cb9b94499dc4095a8", size = 114920, upload-time = "2026-01-24T01:15:29.656Z" },
 ]
 
 [[package]]
@@ -755,7 +771,6 @@ dependencies = [
     { name = "django-interval" },
     { name = "django-json-editor-field" },
     { name = "django-sass-processor" },
-    { name = "gunicorn" },
     { name = "httpx" },
     { name = "imgproxy" },
     { name = "psycopg2-binary" },
@@ -775,17 +790,16 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "apis-acdhch-default-settings", specifier = ">=2.16.0" },
+    { name = "apis-acdhch-default-settings", specifier = ">=2.20.0" },
     { name = "apis-acdhch-django-auditlog", specifier = ">=0.3.0" },
     { name = "apis-acdhch-django-invite", specifier = ">=0.2.0" },
-    { name = "apis-core-rdf", specifier = "==0.58.2" },
+    { name = "apis-core-rdf", specifier = "==0.65.1" },
     { name = "crispy-bootstrap5", specifier = ">=2024.10" },
     { name = "django-auditlog", specifier = "==3.3.0" },
     { name = "django-compressor", specifier = ">=4.5.1" },
     { name = "django-interval", specifier = ">=0.5.1" },
     { name = "django-json-editor-field", specifier = ">=0.4.2" },
     { name = "django-sass-processor", specifier = ">=1.4.2" },
-    { name = "gunicorn", specifier = ">=26.0.0" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "imgproxy", specifier = ">=1.0.0" },
     { name = "psycopg2-binary", specifier = ">=2.9,<3.0" },
@@ -1001,6 +1015,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/fd/01/922f37e5d8c74bc3f92f24f3e240879ae1d04710fdeebb74f39914fc8467/opentelemetry_instrumentation_logging-0.51b0.tar.gz", hash = "sha256:2adaba90fab85a80de24728153b42ef2a74dd80fda5a3b17f3f95c11bb27c3ff", size = 9754, upload-time = "2025-02-04T18:21:33.947Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/00/e3/2d2390370b8730b6b9a2341892cd5508d0f5fa3fe30977457f89979d4085/opentelemetry_instrumentation_logging-0.51b0-py3-none-any.whl", hash = "sha256:b0855cf8b3e37ae4fdb5b77982fbfa713778762c58db3071eb3ca6c97456a049", size = 12171, upload-time = "2025-02-04T18:20:25.006Z" },
+]
+
+[[package]]
+name = "opentelemetry-instrumentation-psycopg"
+version = "0.51b0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "opentelemetry-api" },
+    { name = "opentelemetry-instrumentation" },
+    { name = "opentelemetry-instrumentation-dbapi" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/dc/cd/7f890e2a885a82a13d00355b41ace2f2bcd86eacf9c4ed1852760760ca53/opentelemetry_instrumentation_psycopg-0.51b0.tar.gz", hash = "sha256:353fb85e38c74a64fb17e301a8d2db28a2da70e00b37cad84bff0a961294345e", size = 10500, upload-time = "2025-02-04T18:21:37.716Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/38/a1/4783b7b7e132284dca5f528dd10405cb0a942439b299ceaaee2025fb7345/opentelemetry_instrumentation_psycopg-0.51b0-py3-none-any.whl", hash = "sha256:84eaea8a8c69b208acc0aa6f75a6215ca5ce1ba94262d4fd3ba8c7601d811096", size = 11040, upload-time = "2025-02-04T18:20:32.281Z" },
 ]
 
 [[package]]
