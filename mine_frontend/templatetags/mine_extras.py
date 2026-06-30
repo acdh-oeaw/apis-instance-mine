@@ -13,7 +13,7 @@ def mine_link(value, entity_type: str | None = None):
         cls = ContentType.objects.get(model=entity_type).model_class()
         value = cls.objects.get(pk=value)
     if entity_type is None:
-        entity_type = ContentType.objects.get_for_model(value)
+        entity_type = ContentType.objects.get_for_model(value).model
     if value.is_allowed():
         check = any(
             getattr(value, attr, False)
