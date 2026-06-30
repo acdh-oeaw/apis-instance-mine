@@ -14,9 +14,9 @@ from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from django_json_editor_field.fields import JSONEditorField
 
-from apis_core.apis_entities.abc import E21_Person, E53_Place, E74_Group
 from apis_core.apis_entities.models import AbstractEntity
 from apis_core.collections.models import SkosCollection, SkosCollectionContentObject
+from apis_core.entities.abc import E21_Person, E53_Place, E74_Group
 from apis_core.generic.abc import GenericModel
 from apis_core.history.models import VersionMixin
 from apis_core.relations.models import Relation

@@ -5,10 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "apis-acdhch-default-settings>=2.16.0",
+    "apis-acdhch-default-settings>=2.20.0",
     "apis-acdhch-django-auditlog>=0.3.0",
     "apis-acdhch-django-invite>=0.2.0",
-    "apis-core-rdf==0.58.2",
+    "apis-core-rdf==0.65.1",
     "crispy-bootstrap5>=2024.10",
     "django-compressor>=4.5.1",
     "django-interval>=0.5.1",
@@ -18,7 +18,6 @@ dependencies = [
     "psycopg2-binary>=2.9,<3.0",
     "django-auditlog==3.3.0",
     "imgproxy>=1.0.0",
-    "gunicorn>=26.0.0",
 ]
 
 [dependency-groups]
