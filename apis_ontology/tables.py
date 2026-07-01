@@ -1,4 +1,5 @@
 import django_tables2 as tables
+
 from apis_core.generic.tables import CustomTemplateColumn
 from apis_core.relations.tables import RelationsListTable
 
