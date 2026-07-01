@@ -3,8 +3,19 @@ import re
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.expressions import ArraySubquery
-from django.db.models import Case, Exists, F, OuterRef, Q, Subquery, Value, When
-from django.db.models.functions import Concat, Lower
+from django.db.models import (
+    Case,
+    CharField,
+    Exists,
+    F,
+    Func,
+    OuterRef,
+    Q,
+    Subquery,
+    Value,
+    When,
+)
+from django.db.models.functions import Cast, Concat, Lower
 from django.views import generic
 from django.views.generic.base import TemplateView
 from django_tables2.views import SingleTableView
@@ -16,6 +27,7 @@ from apis_ontology.models import (
     Bild,
     EhrentitelVonInstitution,
     ErwaehntIn,
+    Fach,
     GeborenIn,
     GestorbenIn,
     Gewinnt,
@@ -508,6 +520,11 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             "lookup": "exact",
             "type": "choice",
         },
+        "faecher": {
+            "label": "Fach",
+            "lookups": [("exact", "faecher_position"), ("exact", "faecher_ausbildung")],
+            "type": "array",
+        },
         "profession": {
             "label": "Beruf",
             "field": "beruf__name",
@@ -750,6 +767,39 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             subj_object_id=OuterRef("pk")
         ).values_list("obj_object_id", flat=True)
 
+        # ÖSTAT codes look like "Physik, Astronomie (1030)"; strip the
+        # trailing " (code)" so the Fach facet shows clean labels and the
+        # value used for counting, the URL parameter and the array
+        # __contains filter all stay in sync.  The Cast to varchar keeps
+        # the resulting array typed varchar[] (regexp_replace returns
+        # text), so the array __contains filter still type-matches.
+        oestat_fach = (
+            Fach.objects.filter(pk=OuterRef("fach_id"))
+            .annotate(
+                fach_label_clean=Cast(
+                    Func(
+                        F("oestat"),
+                        Value(r" \([0-9]+\)$"),
+                        Value(""),
+                        function="regexp_replace",
+                    ),
+                    output_field=CharField(),
+                )
+            )
+            .values("fach_label_clean")
+        )
+
+        fach_ausbildung = (
+            AusbildungAn.objects.filter(subj_object_id=OuterRef("pk"))
+            .annotate(fach_label=Subquery(oestat_fach[:1]))
+            .values("fach_label")
+        )
+        fach_position = (
+            PositionAn.objects.filter(subj_object_id=OuterRef("pk"))
+            .annotate(fach_label=Subquery(oestat_fach[:1]))
+            .values("fach_label")
+        )
+
         p = Person.objects_mine.filter(
             mitglied=True,
         ).annotate(
@@ -758,6 +808,8 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             search_labels=Concat("forename", Value(" "), "surname"),
             institute=ArraySubquery(insts),
             geburtsorte=ArraySubquery(geburts_orte),
+            faecher_ausbildung=ArraySubquery(fach_ausbildung),
+            faecher_position=ArraySubquery(fach_position),
             sterbeorte=ArraySubquery(sterbe_orte),
             ausbildunginst=ArraySubquery(ausbildung_inst),
             min_date_memb=Subquery(

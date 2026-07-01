@@ -1,84 +1,84 @@
 {% load facet_tags %}
 <div class="facet-sidebar p-3">
-    {% for facet_key, facet_data in facets.items %}
-        <div class="facet-group mb-4 border rounded p-3">
-            <h5 class="facet-title mb-3 d-flex align-items-center">
-                {{ facet_data.label }}
-                {% if facet_data.selected %}
-                    <span class="badge bg-primary ms-2">{{ facet_data.selected|length }} ausgewählt</span>
-                {% endif %}
-            </h5>
-            {% if facet_data.values %}
-                <!-- Search box for this facet -->
-                {% if facet_data.values|length > 5 %}
-                    <div class="mb-3">
-                        <input type="text"
-                               class="form-control form-control-sm facet-search"
-                               placeholder="Suche {{ facet_data.label }}..."
-                               data-facet="{{ facet_key }}">
-                    </div>
-                {% endif %}
-                <div class="facet-container" data-facet="{{ facet_key }}">
-                    <ul class="facet-values list-unstyled mb-2">
-                        {% for item in facet_data.values %}
-                            {% if item.count > 0 %}
-                                <li class="facet-item {% if forloop.counter > 10 %}facet-item-hidden d-none{% endif %}"
-                                    data-facet="{{ facet_key }}"
-                                    data-index="{{ forloop.counter }}">
-                                    {% with value=item|get_facet_value:facet_data.field_name %}
-                                        {% if value in facet_data.selected %}
-                                            <a href="{% facet_url request facet_key value 'remove' %}"
-                                               class="facet-link active d-flex align-items-center justify-content-between py-1 px-2 rounded text-decoration-none">
-                                                <span class="d-flex align-items-center">
-                                                    <i class="bi bi-x-circle-fill text-danger me-2"></i>
-                                                    <span class="facet-value">{{ value|default:"Unknown" }}</span>
-                                                </span>
-                                                <span class="badge bg-danger">{{ item.count }}</span>
-                                            </a>
-                                        {% else %}
-                                            <a href="{% facet_url request facet_key value 'add' %}"
-                                               class="facet-link d-flex align-items-center justify-content-between py-1 px-2 rounded text-decoration-none">
-                                                <span class="facet-value">{{ value|default:"Unknown" }}</span>
-                                                <span class="badge bg-secondary">{{ item.count }}</span>
-                                            </a>
-                                        {% endif %}
-                                    {% endwith %}
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                    <!-- Show more button -->
-                    {% if facet_data.values|length > 10 %}
-                        <button class="btn btn-outline-primary btn-sm facet-show-more"
-                                data-facet="{{ facet_key }}"
-                                data-visible="10"
-                                data-total="{{ facet_data.values|length }}">
-                            <i class="bi bi-chevron-down me-1"></i>
-                            Zeige 10 weitere (<span class="remaining-count">{{ facet_data.values|length|add:"-10" }}</span> verbleibend)
-                        </button>
+  {% for facet_key, facet_data in facets.items %}
+    <div class="facet-group mb-4 border rounded p-3">
+      <h5 class="facet-title mb-3 d-flex align-items-center">
+        {{ facet_data.label }}
+        {% if facet_data.selected %}
+          <span class="badge bg-primary ms-2">{{ facet_data.selected|length }} ausgewählt</span>
+        {% endif %}
+      </h5>
+      {% if facet_data.values %}
+        <!-- Search box for this facet -->
+        {% if facet_data.values|length > 5 %}
+          <div class="mb-3">
+            <input type="text"
+                   class="form-control form-control-sm facet-search"
+                   placeholder="Suche {{ facet_data.label }}..."
+                   data-facet="{{ facet_key }}">
+          </div>
+        {% endif %}
+        <div class="facet-container" data-facet="{{ facet_key }}">
+          <ul class="facet-values list-unstyled mb-2">
+            {% for item in facet_data.values %}
+              {% if item.count > 0 %}
+                <li class="facet-item {% if forloop.counter > 10 %}facet-item-hidden d-none{% endif %}"
+                    data-facet="{{ facet_key }}"
+                    data-index="{{ forloop.counter }}">
+                  {% with value=item|get_facet_value:facet_data.field_name %}
+                    {% if value|length > 0 and value in facet_data.selected %}
+                      <a href="{% facet_url request facet_key value 'remove' %}"
+                         class="facet-link active d-flex align-items-center justify-content-between py-1 px-2 rounded text-decoration-none">
+                        <span class="d-flex align-items-center">
+                          <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                          <span class="facet-value">{{ value }}</span>
+                        </span>
+                        <span class="badge bg-danger">{{ item.count }}</span>
+                      </a>
+                    {% elif value|length > 0 %}
+                      <a href="{% facet_url request facet_key value 'add' %}"
+                         class="facet-link d-flex align-items-center justify-content-between py-1 px-2 rounded text-decoration-none">
+                        <span class="facet-value">{{ value }}</span>
+                        <span class="badge bg-secondary">{{ item.count }}</span>
+                      </a>
                     {% endif %}
-                    <!-- No results message for search -->
-                    <div class="no-search-results d-none">
-                        <p class="text-muted mb-0">
-                            <i class="bi bi-search me-1"></i>
-                            Nichts gefunden
-                        </p>
-                    </div>
-                </div>
-                {% if facet_data.values|length == 0 %}
-                    <p class="text-muted mb-0">
-                        <i class="bi bi-funnel me-1"></i>
-                        Nichts gefunden
-                    </p>
-                {% endif %}
-            {% else %}
-                <p class="text-muted mb-0">
-                    <i class="bi bi-info-circle me-1"></i>
-                    Keine Optionen verfügbar
-                </p>
-            {% endif %}
+                  {% endwith %}
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+          <!-- Show more button -->
+          {% if facet_data.values|length > 10 %}
+            <button class="btn btn-outline-primary btn-sm facet-show-more"
+                    data-facet="{{ facet_key }}"
+                    data-visible="10"
+                    data-total="{{ facet_data.values|length }}">
+              <i class="bi bi-chevron-down me-1"></i>
+              Zeige 10 weitere (<span class="remaining-count">{{ facet_data.values|length|add:"-10" }}</span> verbleibend)
+            </button>
+          {% endif %}
+          <!-- No results message for search -->
+          <div class="no-search-results d-none">
+            <p class="text-muted mb-0">
+              <i class="bi bi-search me-1"></i>
+              Nichts gefunden
+            </p>
+          </div>
         </div>
-    {% endfor %}
+        {% if facet_data.values|length == 0 %}
+          <p class="text-muted mb-0">
+            <i class="bi bi-funnel me-1"></i>
+            Nichts gefunden
+          </p>
+        {% endif %}
+      {% else %}
+        <p class="text-muted mb-0">
+          <i class="bi bi-info-circle me-1"></i>
+          Keine Optionen verfügbar
+        </p>
+      {% endif %}
+    </div>
+  {% endfor %}
 </div>
 <style>
 .facet-link {
