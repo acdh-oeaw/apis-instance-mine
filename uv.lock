@@ -32,7 +32,7 @@ wheels = [
 
 [[package]]
 name = "apis-acdhch-default-settings"
-version = "2.20.0"
+version = "2.21.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "apis-acdhch-django-auditlog" },
@@ -57,9 +57,9 @@ dependencies = [
     { name = "requests" },
     { name = "whitenoise" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/76/eb/8a8083931da3ef5f1642e1d1e16d407092fef9048e4d556a19c05e01439b/apis_acdhch_default_settings-2.20.0.tar.gz", hash = "sha256:799b60391b79a1ac0a0145b33d20a5fdbbbec01c9be7d9392d46554348900bf4", size = 16416, upload-time = "2026-05-21T11:28:02.469Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/69/5f/519c297904a66859a4803c8ef5078b024111c93a193435a86d5220d200b8/apis_acdhch_default_settings-2.21.0.tar.gz", hash = "sha256:6a91e3bc5879df8524e2aa4b9e9d14018a5de21263065ddbe93258dde1f3da15", size = 16495, upload-time = "2026-08-18T08:06:07.826Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9c/e4/68af7549cfc0a1611aea13ea68920cfa5fff9695e81e77e7d09a45c191ae/apis_acdhch_default_settings-2.20.0-py3-none-any.whl", hash = "sha256:d550b774888f4255aff57b28a26d690fe0211cdcdd3981d8abdff9886716d34c", size = 12168, upload-time = "2026-05-21T11:28:01.41Z" },
+    { url = "https://files.pythonhosted.org/packages/e0/92/84ee473849342abdc5c3337b0735db55fff7b0e0555047ecda986ba3c8a9/apis_acdhch_default_settings-2.21.0-py3-none-any.whl", hash = "sha256:033c0818863f10e93fcab73b327704a5efb58a61c602c666068c6f9dd2b2af9b", size = 12176, upload-time = "2026-08-18T08:06:06.537Z" },
 ]
 
 [[package]]
