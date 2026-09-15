@@ -91,9 +91,11 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         ) + list(NichtGewaehlt.objects.filter(subj_object_id=self.object.id))
         context["membership"] = sorted(
             membership_list,
-            key=lambda obj: getattr(obj, "beginn_date_sort", None)
-            or getattr(obj, "datum_date_sort", None)
-            or datetime.date.today(),
+            key=lambda obj: (
+                getattr(obj, "beginn_date_sort", None)
+                or getattr(obj, "datum_date_sort", None)
+                or datetime.date.today()
+            ),
         )
         context["membership_short"] = (
             OeawMitgliedschaft.objects.filter(subj_object_id=self.object.id)
@@ -468,7 +470,7 @@ class IndexView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context["search_form"] = MineMainform()
         context["form_membership_end_date"] = datetime.date.today().year
-        context["form_membership_start_date"] = 1848
+        context["form_membership_start_date"] = 1847
         context["form_life_end_date"] = datetime.date.today().year
         context["form_life_start_date"] = getattr(
             Person.objects_mine.filter(mitglied=True)
