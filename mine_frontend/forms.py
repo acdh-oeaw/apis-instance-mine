@@ -14,7 +14,7 @@ from mine_frontend.settings import POSITIONEN, POSITIONEN_PRES
 
 class MineMainFormHelper(FormHelper):
     form_class = "genericFilterForm"
-    form_method = "GET"
+    form_method = "GET"  # pyright: ignore[reportIncompatibleMethodOverride, reportAssignmentType]
     form_tag = False
     # self.template = "forms/template_person_form.html"
     layout = Layout(
@@ -133,6 +133,7 @@ Doppelklick auf die Grenzen, um Personen anzuzeigen, deren Mitgliedschaft aussch
                     AccordionGroupTooltip(
                         "Auszeichnungen",
                         "nobelpreis",
+                        "ehrenzeichen",
                         "akademiepreise",
                         tooltip="Akademiepreise & Nobelpreise",
                     ),
@@ -322,6 +323,10 @@ class MineMainform(forms.Form):
     )
     memb_nsdap = forms.BooleanField(label="Mitglied in der NSDAP", required=False)
     nobelpreis = forms.BooleanField(label="Nobelpreis erhalten", required=False)
+    ehrenzeichen = forms.BooleanField(
+        label="Österreichisches Ehrenzeichen für Wissenschaft und Kunst erhalten",
+        required=False,
+    )
     akademiepreise = forms.ModelMultipleChoiceField(
         queryset=Preis.objects.all(),
         widget=autocomplete.ModelSelect2Multiple(url="dal-oeaw-preise"),
@@ -337,7 +342,7 @@ class MineMainform(forms.Form):
 
 class MineInstitutionFormHelper(FormHelper):
     form_class = "genericFilterForm"
-    form_method = "GET"
+    form_method = "GET"  # pyright: ignore[reportIncompatibleMethodOverride, reportAssignmentType]
     form_tag = False
     # self.template = "forms/template_person_form.html"
     layout = Layout(
@@ -427,7 +432,7 @@ class InstitutionMainForm(forms.Form):
                     "Forschungsstelle",
                     "betreibt Grundlagenforschung, ist Mitarbeiter:innen führend und zeitlich befristet",
                 ),
-                ("Klasse", "Klasse"),
+                ("Klasse", "Klasse", None),
                 (
                     "Verwaltung",
                     "Verwaltung",
@@ -438,7 +443,7 @@ class InstitutionMainForm(forms.Form):
                     "Wissenschaftsorientierte Einheit",
                     "verrichtet Serviceleistungen für die ÖAW und betreibt eigene Forschung",
                 ),
-                ("Einrichtung", "Einrichtung"),
+                ("Einrichtung", "Einrichtung", None),
                 (
                     "Komitee",
                     "Komitee",
