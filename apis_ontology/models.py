@@ -575,6 +575,8 @@ class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin):
         ("genehmigt", "genehmigt"),
         ("eingereiht", "eingereiht"),
         ("reaktiviert", "reaktiviert"),
+        ("ruhend gestellt", "ruhend gestellt"),
+        ("ruhend gestellt (Entnazifizierung)", "ruhend gestellt (Entnazifizierung)"),
         ("unbekannt", "unbekannt"),
     ]
     END_TYP_CHOICES = [
@@ -582,6 +584,7 @@ class OeawMitgliedschaft(Relation, VersionMixin, LegacyFieldsMixin):
         ("ausgeschlossen", "ausgeschlossen"),
         ("erloschen", "erloschen"),
         ("ruhend gestellt", "ruhend gestellt"),
+        ("ruhend gestellt (Entnazifizierung)", "ruhend gestellt (Entnazifizierung)"),
         ("andere Mitgliedschaft", "andere Mitgliedschaft"),  # neu hinzugefügt
         ("Tod", "Tod"),  # neu hinzugefügt
         ("unbekannt", "unbekannt"),
