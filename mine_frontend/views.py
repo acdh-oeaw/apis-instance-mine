@@ -671,6 +671,12 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             "lookups": [("bool", "nobelpreis")],
             "type": "bool",
         },
+        "ehrenzeichen": {
+            "label": "Österreichisches Ehrenzeichen für Wissenschaft und Kunst erhalten",
+            "param": "ehrenzeichen",
+            "lookups": [("bool", "ehrenzeichen")],
+            "type": "bool",
+        },
         "akademiepreise": {
             "label": "Akademiepreise erhalten",
             "param": "akademiepreise",
@@ -759,6 +765,10 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
         nobelpreis = Gewinnt.objects.filter(
             subj_object_id=OuterRef("pk"), obj_object_id__in=nobel_p
         )
+        # Österreichisches Ehrenzeichen für Wissenschaft und Kunst
+        ehrenzeichen = Gewinnt.objects.filter(
+            subj_object_id=OuterRef("pk"), obj_object_id=174
+        )
         akademiepreise = Preis.objects.filter(academy_prize=True).values_list(
             "id", flat=True
         )
@@ -825,6 +835,9 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             ),
             nobelpreis=Case(
                 When(Exists(nobelpreis), then=Value(True)), default=Value(False)
+            ),
+            ehrenzeichen=Case(
+                When(Exists(ehrenzeichen), then=Value(True)), default=Value(False)
             ),
             akademiepreise=ArraySubquery(akadp_won),
             wiss_austausch=ArraySubquery(wiss_austausch),
