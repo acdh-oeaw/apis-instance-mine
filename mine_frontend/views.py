@@ -178,18 +178,25 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
                 "philosophisch-historische klasse",
             ],
         )
+        class_func = career.filter(
+            position__in=["Sekretär(in) Klasse", "Präsident(in) Klasse"]
+        ).order_by("position")
         obm = career.exclude(_inst_akad=False).filter(
             position="Obmann/Obfrau (Kommission)"
         )
         kom_mitgl = career.exclude(_inst_akad=False).filter(
-            position="Kommissionsmitglied"
+            position__in=["Kommissionsmitglied", "Mitglied"]
         )
+
         pos_other_inst = (
             career.exclude(_inst_akad=False)
             .exclude(position="Sekretär(in)")
+            .exclude(position="Sekretär(in) Klasse")
             .exclude(position="Präsident(in)")
+            .exclude(position="Präsident(in) Klasse")
             .exclude(position="Vizepräsident(in)")
             .exclude(position="Kommissionsmitglied")
+            .exclude(position="Mitglied")
             .exclude(position="Obmann/Obfrau (Kommission)")
             .exclude(position="Delegierte(r)")
             .exclude(position="Generalsekretär(in)")
@@ -223,6 +230,7 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
                 "sek": sek,
                 "gen_sek": gen_sek,
                 "obm": obm,
+                "klasse_leitung": class_func,
                 "kom_mitgl": kom_mitgl,
                 "pos_other_inst": pos_other_inst,
                 "proposed_success": proposed_success,
