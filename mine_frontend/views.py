@@ -863,6 +863,11 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
         )
         return p
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total_counts"] = context["object_list"].count()
+        return context
+
     def get_queryset(self):
         """Get the final filtered queryset for the table"""
         qs = self.get_base_queryset()
@@ -954,4 +959,5 @@ class InstitutionResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTable
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["css_postfix"] = "-institutions"
+        context["total_counts"] = context["object_list"].count()
         return context
