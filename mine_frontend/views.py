@@ -46,6 +46,8 @@ from apis_ontology.models import (
 )
 from mine_frontend.filters import (
     beruf_institution,
+    inst_ending,
+    inst_starting,
     life_ending,
     life_starting,
     memb_ending,
@@ -63,9 +65,11 @@ def get_web_object_uri(uri_obj):
         if "geschichtewiki" in uri_obj.uri:
             return uri_obj.uri.split("=")[-1]
         elif "parlament" in uri_obj.uri:
-            return re.search(r"PAD_(\d+)", uri_obj.uri).group(1)
+            match = re.search(r"PAD_(\d+)", uri_obj.uri)
+            return match.group(1) if match else uri_obj.uri.split("/")[-1]
         elif "deutsche-biographie" in uri_obj.uri:
-            return re.search(r"/([0-9A-Z]+)\.html", uri_obj.uri).group(1)
+            match = re.search(r"/([0-9A-Z]+)\.html", uri_obj.uri)
+            return match.group(1) if match else uri_obj.uri.split("/")[-1]
         else:
             return uri_obj.uri.split("/")[-1]
 
@@ -228,7 +232,11 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         else:
             context["career_akad"] = False
         context["image"] = (
-            Bild.objects.filter(object_id=self.object.id).order_by("art").first()
+            Bild.objects.filter(  # pyright: ignore[reportAttributeAccessIssue]
+                object_id=self.object.id
+            )
+            .order_by("art")
+            .first()
         )
         context["reference_resources"] = [
             get_web_object_uri(x) for x in Uri.objects.filter(object_id=self.object.id)
@@ -472,13 +480,13 @@ class IndexView(LoginRequiredMixin, TemplateView):
         context["form_membership_end_date"] = datetime.date.today().year
         context["form_membership_start_date"] = 1847
         context["form_life_end_date"] = datetime.date.today().year
-        context["form_life_start_date"] = getattr(
+        earliest_birth = (
             Person.objects_mine.filter(mitglied=True)
             .order_by("date_of_birth_date_from")
-            .first(),
-            "date_of_birth_date_from",
-            "1700",
-        ).strftime("%Y")
+            .first()
+        )
+        dob = getattr(earliest_birth, "date_of_birth_date_from", None)
+        context["form_life_start_date"] = dob.strftime("%Y") if dob else "1700"
         return context
 
 
@@ -489,6 +497,17 @@ class InstitutionIndexView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["search_form"] = InstitutionMainForm()
+        earliest_beginn = (
+            Institution.objects_mine.filter(akademie_institution=True)
+            .exclude(beginn_date_from__isnull=True)
+            .order_by("beginn_date_from")
+            .values_list("beginn_date_from", flat=True)
+            .first()
+        )
+        context["form_inst_start_date"] = (
+            earliest_beginn.year if earliest_beginn else 1847
+        )
+        context["form_inst_end_date"] = datetime.date.today().year
         return context
 
 
@@ -879,6 +898,18 @@ class InstitutionResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTable
             "field": "label",
             "param": "q",
             "lookup": "unaccent__icontains",
+            "type": "text",
+        },
+        "inst_min": {
+            "label": "Institution bestand ab",
+            "param": "start_date_inst",
+            "filter_func": inst_starting,
+            "type": "text",
+        },
+        "inst_max": {
+            "label": "Institution bestand bis",
+            "param": "end_date_inst",
+            "filter_func": inst_ending,
             "type": "text",
         },
     }

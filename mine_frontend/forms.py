@@ -383,6 +383,25 @@ class MineInstitutionFormHelper(FormHelper):
                             css_id="mitgliedschaft",
                             css_class="show card-body card filter-wrapper pb-1",
                         ),
+                        HTML("<br/>"),
+                        Fieldset(
+                            "",
+                            "start_date_inst",
+                            "end_date_inst",
+                            "start_date_inst_exclusive",
+                            "end_date_inst_exclusive",
+                            HTML(  # Bestehen slider
+                                """
+                                <div class="px-3 pb-3 pt-1">
+                                    <label id="bestehen-slider-label" class="font-weight-bold pb-5">Welche Institutionen bestanden in diesem Zeitraum?</label>
+                                    <p><span id="inst-slider-help" class="pb-5">Doppelklick auf die Grenzen, um Institutionen anzuzeigen, die nur innerhalb der Zeitspanne bestanden.</span></p>
+                                        <div class="slider-container pt-3">
+                                            <div data-start-form="start_date_inst" data-end-form="end_date_inst" class="range-slider" data-range-start="{{form_inst_start_date}}" data-range-end="{{form_inst_end_date}}" data-start-exclusive="start_date_inst_exclusive" data-end-exclusive="end_date_inst_exclusive" data-subject-label="Institution">
+                                        </div>
+                                </div>"""
+                            ),
+                            css_class="show card-body card filter-wrapper pb-1",
+                        ),
                         css_class="bg-white",
                     ),
                 ),
@@ -418,23 +437,35 @@ class InstitutionMainForm(forms.Form):
         required=False,
         label="",
     )
-    klasse = (
-        forms.MultipleChoiceField(
-            widget=forms.CheckboxSelectMultiple(),
-            required=False,
-            label="Klasse",
-            choices=[
-                (
-                    "Mathematisch-Naturwissenschaftliche Klasse",
-                    "Mathematisch-Naturwissenschaftliche Klasse",
-                ),
-                (
-                    "Philosophisch-Historische Klasse",
-                    "Philosophisch-Historische Klasse",
-                ),
-                ("Gesamtakademie", "Gesamtakademie"),
-            ],
-        ),
+    start_date_inst = forms.CharField(
+        required=False, widget=forms.HiddenInput(attrs={"id": "start_date_inst"})
+    )
+    end_date_inst = forms.CharField(
+        required=False, widget=forms.HiddenInput(attrs={"id": "end_date_inst"})
+    )
+    start_date_inst_exclusive = forms.BooleanField(
+        required=False,
+        widget=forms.HiddenInput(attrs={"id": "start_date_inst_exclusive"}),
+    )
+    end_date_inst_exclusive = forms.BooleanField(
+        required=False,
+        widget=forms.HiddenInput(attrs={"id": "end_date_inst_exclusive"}),
+    )
+    klasse = forms.MultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        required=False,
+        label="Klasse",
+        choices=[
+            (
+                "Mathematisch-Naturwissenschaftliche Klasse",
+                "Mathematisch-Naturwissenschaftliche Klasse",
+            ),
+            (
+                "Philosophisch-Historische Klasse",
+                "Philosophisch-Historische Klasse",
+            ),
+            ("Gesamtakademie", "Gesamtakademie"),
+        ],
     )
     typ = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),

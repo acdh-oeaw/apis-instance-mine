@@ -1,3 +1,6 @@
+# pyright: reportOperatorIssue=false
+# Django's Q.__or__/__and__ are untyped, so pyright infers Node for every
+# combined Q; augmented Q assignments would all trip reportOperatorIssue.
 from django.db.models import Case, Exists, OuterRef, Q, Value, When
 
 from apis_ontology.models import NichtGewaehlt, OeawMitgliedschaft, PositionAn
@@ -20,6 +23,26 @@ def memb_ending(queryset, config_dict, selected_values, request):
     q = Q(min_date_memb__lte=val)
     if excl:
         q &= Q(max_date_memb__lte=val)
+    return queryset.filter(q)
+
+
+def inst_starting(queryset, config_dict, selected_values, request):
+    """filters institutions that still existed at the given start year"""
+    excl = request.GET.get("start_date_inst_exclusive", False)
+    val = selected_values[0]
+    q = Q(ende_date_to__gte=val) | Q(ende_date_to__isnull=True)
+    if excl:
+        q &= Q(beginn_date_from__gte=val)
+    return queryset.filter(q)
+
+
+def inst_ending(queryset, config_dict, selected_values, request):
+    """filters institutions that already existed at the given end year"""
+    excl = request.GET.get("end_date_inst_exclusive", False)
+    val = selected_values[0]
+    q = Q(beginn_date_from__lte=val)
+    if excl:
+        q &= Q(ende_date_to__lte=val)
     return queryset.filter(q)
 
 

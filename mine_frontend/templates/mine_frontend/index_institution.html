@@ -1,6 +1,10 @@
 {% extends "mine_frontend/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% block scriptHeader %}
+    {{ block.super }}
+    <script src="{% static 'mine_frontend/js/membership_slider.js' %}" defer></script>
+{% endblock scriptHeader %}
 {% block content %}
     <div class="wrapper" id="wrapper-hero">
         <!-- ******************* The Hero Area ******************* -->
