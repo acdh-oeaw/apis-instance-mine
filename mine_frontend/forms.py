@@ -1,10 +1,12 @@
+import re
+
 from crispy_forms.bootstrap import Accordion, AccordionGroup
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Div, Field, Fieldset, Layout, Submit
 from dal import autocomplete
 from django import forms
 
-from apis_ontology.models import Institution, Ort, Person, Preis
+from apis_ontology.models import Fach, Institution, Ort, Person, Preis
 from mine_frontend.crispy_overrides import (
     AccordionGroupTooltip,
 )
@@ -108,6 +110,7 @@ Doppelklick auf die Grenzen, um Personen anzuzeigen, deren Mitgliedschaft aussch
                         "geburtsort",
                         "sterbeort",
                         "ausbildunginst",
+                        Field("faecher", css_class="mine-select2-simple"),
                         # "place_of_birth",
                         # "place_of_death",
                         # "schule",
@@ -153,6 +156,21 @@ Doppelklick auf die Grenzen, um Personen anzuzeigen, deren Mitgliedschaft aussch
                 css_class="rounded-0 mt-3 text-uppercase w-100 text-left",
             )
         )
+
+
+def fach_choices():
+    """Cleaned ÖSTAT labels (code suffix stripped), mirroring the
+    regexp_replace in PersonResultsView.get_base_queryset so form values,
+    facet values and the faecher_* annotations stay in sync."""
+    return [
+        (label, label)
+        for label in sorted(
+            {
+                re.sub(r" \([0-9]+\)$", "", f.oestat)
+                for f in Fach.objects.exclude(oestat__isnull=True).exclude(oestat="")
+            }
+        )
+    ]
 
 
 class MineMainform(forms.Form):
@@ -300,6 +318,13 @@ class MineMainform(forms.Form):
         help_text="inkludiert Studium, Dissertation und Habilitation",
         required=False,
         label="Ausbildung an",
+    )
+    faecher = forms.MultipleChoiceField(
+        widget=forms.SelectMultiple(),
+        required=False,
+        choices=fach_choices,
+        label="Fach",
+        help_text="Wissenschaftliches Fachgebiet in Ausbilung oder Beruf laut Östat",
     )
     beruf_position = forms.MultipleChoiceField(
         widget=forms.SelectMultiple(),
