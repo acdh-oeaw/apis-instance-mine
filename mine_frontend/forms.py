@@ -11,7 +11,7 @@ from mine_frontend.crispy_overrides import (
     AccordionGroupTooltip,
 )
 from mine_frontend.helpers import create_choices_with_tooltip
-from mine_frontend.settings import POSITIONEN, POSITIONEN_PRES
+from mine_frontend.settings import POSITIONEN, POSITIONEN_KURATOR, POSITIONEN_PRES
 
 
 class MineMainFormHelper(FormHelper):
@@ -73,6 +73,7 @@ Doppelklick auf die Grenzen, um Personen anzuzeigen, deren Mitgliedschaft aussch
                     ),
                     AccordionGroup(
                         "Funktionen in Akademieinstitutionen",
+                        "kurator_func",
                         "akademiefunktionen",
                         css_id="in_der_akademie",
                     ),
@@ -242,6 +243,12 @@ class MineMainform(forms.Form):
         label="",
         widget=forms.CheckboxSelectMultiple(),
         choices=[(x, x) for x in POSITIONEN_PRES],
+    )
+    kurator_func = forms.MultipleChoiceField(
+        required=False,
+        label="",
+        widget=forms.CheckboxSelectMultiple(),
+        choices=[(x, x) for x in POSITIONEN_KURATOR],
     )
     gender = forms.ChoiceField(
         # widget=forms.Select(attrs={"class": "select2-main no-search rounded-0"}),

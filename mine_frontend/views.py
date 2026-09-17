@@ -56,7 +56,11 @@ from mine_frontend.filters import (
 )
 from mine_frontend.forms import InstitutionMainForm, MineMainform
 from mine_frontend.mixins import FacetedSearchMixin
-from mine_frontend.settings import AKADEMIE_INST_ROOT, POSITIONEN_PRES
+from mine_frontend.settings import (
+    AKADEMIE_INST_ROOT,
+    POSITIONEN_KURATOR,
+    POSITIONEN_PRES,
+)
 from mine_frontend.tables import SearchResultInstitutionTable, SearchResultTable
 
 
@@ -543,6 +547,12 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             "lookup": "exact",
             "type": "array",
         },
+        "kurator_func": {
+            "label": "Kurator-Funktionen",
+            "field": "kurator_func",
+            "lookup": "exact",
+            "type": "array",
+        },
         "gender": {
             "label": "Geschlecht",
             "field": "gender",
@@ -763,6 +773,22 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
             .values_list("obj_object_id", flat=True)
             .distinct()
         )
+        kurator_func = (
+            PositionAn.objects.filter(
+                subj_object_id=OuterRef("id"),
+                position__in=POSITIONEN_KURATOR,
+            )
+            .annotate(
+                akad_inst=Subquery(
+                    Institution.objects.filter(
+                        pk=OuterRef("obj_object_id"), akademie_institution=True
+                    ).values("pk")[:1]
+                )
+            )
+            .filter(akad_inst__isnull=False)
+            .values_list("position")
+            .distinct()
+        )
         geburts_orte = GeborenIn.objects.filter(
             subj_object_id=OuterRef("id")
         ).values_list("obj_object_id", flat=True)
@@ -844,6 +870,7 @@ class PersonResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTableView)
         ).annotate(
             memberships=ArraySubquery(memb),
             acad_func=ArraySubquery(func_presidium),
+            kurator_func=ArraySubquery(kurator_func),
             search_labels=Concat("forename", Value(" "), "surname"),
             institute=ArraySubquery(insts),
             geburtsorte=ArraySubquery(geburts_orte),
