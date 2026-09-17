@@ -8,6 +8,8 @@ POSITIONEN_PRES = [
     "Sekretär(in) Klasse",
 ]
 
+POSITIONEN_KURATOR = ["Kurator", "Kuratorstellvertreter"]
+
 POSITIONEN = [
     "Kustos-Adjunkt(in)",
     "Geolog(e/in)",
