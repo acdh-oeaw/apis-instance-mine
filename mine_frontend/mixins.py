@@ -297,21 +297,12 @@ class FacetedSearchMixin:
 
         for key, config in self.get_facet_fields().items():
             selected = self._get_selected(key)
-            temp_qs = self.apply_facet_filters_except(filtered_qs)
+            temp_qs = self.apply_facet_filters_except(filtered_qs, exclude_facet=key)
             fields = _facet_source_fields(config)
             if not fields:
                 continue
             ftype = config.get("type", "choice")
             if ftype not in ("choice", "array"):
-                continue
-
-            if selected:
-                facets[key] = {
-                    "label": config["label"],
-                    "field_name": alias,
-                    "values": [{alias: selected[0], "count": temp_qs.count()}],
-                    "selected": selected,
-                }
                 continue
 
             value_counts = self._facet_value_counts(temp_qs, fields, ftype)
