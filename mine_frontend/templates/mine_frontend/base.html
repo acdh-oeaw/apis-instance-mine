@@ -1,155 +1,165 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>
-            {% block title %}Geschichte der Akademie{% endblock %}
-        </title>
-        {% block scriptHeader %}
-            {% load sass_tags %}
-            <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap"
-                  rel="stylesheet">
-            <link rel="preconnect" href="https://fonts.gstatic.com">
-            <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;1,400&display=swap"
-                  rel="stylesheet">
-            <!-- <script src="{% static 'jquery/jquery-3.7.1.slim.min.js' %}"></script> -->
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-            <link rel="stylesheet"
-                  href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
-            <link rel="stylesheet" href="{% static 'lightbox/css/lightbox.min.css' %}" />
-            <script src="{% static 'bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
-            <!-- Custom styles for this template -->
-            <script src="{% static 'feather/feather.min.js' %}"></script>
-            <!-- lightbox -->
-            <script src="{% static 'lightbox/js/lightbox.min.js' %}"></script>
-            <link href="{% sass_src 'mine_frontend/css/theme.scss' %}"
-                  rel="stylesheet"
-                  type="text/css" />
-        {% endblock %}
-    </head>
-    <body id="body" data-searchtype="erw" class="bg-mine">
-        <div class="hfeed site bg-white" id="page">
-            <!-- NAVBAR
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>
+
+      {% block title %}Geschichte der Akademie{% endblock %}
+
+    </title>
+
+    {% block scriptHeader %}
+      {% load sass_tags %}
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap"
+            rel="stylesheet">
+      <link rel="preconnect" href="https://fonts.gstatic.com">
+      <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;1,400&display=swap"
+            rel="stylesheet">
+      <!-- <script src="{% static 'jquery/jquery-3.7.1.slim.min.js' %}"></script> -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <link rel="stylesheet"
+            href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
+      <link rel="stylesheet" href="{% static 'lightbox/css/lightbox.min.css' %}" />
+      <script src="{% static 'bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+      <!-- Custom styles for this template -->
+      <script src="{% static 'feather/feather.min.js' %}"></script>
+      <!-- lightbox -->
+      <script src="{% static 'lightbox/js/lightbox.min.js' %}"></script>
+      <link href="{% sass_src 'mine_frontend/css/theme.scss' %}"
+            rel="stylesheet"
+            type="text/css" />
+    {% endblock %}
+
+  </head>
+  <body id="body" data-searchtype="erw" class="bg-mine">
+    <div class="hfeed site bg-white" id="page">
+      <!-- NAVBAR
 ================================================== -->
-            <!-- ******************* The Navbar Area ******************* -->
-            <div class="wrapper-fluid wrapper-navbar sticky-navbar"
-                 id="wrapper-navbar"
-                 itemscope
-                 itemtype="http://schema.org/WebSite">
-                <nav class="navbar navbar-expand-lg navbar-light">
-                    <div class="container">
-                        <a href="/"
-                           class="navbar-brand custom-logo-link w-100 h-100"
-                           rel="home"
-                           itemprop="url"><!--<h3>PAAS</h3>-->
-                            <img class="w-100 h-100"
-                                 src="{% static 'mine_frontend/img/MINE_logo.svg' %}" />
-                        </a><!-- end custom logo -->
-                        <button class="navbar-toggler"
-                                type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#navbarSupportedContent"
-                                aria-controls="navbarSupportedContent"
-                                aria-expanded="false"
-                                aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse align-items-start justify-content-start"
-                             id="navbarSupportedContent">
-                            <!-- Your menu goes here -->
-                            <ul id="main-menu"
-                                class="navbar-nav me-0 fw-bold flex-column text-uppercase">
-                                <li class="nav-item">
-                                    <a title="Mitglieder" href="{% url 'index' %}" class="nav-link p-0">Mitglieder</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a title="Institutionen"
-                                       href="{% url 'institution-index' %}"
-                                       class="nav-link p-0">Institutionen</a>
-                                </li>
-                                <li class="nav-item nav-link p-0" style="color: grey">Netzwerke</li>
-                                <li class="nav-item nav-link p-0" style="color: grey">Ereignisse</li>
-                            </ul>
-                            <form class="d-flex my-2 my-lg-0 pt-1 navbar-search-form"
-                                  method="get"
-                                  action=" {% if 'institution' in request.path %} /institutionen/search {% else %} /search {% endif %} "
-                                  role="search">
-                                <input class="form-control navbar-search rounded-0 border-0"
-                                       id="s"
-                                       name="q"
-                                       type="text"
-                                       placeholder=""
-                                       value=""
-                                       autocomplete="off">
-                                <button type="submit" class="navbar-search-icon pt-1">
-                                    <i data-feather="search"></i>
-                                </button>
-                            </form>
-                            <ul id="second-menu"
-                                class="navbar-nav me-0 align-top ps-lg-5 flex-column text-uppercase fw-light">
-                                <li class="nav-item">
-                                    <a title="Über" href="{% url 'about' %}" class="nav-link p-0">Über</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a title="Kontakt"
-                                       href="mailto:matthias.schloegl@oeaw.ac.at,johannes.feichtinger@oeaw.ac.at?subject=MINE%20Anfrage"
-                                       class="nav-link p-0">Kontakt</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- .collapse navbar-collapse -->
-                    </div>
-                    <!-- .container -->
-                </nav>
-                <!-- .site-navigation -->
+      <!-- ******************* The Navbar Area ******************* -->
+      <div class="wrapper-fluid wrapper-navbar sticky-navbar"
+           id="wrapper-navbar"
+           itemscope
+           itemtype="http://schema.org/WebSite">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <div class="container">
+            <a href="/"
+               class="navbar-brand custom-logo-link w-100 h-100"
+               rel="home"
+               itemprop="url"><!--<h3>PAAS</h3>-->
+              <img class="w-100 h-100"
+                   src="{% static 'mine_frontend/img/MINE_logo.svg' %}" />
+            </a><!-- end custom logo -->
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse align-items-start justify-content-start"
+                 id="navbarSupportedContent">
+              <!-- Your menu goes here -->
+              <ul id="main-menu"
+                  class="navbar-nav me-0 fw-bold flex-column text-uppercase">
+                <li class="nav-item">
+                  <a title="Mitglieder" href="{% url 'index' %}" class="nav-link p-0">Mitglieder</a>
+                </li>
+                <li class="nav-item">
+                  <a title="Institutionen"
+                     href="{% url 'institution-index' %}"
+                     class="nav-link p-0">Institutionen</a>
+                </li>
+                <li class="nav-item nav-link p-0" style="color: grey">Netzwerke</li>
+                <li class="nav-item nav-link p-0" style="color: grey">Ereignisse</li>
+              </ul>
+              <form class="d-flex my-2 my-lg-0 pt-1 navbar-search-form"
+                    method="get"
+                    action=" {% if 'institution' in request.path %} /institutionen/search {% else %} /search {% endif %} "
+                    role="search">
+                <input class="form-control navbar-search rounded-0 border-0"
+                       id="s"
+                       name="q"
+                       type="text"
+                       placeholder=""
+                       value=""
+                       autocomplete="off">
+                <button type="submit" class="navbar-search-icon pt-1">
+                  <i data-feather="search"></i>
+                </button>
+              </form>
+              <ul id="second-menu"
+                  class="navbar-nav me-0 align-top ps-lg-5 flex-column text-uppercase fw-light">
+                <li class="nav-item">
+                  <a title="Über" href="{% url 'about' %}" class="nav-link p-0">Über</a>
+                </li>
+                <li class="nav-item">
+                  <a title="Benutzung" href="{% url 'benutzung' %}" class="nav-link p-0">Benutzung</a>
+                </li>
+                <li class="nav-item">
+                  <a title="Kontakt"
+                     href="mailto:matthias.schloegl@oeaw.ac.at,johannes.feichtinger@oeaw.ac.at?subject=MINE%20Anfrage"
+                     class="nav-link p-0">Kontakt</a>
+                </li>
+              </ul>
             </div>
-            <!-- .wrapper-navbar end -->
-            <div class="h-100" id="content">
-                {% block content %}{% endblock %}
+            <!-- .collapse navbar-collapse -->
+          </div>
+          <!-- .container -->
+        </nav>
+        <!-- .site-navigation -->
+      </div>
+      <!-- .wrapper-navbar end -->
+      <div class="h-100" id="content">
+
+        {% block content %}{% endblock %}
+
+      </div>
+      <div id="footer"
+           class="footer {% if 'institution' in request.path %} border-mine-institutions {% else %} border-mine {% endif %} mlr-30">
+        <div class="container">
+          <footer>
+            <div class="row">
+              <div class="col-8 footermenu">
+                <ul class="nav list-inline justify-content-between">
+                  <li class="pb-1 ps-0 list-inline-item">
+                    <small><a title="Impressum" href="/imprint">Impressum</a></small>
+                  </li>
+                  <li class="pb-1 ps-0 list-inline-item">
+                    <small><a title="Impressum" href="/imprint">Datenschutz</a></small>
+                  </li>
+                  <li class=" ps-0 list-inline-item text-oeaw-blue">
+                    <small>&#xa9; Österreichische Akademie der Wissenschaften</small>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-4 text-end">
+                <i onclick="scrollToTop()" data-feather="arrow-up"></i>
+              </div>
             </div>
-            <div id="footer"
-                 class="footer {% if 'institution' in request.path %} border-mine-institutions {% else %} border-mine {% endif %} mlr-30">
-                <div class="container">
-                    <footer>
-                        <div class="row">
-                            <div class="col-8 footermenu">
-                                <ul class="nav list-inline justify-content-between">
-                                    <li class="pb-1 ps-0 list-inline-item">
-                                        <small><a title="Impressum" href="/imprint">Impressum</a></small>
-                                    </li>
-                                    <li class="pb-1 ps-0 list-inline-item">
-                                        <small><a title="Impressum" href="/imprint">Datenschutz</a></small>
-                                    </li>
-                                    <li class=" ps-0 list-inline-item text-oeaw-blue">
-                                        <small>&#xa9; Österreichische Akademie der Wissenschaften</small>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-4 text-end">
-                                <i onclick="scrollToTop()" data-feather="arrow-up"></i>
-                            </div>
-                        </div>
-                    </footer>
-                </div>
-            </div>
-            <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script>
-            <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script> -->
-            <script>feather.replace()</script>
-            <script>
+          </footer>
+        </div>
+      </div>
+      <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script>
+      <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script> -->
+      <script>feather.replace()</script>
+      <script>
     function scrollToTop() {
       $('body,html').animate({
         scrollTop : 0
     }, 500);
     }
 
-            </script>
-            {% block scripts %}
-                <script>
+      </script>
+
+      {% block scripts %}
+        <script>
 			$(document).ready(function(){
 				$('.mine-select2-simple').select2();
 			});
@@ -198,14 +208,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
-                </script>
-                <script>
+        </script>
+        <script>
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-                </script>
-            {% endblock %}
-            {% block scripts2 %}
-            {% endblock scripts2 %}
-        </div>
-    </body>
+        </script>
+      {% endblock %}
+
+      {% block scripts2 %}
+      {% endblock scripts2 %}
+
+    </div>
+  </body>
 </html>

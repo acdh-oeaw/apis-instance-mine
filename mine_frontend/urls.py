@@ -29,6 +29,11 @@ urlpatterns = [
         TemplateView.as_view(template_name="mine_frontend/about.html"),
         name="about",
     ),
+    path(
+        "benutzung/",
+        TemplateView.as_view(template_name="mine_frontend/benutzung.html"),
+        name="benutzung",
+    ),
     path("person/<int:pk>/", OEAWMemberDetailView.as_view(), name="person-detail"),
     path(
         "institution/<int:pk>/",
