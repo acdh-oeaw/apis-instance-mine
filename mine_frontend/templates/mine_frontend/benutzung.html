@@ -1,0 +1,280 @@
+{% extends "mine_frontend/base.html" %}
+{% load static %}
+
+{% block title %}Benutzung{% endblock %}
+
+{% block content %}
+  <div class="wrapper" id="wrapper-hero">
+    <div class="wrapper  pb-0" id="wrapper-hero-content">
+      <div class="container pl-5 pr-5 hero-light"
+           id="wrapper-hero-inner"
+           tabindex="-1">
+        <div class="row m-0 bg-mine border-mine p-1">
+          <h1 class="w-50  font-weight-bold">Datengrundlage und Benutzung ÖAW M|I|N|E</h1>
+        </div>
+      </div>
+    </div>
+    <div class="wrapper pt-0" id="index-wrapper">
+      <div class="container pl-5 pr-5" id="content" tabindex="-1">
+        <div class="row">
+          <div class="col-md-3">
+            <nav class="position-sticky top-0 pt-3" aria-label="Inhaltsverzeichnis">
+              <h2 class="h6 text-uppercase fw-bold">Inhaltsverzeichnis</h2>
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link py-1" href="#wozu">1. Wozu dient ÖAW M|I|N|E?</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link py-1" href="#datengrundlage">2. Auf welcher Datengrundlage basiert ÖAW M|I|N|E?</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link py-1" href="#noch-nicht">3. Welche Daten finde ich in ÖAW M|I|N|E noch nicht?</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link py-1" href="#mitglieder">4. Wie finde ich Mitglieder in ÖAW M|I|N|E?</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link py-1" href="#institutionen">5. Wie finde ich Institutionen in ÖAW M|I|N|E?</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div class="col-md-9">
+            <section id="wozu">
+              <h2 class="h2 font-weight-bold" style="text-decoration:underline">1. Wozu dient ÖAW M|I|N|E?</h2>
+              <p>
+                ÖAW M|I|N|E ist ein Recherchetool für historisch interessierte Laien und
+                professionelle Historiker:innen, die sich für die Geschichte der
+                Österreichischen Akademie der Wissenschaften (ÖAW) und ihrer
+                Vorgängerinstitutionen seit 1847 interessieren. Erfasst sind hier vor allem
+                Daten, die die Akademie selbst über ihre Mitglieder, Institutionen,
+                Netzwerke und Ereignisse gesammelt, veröffentlicht oder archiviert hat
+                (siehe <a href="#datengrundlage">Datengrundlage</a>). Diese neuartige
+                Datenbank ermöglicht es, diese Datensätze, erweitert um Daten aus der
+                Linked Open Data (Wikidata, Gemeinsame Normdatei (GND), GeoNames etc.), zu
+                kombinieren und auszuwerten (siehe <a href="#mitglieder">Suchmöglichkeiten</a>).
+                Auch ohne tiefere Vorkenntnisse der Akademiegeschichte gibt es hier
+                zahlreiche Möglichkeiten, die Zusammensetzung, Organisation und den Wandel
+                der Gelehrtengesellschaft, ihre Forschungsinitiativen sowie ihre dunkleren
+                Kapitel kennenzulernen.
+              </p>
+              <p>
+                Wie war die Akademie aufgebaut? Klicken Sie sich in der Suchmaske durch
+                verschiedene Möglichkeiten, probieren Sie verschiedene Kombinationen aus
+                und filtern Sie Ihre Suchergebnisse, bis Sie das gewünschte Ergebnis
+                finden. Es bleibt Ihnen überlassen, wie stark Sie Ihre Suche auf ein
+                bestimmtes Thema (z.B. Nobelpreisträger:innen, weibliche Akademiemitglieder,
+                NSDAP-Mitglieder, Gründungsmitglieder, Physiker:innen usw.) fokussieren.
+                Klicken Sie sich explorativ durch die Akademiegeschichte und probieren Sie
+                alle möglichen Fragestellungen und Kombinationsmöglichkeiten (z.B.
+                weibliche Nobelpreisträger, Physiker in der NSDAP, Gründungsmitglieder aus
+                Italien usw.) aus.
+              </p>
+              <p>
+                Wenn Sie nicht wissen, wo Sie anfangen könnten, starten Sie die Suche ohne
+                bestimmte Felder auszuwählen und lassen Sie sich zunächst alle Mitglieder
+                anzeigen (blauer Button unten auf der Seite „kombinierte Auswertung
+                starten“). Anschließend haben Sie die Möglichkeit, Ihre Suchergebnisse
+                weiter zu filtern (z.B. nach Klasse, Mitgliedschaftsart, Funktionen im
+                Präsidium, Geschlecht, Fach usw.).
+              </p>
+              <p>
+                Bitte beachten Sie, dass die Seite noch im Aufbau ist und nicht alle
+                Informationen verfügbar sind (siehe <a href="#noch-nicht">„Welche Daten
+                finde ich in ÖAW M|I|N|E noch nicht?“</a>).
+              </p>
+            </section>
+            <section id="datengrundlage">
+              <h2 class="h2 font-weight-bold" style="text-decoration:underline">
+                2. Auf welcher Datengrundlage basiert ÖAW M|I|N|E?
+              </h2>
+              <p>
+                ÖAW M|I|N|E basiert vor allem auf akademieinternen Daten, ergänzt durch
+                Daten aus der Linked Open Data. Das bedeutet, dass die wesentlichen Daten
+                zum Aufbau der Gelehrtengesellschaft, des Forschungsträgers und der
+                Verwaltung den veröffentlichten „Almanachen“ („Jahresberichten“) entnommen
+                sind und die biografischen Mitgliederdaten im Wesentlichen auf ihren
+                Selbstauskünften an die Akademie (archiviert in Personalakten) beruhen.
+              </p>
+              <p>
+                Der Akademie-Almanach wird seit 1851 jährlich herausgegeben und enthält
+                essenzielle Daten zum Mitgliederstand, zur Organisationsstruktur der
+                Akademie sowie zu den wesentlichen Forschungsfortschritten, die im letzten
+                Jahr erzielt wurden. Verstorbene Mitglieder werden mit einem Nachruf
+                geehrt. Der Almanach publiziert auch wichtige historische Dokumente wie
+                Statuten und Statutenänderungen, Geschäftsordnungen, Stiftsbriefe zu
+                Hinterlassenschaften sowie kaiserliche oder ministerielle Erlässe, die die
+                Akademie betreffen. Zudem dient der Almanach zur Dokumentation der
+                jährlichen feierlichen Sitzungen, einschließlich der dort gehaltenen Reden.
+              </p>
+              <p>
+                Die Mitgliederbiografien in ÖAW M|I|N|E basieren vor allem auf Angaben, die
+                die Mitglieder selbst über sich gemacht haben. Im heutigen Archiv der
+                Österreichischen Akademie der Wissenschaften (AÖAW) sind diese Daten in
+                Personalakten sortiert. Ein Personalakt enthält in der Regel den
+                Wahlvorschlagszettel, den ein vorschlagsberechtigtes Mitglied verfasst hat
+                und der von weiteren unterstützenden Mitgliedern unterschrieben wurde.
+                Nicht immer waren diese Wahlvorschläge auffindbar, weshalb die
+                Rekonstruktion der Unterstützer:innen lückenhaft bleiben muss. Des Weiteren
+                enthält ein Personalakt in der Regel eine Selbstbiografie, die von neu
+                gewählten Mitgliedern eingefordert wurde, ggf. ergänzt durch weitere
+                Nachreichungen. Nicht alle Mitglieder kamen der Bitte der Akademie nach,
+                einen selbstverfassten Lebenslauf einzureichen, weshalb diese Angaben
+                ebenfalls nicht vollständig erfasst wurden. Zu beachten ist dabei
+                weiterhin, dass die meisten Lebensläufe die eigene Biografie nur bis zum
+                Zeitpunkt der Wahl zum Akademiemitglied erfassen und keine Nachreichungen
+                vorgenommen wurden. Das bedeutet, dass die biografischen Angaben in den
+                Mitgliederprofilen einerseits sehr subjektiv gefärbt und andererseits sehr
+                lückenhaft dargestellt sind.
+              </p>
+              <p>
+                Dieses Vorgehen unterscheidet ÖAW M|I|N|E grundlegend von biografischen
+                Datenbanken, die in der Regel nicht auf einen so reichen Schatz an
+                Selbstauskünften zurückgreifen können, sondern Biografien vor allem aus
+                externen Quellen rekonstruieren. Dies führt dazu, dass die Mitgliederprofile
+                in ÖAW M|I|N|E fehlerhaft oder unvollständig erscheinen, was jedoch
+                explizit beabsichtigt ist und durch die Verlinkung mit anderen biografischen
+                Datenbanken ausgeglichen wird. So mag sich ein Mitglied möglicherweise bei
+                einer Datumsangabe geirrt haben oder sensible Informationen (z.B. zu
+                politischen Überzeugungen) absichtlich zurückgehalten haben. Bitte beachten
+                Sie dabei stets die Quellenangaben zu den biografischen Informationen.
+              </p>
+            </section>
+            <section id="noch-nicht">
+              <h2 class="h2 font-weight-bold" style="text-decoration:underline">
+                3. Welche Daten finde ich in ÖAW M|I|N|E noch nicht?
+              </h2>
+              <p>
+                Die Webapplikation ÖAW M|I|N|E wird fortlaufend überarbeitet und ergänzt.
+                Das betrifft nicht nur die heutigen Mitglieder, sondern teilweise auch die
+                historischen. Wie weiter oben beschrieben, speist sich der Datenbestand von
+                ÖAW M|I|N|E hauptsächlich aus zwei Quellen: Almanachdaten und biografische
+                Selbstauskünfte. Aus dem Almanach sind die Mitgliedschaftsdaten von rund
+                3.000 Akademiemitgliedern von 1847 bis heute erfasst. Dies betrifft Art und
+                Dauer der Mitgliedschaft, Funktionen in der Akademie, Auszeichnungen,
+                Festreden usw. Ebenso wurden die Institutionen (rund 80 Institute, 365
+                Kommissionen usw.) und deren Zusammenhänge aus den Almanachdaten übernommen.
+              </p>
+              <p>
+                Die biografischen Selbstauskünfte der Mitglieder sind noch im Aufbau.
+                Bisher befinden sich in ÖAW M|I|N|E die biografischen Daten der wirklichen
+                Mitglieder von 1847 bis 1970 sowie die der korrespondierenden Mitglieder im
+                Inland von 1847 bis 1955. Die Personalakten der korrespondierenden Mitglieder
+                im Ausland, der Ehrenmitglieder und der Mitglieder der Jungen Akademie
+                konnten bislang noch nicht bearbeitet werden.
+              </p>
+            </section>
+            <section id="mitglieder">
+              <h2 class="h2 font-weight-bold" style="text-decoration:underline">4. Wie finde ich Mitglieder in ÖAW M|I|N|E?</h2>
+              <p>
+                Es gibt mehrere Möglichkeiten, Akademiemitglieder zu finden. Hier stellen
+                wir Ihnen einige gängige Möglichkeiten vor. Kennen Sie bereits den Namen
+                eines konkreten Mitglieds, können Sie ihn direkt in den Suchschlitz
+                („Mitgliedersuche“) eingeben.
+              </p>
+              <p>
+                Das Besondere an ÖAW M|I|N|E ist jedoch, dass man sich auch ohne
+                vorherige Kenntnis konkreter Namen Gruppen von Akademiemitgliedern
+                zusammenstellen lassen kann, über die man Näheres erfahren möchte.
+                Interessiert man sich beispielsweise für die disziplinäre Zusammensetzung
+                der Gelehrtengesellschaft in einem bestimmten Zeitraum, kann man den
+                Zeitstrahl entsprechend einschränken, sich zunächst alle Mitglieder (oder
+                auch nur wirkliche Mitglieder etc.) anzeigen lassen („kombinierte
+                Auswertung starten“) und diese anschließend nach Fächern filtern. Damit
+                lässt sich beispielsweise die fachliche Zusammensetzung der
+                Gelehrtengesellschaft im Zeitverlauf beobachten.
+              </p>
+              <p>
+                Bei der Bedienung des Zeitstrahls ist lediglich zu beachten, dass ein
+                Doppelklick auf die zeitlichen Grenzen des Untersuchungszeitraums
+                erforderlich sein kann. Das bedeutet, dass dann nur noch Personen, deren
+                Mitgliedschaft ausschließlich innerhalb der Zeitspanne aufrecht war,
+                angezeigt werden. Möchte man beispielsweise die Gruppe der
+                Akademiemitglieder in der NS-Zeit näher untersuchen, so kann man den
+                Zeitraum 1938 bis 1945 auswählen und erhält bei einfachem Klick 355
+                Personen, die irgendwann zwischen 1938 und 1945 eine aufrechte
+                Mitgliedschaft besaßen. Dazu zählen dann beispielsweise auch der
+                hochbetagte Philologe Georgios Hazidakis, der 1848 bis 1941 lebte und von
+                1911 bis 1941 kMA war. Sollen nur stimmberechtigten Personen angezeigt
+                werden, muss man die Mitgliedschaft auf wirkliche Mitglieder beschränken.
+              </p>
+              <p>
+                Möchte man sich hingegen nur diejenigen Personen anzeigen lassen, die
+                durch die gelenkten Wahlen der NS-Zeit hinzugewählt wurden, muss man beim
+                Startjahr 1939 einen Doppelklick machen (dadurch wird der Punkt rot und man
+                kann folgenden Hinweis lesen: „Mitgliedschaft muss nach 1938 starten“).
+                Der Endpunkt sollte bei 1944 (den letzten unfreien Wahlen) einfach gesetzt
+                werden (einfach deshalb, weil die Mitgliedschaft auch in der Nachkriegszeit
+                noch aufrecht sein konnte). Dadurch kommt man zu dem Ergebnis, dass in der
+                NS-Zeit 103 Personen aller Mitgliederkategorien hinzugewählt wurden. Diese
+                Personengruppe lässt sich nun beliebig weiter filtern.
+              </p>
+              <p>
+                Nach diesem einfachen Prinzip lassen sich immer komplexere Auswertungen
+                durchführen. Kombinieren Sie zum Beispiel Ihre so gewonnenen Erkenntnisse
+                über Fachgruppen mit beliebigen anderen Kategorien, die auf der Startseite
+                auswählbar sind: z.B. in welcher Fachdisziplin wurden die meisten
+                Nobelpreise gewonnen, wer stellte die meisten Präsidenten usw. Kombinieren
+                Sie die verschiedensten Möglichkeiten und erzielen Sie spannende Ergebnisse.
+              </p>
+              <p>
+                Ohne viel Vorkenntnis der Mitgliederstruktur der ÖAW wird auf der
+                Startseite bereits vieles ersichtlich, etwa die Mitgliedschaftskategorien,
+                die beiden Klassen, die Funktionen im Präsidium usw. So kann man
+                beispielsweise an der Suchmöglichkeit „zur Wahl vorgeschlagen von“ bereits
+                erkennen, dass man zur Wahl vorgeschlagen werden musste. Die darin zur
+                Auswahl stehenden Mitglieder sind ausschließlich wirkliche Mitglieder, denn
+                nur diese waren stimmberechtigt (mit Ausnahme der Wahl zum MJA). Des
+                Weiteren zeigt der Reiter „Wissenschaftler:innenaustausch“ an, dass es ab
+                1965 die Möglichkeit gab, im Ausland zu forschen. Die Auswahlmöglichkeiten
+                darunter geben einen Einblick darin, wohin die Reise gehen konnte. Unter
+                „Auszeichnungen“ sind u.a. alle jemals verliehenen Akademiepreise
+                aufgeführt. Lässt man sich beispielsweise alle Preisträger:innen des
+                Erwin-Schrödinger-Preises der mathematisch-naturwissenschaftlichen Klasse
+                anzeigen, so kommt man bereits durch wenige Klicks zu spannenden
+                Ergebnissen: Seit der ersten Vergabe 1956 wurde der Preis an 70 spätere
+                Akademiemitglieder vergeben (gegenwärtige wirkliche Mitglieder sind laut
+                Statuten von der Nominierung ausgeschlossen), darunter vor allem
+                Physiker:innen und Chemiker:innen. Der Frauenanteil liegt bei 5,7 %.
+              </p>
+            </section>
+            <section id="institutionen">
+              <h2 class="h2 font-weight-bold" style="text-decoration:underline">5. Wie finde ich Institutionen in ÖAW M|I|N|E?</h2>
+              <p>
+                Um nach Institutionen zu suchen, wechselt man zunächst zur grün markierten
+                Suchseite „Institutionen“ (Link oben rechts). Hier können Sie nach
+                historischen und gegenwärtigen Institutionen suchen und kombinierte
+                Auswertungen durchführen. Zunächst sind hier die verschiedenen Arten von
+                Institutionen von Kommissionen bis Preisen aufgeführt. Beim Darüberfahren
+                werden weitere Informationen zu diesen Kategorien angezeigt. Nicht alle
+                Arten von Institutionen gab es zu allen Zeiten und nicht alle dienten dem
+                wissenschaftlichen Austausch (siehe die Institutionen der Verwaltung).
+                Klicken Sie sich durch und finden Sie selbst heraus, welche Aspekte Sie am
+                meisten interessieren.
+              </p>
+              <p>
+                Starten Sie zum Beispiel mit den Kommissionen und sortieren Sie diese nach
+                Gründungsdatum oder filtern Sie sie nach Klasse. Manche Kommissionen mit
+                langer Laufzeit (z.B. die Historische Kommission) durchlaufen verschiedene
+                strukturelle Entwicklungen (wie Ein- oder Ausgliederungen) oder haben
+                institutionelle Vorgänger und/oder Nachfolger. Die vielen Umbenennungen
+                von Kommissionen und auch Umwandlungen in Institute oder Forschungsstellen
+                können es erschweren, den Namen einer Kommission direkt zu suchen. Lassen
+                Sie sich nicht von kurzen Laufzeiten irritieren, sondern beachten Sie auch
+                entsprechende Vorgänger und Nachfolger, die möglicherweise nur einer
+                kleinen Umbenennung Rechnung tragen. Auch können bestimmte
+                Institutionsnamen mehrfach vorkommen und unterschiedliche Laufzeiten
+                haben: So gab es das Institut für Radiumforschung zwischen 1910 und 1944
+                sowie zwischen 1945 und 1955. Dazwischen hieß es „Vierjahresplaninstitut
+                für Neutronenforschung“ (1944–1945). Solche Begebenheiten haben es lange
+                Zeit erschwert, die Institutionengeschichte der ÖAW strukturell zu
+                erfassen, was nun durch ÖAW M|I|N|E erstmals auch für Nicht-Spezialist:innen
+                möglich ist.
+              </p>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
