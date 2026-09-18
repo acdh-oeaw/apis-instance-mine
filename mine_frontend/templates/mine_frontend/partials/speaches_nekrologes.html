@@ -1,31 +1,35 @@
 {% load mine_extras %}
 {% if speaches %}
-    Hat Reden auf folgenden Veranstaltungen gehalten:
-    <ul class="ps-0 mb-0 list-unstyled">
-        {% for speach in speaches %}
-            <li class="fw-normal pb-1">
-                {{ speach.obj }}
-                {% if speach.obj.datum %}({{ speach.obj.datum_date_sort|date:"Y" }}){% endif %}
-            </li>
-        {% endfor %}
-    </ul>
+  Hat Reden auf folgenden Veranstaltungen gehalten:
+  <ul class="ps-0 mb-0 list-unstyled">
+    {% for speach in speaches %}
+      <li class="fw-normal pb-1">
+        {{ speach.obj }}
+        {% if speach.obj.datum %}({{ speach.obj.datum_date_sort|date:"Y" }}){% endif %}
+      </li>
+    {% endfor %}
+  </ul>
 {% endif %}
 {% if nekrologe_verfasst %}
-    {% if speaches %}<hr>{% endif %}
-    Hat Nachrufe für folgende Mitglieder verfasst:
-    <ul class="ps-0 mb-0 list-unstyled">
-        {% for nekro in nekrologe_verfasst %}
-            <li class="fw-normal pb-1">
-                {{ nekro.subj|mine_link }}
-                {% if nekro.obj.datum %}({{ nekro.obj.datum_date_sort|date:"Y" }}){% endif %}
-                {% if nekro.references %}
-                    {% include 'mine_frontend/partials/tooltip_info.html' with text=nekro.references %}
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
+  {% if speaches %}<hr>{% endif %}
+  Hat Nachrufe für folgende Mitglieder verfasst:
+  <ul class="ps-0 mb-0 list-unstyled">
+    {% for nekro in nekrologe_verfasst %}
+      <li class="fw-normal pb-1">
+        {{ nekro.subj|mine_link }}
+        {% if nekro.obj.datum %}({{ nekro.obj.datum_date_sort|date:"Y" }}){% endif %}
+        {% if nekro.references %}
+          {% include 'mine_frontend/partials/tooltip_info.html' with text=nekro.references %}
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
 {% endif %}
 {% if own_nekro %}
-    {% if nekrologe_verfasst or speaches %}<hr>{% endif %}
+  {% if nekrologe_verfasst or speaches %}<hr>{% endif %}
+  {% if oeaw_member.id != own_nekro.subj.id %}
     <p>Der Nachruf auf {{ oeaw_member }} wurde von {{ own_nekro.subj|mine_link }} verfasst</p>
+  {% else %}
+    <p>{{ oeaw_member }} verfasste einen autobiographischen Nachruf</p>
+  {% endif %}
 {% endif %}

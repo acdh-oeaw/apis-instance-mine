@@ -276,7 +276,7 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         )
         context["nekrologe_verfasst"] = ErwaehntIn.objects.filter(
             obj_object_id__in=aut_nekro_pre
-        )
+        ).exclude(subj_object_id=self.object.id)
         own_nekro_pre = AutorVon.objects.filter(
             obj_object_id__in=ErwaehntIn.objects.filter(subj_object_id=self.object.id)
             .annotate(_title=nekrolog.values("titel"))
