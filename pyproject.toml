@@ -5,11 +5,11 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "apis-acdhch-default-settings>=2.20.0",
+    "apis-acdhch-default-settings>=2.23.0,<2.24",
     "apis-acdhch-django-invite>=0.2.0",
-    "apis-core-rdf>=0.65.1",
+    "apis-core-rdf>=0.69.1,<0.70",
     "django-compressor>=4.6.0",
-    "django-interval>=0.5.2",
+    "django-interval>=0.5.4,<0.6",
     "django-json-editor-field>=0.4.2",
     "django-sass-processor>=1.4.2",
     "imgproxy>=1.0.0",
