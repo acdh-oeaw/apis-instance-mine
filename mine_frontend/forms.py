@@ -269,7 +269,7 @@ class MineMainform(forms.Form):
             ("kM A", "korrespondierendes Mitglied im Ausland"),
             ("wM", "Wirkliches Mitglied"),
             ("EM", "Ehrenmitglied"),
-            ("Junge Kurie/Junge Akademie", "Junge Kurie/Junge Akademie"),
+            ("JA", "Mitglied Junge Akademie"),
         ],
     )
     klasse = forms.MultipleChoiceField(
