@@ -68,12 +68,12 @@ Doppelklick auf die Grenzen, um Personen anzuzeigen, deren Mitgliedschaft aussch
                     AccordionGroupTooltip(
                         "Funktionen im Präsidium",
                         "acad_func",
+                        "kurator_func",
                         css_id="praesidium",
                         tooltip="kollegiales Leitungsorgan, auf 5 Jahre gewählt",
                     ),
                     AccordionGroup(
                         "Funktionen in Akademieinstitutionen",
-                        "kurator_func",
                         "akademiefunktionen",
                         css_id="in_der_akademie",
                     ),
