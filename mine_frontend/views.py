@@ -95,8 +95,14 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         membership_list = list(
-            OeawMitgliedschaft.objects.filter(subj_object_id=self.object.id)
-        ) + list(NichtGewaehlt.objects.filter(subj_object_id=self.object.id))
+            OeawMitgliedschaft.objects.filter(
+                subj_object_id=self.object.id
+            ).prefetch_related("obj", "vorgeschlagen_von")
+        ) + list(
+            NichtGewaehlt.objects.filter(
+                subj_object_id=self.object.id
+            ).prefetch_related("obj", "vorgeschlagen_von")
+        )
         context["membership"] = sorted(
             membership_list,
             key=lambda obj: (
@@ -108,26 +114,31 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         context["membership_short"] = (
             OeawMitgliedschaft.objects.filter(subj_object_id=self.object.id)
             .exclude(beginn_typ="gewählt, nicht bestätigt")
+            .prefetch_related("obj", "vorgeschlagen_von")
             .order_by("beginn_date_sort")
         )
         context["place_of_birth"] = GeborenIn.objects.filter(
             subj_object_id=self.object.id
-        )
+        ).prefetch_related("obj")
         context["place_of_death"] = GestorbenIn.objects.filter(
             subj_object_id=self.object.id
-        )
-        context["education"] = AusbildungAn.objects.filter(
-            subj_object_id=self.object.id
-        ).order_by(
-            Case(When(typ="Schule", then=Value(0)), default=Value(1)),
-            "beginn_date_sort",
+        ).prefetch_related("obj")
+        context["education"] = (
+            AusbildungAn.objects.filter(subj_object_id=self.object.id)
+            .select_related("fach")
+            .prefetch_related("obj")
+            .order_by(
+                Case(When(typ="Schule", then=Value(0)), default=Value(1)),
+                "beginn_date_sort",
+            )
         )
         context["honour_titles"] = EhrentitelVonInstitution.objects.filter(
             subj_object_id=self.object.id
-        )
+        ).prefetch_related("obj")
         inst_akad = Institution.objects.filter(pk=OuterRef("obj_object_id"))
         career = (
             PositionAn.objects.filter(subj_object_id=self.object.id)
+            .select_related("fach")
             .annotate(
                 _inst_akad=inst_akad.values("akademie_institution"),
                 _inst_typ=inst_akad.values("typ"),
@@ -138,6 +149,7 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
                 ),
             )
             .order_by("_sort_date")
+            .prefetch_related("obj")
         )
         context["career"] = career.exclude(_inst_akad=True)
         context["career_akad"] = {}
@@ -207,10 +219,10 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         )
         proposed_success = OeawMitgliedschaft.objects.filter(
             vorgeschlagen_von=self.object.id
-        ).order_by("beginn_date_sort")
+        ).prefetch_related("obj", "subj")
         proposed_unsuccess = NichtGewaehlt.objects.filter(
             vorgeschlagen_von=self.object.id
-        ).order_by("datum_date_sort")
+        ).prefetch_related("obj", "subj")
         delegations = career.filter(_inst_typ="Delegation")
 
         if any(
@@ -253,9 +265,11 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
         context["reference_resources"] = [
             get_web_object_uri(x) for x in Uri.objects.filter(object_id=self.object.id)
         ]
-        context["prizes"] = Gewinnt.objects.filter(
-            subj_object_id=self.object.id
-        ).order_by("datum_date_sort")
+        context["prizes"] = (
+            Gewinnt.objects.filter(subj_object_id=self.object.id)
+            .prefetch_related("obj")
+            .order_by("datum_date_sort")
+        )
         inst_member = Institution.objects.filter(pk=OuterRef("obj_object_id"))
         member = (
             Mitglied.objects.filter(subj_object_id=self.object.id)
@@ -264,6 +278,7 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
                 _inst_label=inst_member.values("label"),
             )
             .order_by("beginn_date_sort")
+            .prefetch_related("obj")
         )
         context["memb_akad"] = member.filter(_inst_kind="Akademie (Ausland)")
         context["nazi"] = member.filter(_inst_label__icontains="nationalsozialistisch")
@@ -274,9 +289,11 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
             .values("obj_object_id")
             .filter(_title__icontains="nekrolog")
         )
-        context["nekrologe_verfasst"] = ErwaehntIn.objects.filter(
-            obj_object_id__in=aut_nekro_pre
-        ).exclude(subj_object_id=self.object.id)
+        context["nekrologe_verfasst"] = (
+            ErwaehntIn.objects.filter(obj_object_id__in=aut_nekro_pre)
+            .exclude(subj_object_id=self.object.id)
+            .prefetch_related("subj", "obj")
+        )
         own_nekro_pre = AutorVon.objects.filter(
             obj_object_id__in=ErwaehntIn.objects.filter(subj_object_id=self.object.id)
             .annotate(_title=nekrolog.values("titel"))
@@ -284,8 +301,10 @@ class OEAWMemberDetailView(LoginRequiredMixin, generic.DetailView):
             .values("obj_object_id")
         )
         if own_nekro_pre.exists():
-            context["own_nekro"] = own_nekro_pre.first()
-        context["speaches"] = HaeltRedeBei.objects.filter(subj_object_id=self.object.id)
+            context["own_nekro"] = own_nekro_pre.prefetch_related("subj", "obj").first()
+        context["speaches"] = HaeltRedeBei.objects.filter(
+            subj_object_id=self.object.id
+        ).prefetch_related("obj")
         context["entity_type"] = "person"
 
         return context

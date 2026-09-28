@@ -1,3 +1,5 @@
+from functools import cache
+
 from django import template
 from django.contrib.contenttypes.models import ContentType
 from django.utils.html import mark_safe
@@ -5,6 +7,16 @@ from django.utils.html import mark_safe
 from apis_core.uris.models import Uri
 
 register = template.Library()
+
+
+@cache
+def gnd_uri(pk: int):
+    """Cached: first d-nb.info URI of an object (or None)."""
+    return (
+        Uri.objects.filter(uri__contains="d-nb.info", object_id=pk)
+        .values_list("uri", flat=True)
+        .first()
+    )
 
 
 @register.filter()
@@ -21,10 +33,10 @@ def mine_link(value, entity_type: str | None = None):
         )
         if check:
             return mark_safe(f'<a href="/{entity_type}/{value.pk}">{value}</a>')
-    gnd = Uri.objects.filter(uri__contains="d-nb.info", object_id=value.pk)
-    if gnd.exists():
+    gnd = gnd_uri(value.pk)
+    if gnd:
         return mark_safe(
-            f'<a href="{gnd.first().uri}">{value}</a><i data-feather="external-link" style="width: 1.1em; height: 1.1em; padding-left: 0.2em; vertical-align: middle;"></i>'
+            f'<a href="{gnd}">{value}</a><i data-feather="external-link" style="width: 1.1em; height: 1.1em; padding-left: 0.2em; vertical-align: middle;"></i>'
         )
     return mark_safe(f"<u>{value}</u>")
 
