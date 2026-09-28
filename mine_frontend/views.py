@@ -993,11 +993,17 @@ class InstitutionResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTable
             .values("klasse_id")[:1]
         )
 
-        return Institution.objects_mine.filter(akademie_institution=True).annotate(
-            klasse_id=Subquery(klasse_relation),
-            klasse_label=Subquery(
-                Institution.objects.filter(pk=OuterRef("klasse_id")).values("label")[:1]
-            ),
+        return (
+            Institution.objects_mine.filter(akademie_institution=True)
+            .exclude(typ="Preis")
+            .annotate(
+                klasse_id=Subquery(klasse_relation),
+                klasse_label=Subquery(
+                    Institution.objects.filter(pk=OuterRef("klasse_id")).values(
+                        "label"
+                    )[:1]
+                ),
+            )
         )
 
     def get_queryset(self):
