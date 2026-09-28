@@ -532,7 +532,7 @@ class InstitutionMainForm(forms.Form):
                     "Internationales Forschungsprogramm",
                     "ist ein Forschungsprogramm internationaler Organisationen, an dem die ÖAW beteiligt ist und Österreich vertritt",
                 ),
-                ("Preis", "Preis", "umfasst die ÖAW-Preise und den Nobelpreis"),
+                #                ("Preis", "Preis", "umfasst die ÖAW-Preise und den Nobelpreis"),
             ]
         ),
     )
