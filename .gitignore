@@ -40,3 +40,5 @@ mine_frontend/static/bootstrap/dist/css/*
 !mine_frontend/static/bootstrap/dist/js/
 mine_frontend/static/bootstrap/dist/js/*
 !mine_frontend/static/bootstrap/dist/js/bootstrap.bundle.min.js
+
+analysis/
