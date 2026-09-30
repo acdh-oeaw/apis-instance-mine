@@ -1,6 +1,9 @@
 import datetime
+import os
 import re
 
+import requests
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.expressions import ArraySubquery
 from django.db.models import (
@@ -16,7 +19,9 @@ from django.db.models import (
     When,
 )
 from django.db.models.functions import Cast, Concat, Lower
+from django.utils.decorators import method_decorator
 from django.views import generic
+from django.views.decorators.cache import cache_page
 from django.views.generic.base import TemplateView
 from django_tables2.views import SingleTableView
 
@@ -1021,3 +1026,28 @@ class InstitutionResultsView(FacetedSearchMixin, LoginRequiredMixin, SingleTable
         context["css_postfix"] = "-institutions"
         context["total_counts"] = context["object_list"].count()
         return context
+
+
+@method_decorator(cache_page(60 * 5), name="dispatch")
+class Imprint(TemplateView):
+    template_name = "mine_frontend/imprint.html"
+
+    def get_context_data(self) -> str:
+        ctx = super().get_context_data()
+        base_url = getattr(
+            settings, "ACDH_IMPRINT_URL", "https://imprint.acdh.oeaw.ac.at/"
+        )
+        redmine_id = getattr(settings, "REDMINE_ID", os.getenv("SERVICE_ID", "26962"))
+        lang = self.request.LANGUAGE_CODE.split("-")[0]
+
+        r = requests.get(f"{base_url}{redmine_id}", params={"locale": lang})
+
+        if r and redmine_id:
+            ctx["imprint"] = r.text
+        else:
+            ctx["imprint"] = """
+            One of our services is currently not available. Please try it later or write
+            an email to acdh@oeaw.ac.at; if you are service provider, make sure that you
+            provided ACDH_IMPRINT_URL and REDMINE_ID.
+            """
+        return ctx

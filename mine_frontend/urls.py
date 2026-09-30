@@ -12,6 +12,7 @@ from mine_frontend.autocompletes import (
     WissenschaftsaustauschDal,
 )
 from mine_frontend.views import (
+    Imprint,
     IndexView,
     InstitutionIndexView,
     InstitutionResultsView,
@@ -33,6 +34,11 @@ urlpatterns = [
         "benutzung/",
         TemplateView.as_view(template_name="mine_frontend/benutzung.html"),
         name="benutzung",
+    ),
+    path(
+        "mine-imprint/",
+        Imprint.as_view(),
+        name="imprint",
     ),
     path("person/<int:pk>/", OEAWMemberDetailView.as_view(), name="person-detail"),
     path(
