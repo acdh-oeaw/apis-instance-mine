@@ -1,0 +1,23 @@
+{% extends "mine_frontend/base.html" %}
+
+{% load static %}
+{% block addStyles %}
+<style>
+	h2 {
+		font-size: 1.5rem;
+		text-decoration: underline;
+	}
+
+	h3 {
+		font-size: 1.2rem;
+		text-decoration: underline;
+	}
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+	<div class="card imprint">
+		<div class="card-body">{{ imprint|safe }}</div>
+	</div>
+</div>
+{% endblock %}
