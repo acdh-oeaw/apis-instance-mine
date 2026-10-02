@@ -276,7 +276,7 @@ class FacetedSearchMixin:
             )
 
         parts = [self._facet_value_rows(queryset, fld, ftype) for fld in fields]
-        unioned = parts[0].union(*parts[1:])
+        unioned = parts[0].union(*parts[1:]).order_by()
         counts = {}
         for value, oid in unioned.values_list("value", "oid"):
             if value is None:
